@@ -1,0 +1,395 @@
+/**
+ * Laravel-specific overrides for WordPress theme CSS
+ * Flash messages, pagination, and other Laravel-only elements
+ */
+
+/* Flash messages */
+.alert {
+    padding: 12px 20px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    font-size: 14px;
+    line-height: 20px;
+}
+
+.alert-success {
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.alert-error {
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+/* Laravel pagination */
+nav[role="navigation"] {
+    display: flex;
+    justify-content: center;
+    margin-top: 32px;
+}
+
+nav[role="navigation"] .flex.justify-between {
+    display: none;
+}
+
+nav[role="navigation"] span[aria-current="page"] span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    background: #898121;
+    color: #fff;
+    border-radius: 50%;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+nav[role="navigation"] a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    color: #404141;
+    border-radius: 50%;
+    font-size: 14px;
+    text-decoration: none;
+    transition: background 0.2s;
+}
+
+nav[role="navigation"] a:hover {
+    background: #ebeaf0;
+}
+
+/* Empty cart */
+.cart-empty {
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.cart-empty p {
+    font-size: 18px;
+    color: #807f81;
+    margin-bottom: 20px;
+}
+
+/* Validation errors inline */
+.field-error {
+    color: #A03611;
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+/* Product gallery: thumbnail navigation with arrows */
+.thumbnail-nav {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    flex-shrink: 0;
+    width: 80px;
+}
+
+.thumb-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 20px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    opacity: 0.5;
+    transition: opacity 0.2s;
+}
+
+.thumb-arrow:hover {
+    opacity: 1;
+}
+
+.thumbnail-slider {
+    width: 70px;
+    max-height: 420px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.thumbnail-slider::-webkit-scrollbar {
+    display: none;
+}
+
+.thumbnail-nav .thumbnail {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    transition: transform 0.3s ease;
+    width: 100% !important;
+}
+
+.thumbnail-nav .thumbnail a {
+    flex-shrink: 0;
+}
+
+/* Card image slider (mouse position) */
+.card__img {
+    position: relative;
+    overflow: hidden;
+}
+
+.card__img a {
+    position: relative;
+    display: block;
+}
+
+.card__img-slide {
+    display: none;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.card__img-slide.active {
+    display: block;
+}
+
+.card__img-dots {
+    position: absolute;
+    bottom: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 4px;
+    z-index: 2;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.card__img:hover .card__img-dots {
+    opacity: 1;
+}
+
+.card__img-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.25);
+    transition: background 0.15s;
+}
+
+.card__img-dot.active {
+    background: #898121;
+}
+
+/* Cart: shift "Название" header right to align with product name text (after image) */
+.cart th.product-name {
+    padding-left: 20px;
+}
+
+/* Cart: remove button (button element, not just <a>) */
+button.remove2 {
+    display: flex;
+    width: 50px !important;
+    height: 50px !important;
+    color: #fff !important;
+    background-color: #898121;
+    border-radius: 10px !important;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
+}
+button.remove2:hover {
+    background-color: #AFA312;
+}
+button.remove2:active {
+    background-color: #343A1D;
+}
+
+/* Cart: coupon applied badge */
+.coupon-applied {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 12px;
+    padding: 8px 12px;
+    background: #f0f0eb;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+.coupon-remove {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    color: #807f81;
+    padding: 2px 6px;
+}
+
+.coupon-remove:hover {
+    color: #a03611;
+}
+
+/* Screen reader text (accessibility) */
+.screen-reader-text {
+    position: absolute !important;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* Toast notifications */
+#toast-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 99999;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.toast {
+    padding: 14px 20px;
+    border-radius: 10px;
+    font-size: 14px;
+    line-height: 20px;
+    color: #fff;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    animation: toast-in 0.3s ease;
+    max-width: 360px;
+}
+
+.toast--success {
+    background: #898121;
+}
+
+.toast--error {
+    background: #a03611;
+}
+
+.toast--removing {
+    animation: toast-out 0.3s ease forwards;
+}
+
+.toast__link {
+    display: block;
+    margin-top: 8px;
+    padding: 6px 14px;
+    background: #fff;
+    color: #252916;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 13px;
+    text-align: center;
+    transition: background 0.2s;
+}
+
+.toast__link:hover {
+    background: #f0f0f0;
+}
+
+@keyframes toast-in {
+    from { opacity: 0; transform: translateX(100%); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes toast-out {
+    from { opacity: 1; transform: translateX(0); }
+    to { opacity: 0; transform: translateX(100%); }
+}
+
+/* "Already in cart" button state */
+.card__btns--in-cart {
+    display: flex;
+    width: 100%;
+}
+
+.card__btns--in-cart .card__btns__btn--in-cart {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    padding: 12px 20px;
+    background: #252916;
+    border-radius: 7px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.card__btns--in-cart .card__btns__btn--in-cart .card__btns__btn-text {
+    color: #fff;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.card__btns--in-cart .card__btns__btn--in-cart svg {
+    fill: #fff;
+    width: 18px;
+    height: 16px;
+}
+
+.card__btns--in-cart .card__btns__btn--in-cart:hover {
+    background: #898121;
+}
+
+/* Header catalog link */
+a.header__catalog,
+a.header__catalog:visited,
+a.header__catalog span {
+    color: #fff;
+    text-decoration: none;
+}
+
+/* Checkout layout */
+
+@media (max-width: 1024px) {
+    .thumbnail-nav {
+        flex-direction: row;
+        width: 100%;
+        order: 2;
+    }
+    .thumb-arrow--up svg,
+    .thumb-arrow--down svg {
+        transform: rotate(-90deg);
+    }
+    .thumb-arrow--down svg {
+        transform: rotate(90deg);
+    }
+    .thumbnail-slider {
+        width: 100%;
+        max-height: none;
+        overflow: hidden;
+    }
+    .thumbnail-nav .thumbnail {
+        flex-direction: row;
+    }
+
+    #toast-container {
+        top: 10px;
+        right: 10px;
+        left: 10px;
+    }
+    .toast {
+        max-width: 100%;
+    }
+}
+
