@@ -108,16 +108,33 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
-/* ---------- Catalog dropdown (hover) ---------- */
-const catalogWrapper = document.querySelector('.header__catalog-wrapper');
+/* ---------- Catalog dropdown (hover with delay) ---------- */
+const catalogWrapper = document.querySelector('.header__nav-catalog-wrapper') || document.querySelector('.header__catalog-wrapper');
 if (catalogWrapper) {
-    const catalogMenu = catalogWrapper.querySelector('.header__catalog__menu');
-    catalogWrapper.addEventListener('mouseenter', () => catalogMenu.style.display = 'block');
-    catalogWrapper.addEventListener('mouseleave', () => catalogMenu.style.display = 'none');
+    const catalogMenu = catalogWrapper.querySelector('.header__catalog-dropdown') || catalogWrapper.querySelector('.header__catalog__menu');
+    if (catalogMenu) {
+        let catalogHideTimeout = null;
+
+        function showCatalogDropdown() {
+            clearTimeout(catalogHideTimeout);
+            catalogMenu.style.display = 'block';
+        }
+
+        function hideCatalogDropdown() {
+            catalogHideTimeout = setTimeout(() => {
+                catalogMenu.style.display = 'none';
+            }, 200);
+        }
+
+        catalogWrapper.addEventListener('mouseenter', showCatalogDropdown);
+        catalogWrapper.addEventListener('mouseleave', hideCatalogDropdown);
+        catalogMenu.addEventListener('mouseenter', showCatalogDropdown);
+        catalogMenu.addEventListener('mouseleave', hideCatalogDropdown);
+    }
 }
 
 /* ---------- Search modal (WP theme: .open / ._active) ---------- */
-const searchToggle = document.querySelector('.header__bottom-right__search');
+const searchToggle = document.querySelector('.header__search') || document.querySelector('.header__bottom-right__search');
 const searchModal = document.querySelector('.search-modal');
 const searchModalCont = document.querySelector('.search-modal__container');
 const searchBody = document.querySelector('.search-modal__body');
@@ -199,40 +216,63 @@ if (searchToggle && searchModal) {
     }
 }
 
-/* ---------- Mobile burger menu (WP theme: .open) ---------- */
+/* ---------- Mobile burger menu: panel + accordion ---------- */
 document.addEventListener('DOMContentLoaded', function () {
     const menu = document.querySelector('.header__bottom-burger__menu');
-    const btnBurger = document.querySelector('.header__bottom-burger');
-    const btnClose = menu?.querySelector('.close');
-    const menuBurgerItems = document.querySelectorAll('.header__bottom-burger__menu-item');
-    const pathname = document.location.pathname;
+    const overlay = document.querySelector('.burger-overlay');
+    const btnBurger = document.querySelector('.header__burger') || document.querySelector('.header__bottom-burger');
+    const btnClose = menu?.querySelector('.burger-menu__close');
 
-    // Highlight active menu items
-    const menuItems = document.querySelectorAll('.header__bottom-left__menu-item');
-    if (menuItems) {
-        menuItems.forEach(p => {
-            if (p.pathname === pathname) {
-                p.classList.add('active');
-            }
-        });
+    if (!menu) return;
+
+    function openMenu() {
+        overlay?.classList.add('active');
+        document.documentElement.classList.add('burger-menu-open');
+        document.body.classList.add('burger-menu-open');
     }
 
-    menuBurgerItems.forEach(p => {
-        if (p.pathname === pathname) {
-            p.classList.add('active');
-        }
-        p.addEventListener('click', function () {
-            menu?.classList.remove('open');
-        });
-    });
+    function closeMenu() {
+        overlay?.classList.remove('active');
+        document.documentElement.classList.remove('burger-menu-open');
+        document.body.classList.remove('burger-menu-open');
+    }
 
-    btnBurger?.addEventListener('click', function () {
-        menu?.classList.add('open');
+    btnBurger?.addEventListener('click', function (e) {
+        e.stopPropagation();
+        openMenu();
     });
-
     btnClose?.addEventListener('click', function (e) {
         e.preventDefault();
-        menu?.classList.remove('open');
+        closeMenu();
+    });
+    overlay?.addEventListener('click', function (e) {
+        e.stopPropagation();
+        closeMenu();
+    });
+
+    // Also close when clicking on the shifted wrapper area (visible right of menu)
+    document.querySelector('.wrapper')?.addEventListener('click', function (e) {
+        if (document.body.classList.contains('burger-menu-open')) {
+            closeMenu();
+        }
+    });
+
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && document.body.classList.contains('burger-menu-open')) {
+            closeMenu();
+        }
+    });
+
+    // Accordion toggle for all expandable items
+    menu.querySelectorAll('.burger-menu__toggle').forEach(function (btn) {
+        btn.addEventListener('click', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            const expandable = btn.closest('.burger-menu__item--expandable, .burger-menu__subitem--expandable');
+            if (expandable) {
+                expandable.classList.toggle('open');
+            }
+        });
     });
 });
 
@@ -348,27 +388,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 });
-
-/* ---------- Benefits sliders: Swiper (desktop + mobile) ---------- */
-const benefitsSlider = document.querySelector('.benefits__slider');
-if (benefitsSlider) {
-    new Swiper('.benefits__slider', {
-        modules: [Navigation, Pagination],
-        slidesPerView: 1,
-        loop: true,
-        spaceBetween: 20,
-    });
-}
-
-const benefitsMobileSlider = document.querySelector('.benefits__info-photo-mobile');
-if (benefitsMobileSlider) {
-    new Swiper('.benefits__info-photo-mobile', {
-        modules: [Pagination],
-        slidesPerView: 1,
-        loop: true,
-        spaceBetween: 20,
-    });
-}
 
 /* ---------- Product page: Quantity counter ---------- */
 document.querySelectorAll('.product__info-counter').forEach(counter => {
@@ -721,3 +740,4 @@ document.querySelectorAll('.coupon-apply-btn, .coupon-apply-btn-sidebar').forEac
         });
     });
 });
+

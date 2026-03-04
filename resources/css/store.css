@@ -2,7 +2,7 @@
 
 @font-face {
     font-family: 'Bebas Neue';
-    src: url('/wp-theme/css/BebasNeue.ttf') format('truetype');
+    src: url('../fonts/BebasNeue.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
 }
@@ -6709,7 +6709,7 @@ footer .form-btn {
 
 .custom-option.selected::before {
   content: '\2713'; /* Галочка перед текстом */
-  color: #a03611; /* Цвет галочки */
+  color: #A03611; /* Цвет галочки */
 }
 
 .custom-select.open .custom-options {

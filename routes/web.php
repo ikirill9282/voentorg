@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\ProductVariantController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\AccountController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StoreController;
 use Illuminate\Support\Facades\Route;
@@ -42,14 +43,18 @@ Route::get('/api/products/{product}/variants', [ProductVariantController::class,
 Route::match(['get', 'post'], '/api/cdek/token', [CdekController::class, 'token'])->name('api.cdek.token');
 Route::match(['get', 'post'], '/api/cdek/{endpoint}', [CdekController::class, 'proxy'])->where('endpoint', '.*')->name('api.cdek.proxy');
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', fn () => redirect()->route('account.dashboard'))
+    ->middleware('auth')
+    ->name('dashboard');
 
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+Route::middleware('auth')->prefix('account')->name('account.')->group(function () {
+    Route::get('/', [AccountController::class, 'dashboard'])->name('dashboard');
+    Route::get('/orders', [AccountController::class, 'orders'])->name('orders');
+    Route::get('/orders/{order}', [AccountController::class, 'orderShow'])->name('orders.show');
+    Route::get('/settings', [AccountController::class, 'settings'])->name('settings');
+    Route::patch('/settings/profile', [AccountController::class, 'updateProfile'])->name('settings.profile');
+    Route::put('/settings/password', [AccountController::class, 'updatePassword'])->name('settings.password');
+    Route::delete('/settings', [AccountController::class, 'destroy'])->name('destroy');
 });
 
 require __DIR__.'/auth.php';

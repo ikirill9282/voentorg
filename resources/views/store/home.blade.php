@@ -67,109 +67,76 @@
                     <p>С 2022 года мы разрабатываем и производим средства индивидуальной защиты, разгрузочные системы, тактическую одежду и многие другие элементы снаряжения. Нашей основной задачей является создание современного продукта, обладающего наилучшим качеством, износостойкостью, удобством и одновременно дешевизной. Десятки тысяч отправленных изделий, профессиональный подход, опыт и доступность наших продуктов делают нас объективными лидерами на рынке.</p>
                 </div>
                 <div class="about__progress">
-                    <img src="{{ asset('legacy/assets/colchuga.ru/wp-content/uploads/2025/03/vert.png') }}" alt="about-label">
+                    <div class="about__video-wrapper">
+                        <!-- TODO: заменить VIDEO_ID на реальный ID видео -->
+                        <iframe src="https://www.youtube.com/embed/VIDEO_ID" title="О компании COLCHUGA" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    {{-- 4. Benefits section --}}
-    <section class="benefits">
-        <div class="container">
-            <div class="benefits__inner">
-                <div class="benefits__info">
-                    <h2>Наши преимущества</h2>
-                    <div class="benefits__slider swiper">
-                        <div class="benefits__slider-wrapper swiper-wrapper">
-                            <div class="benefits__slider-slide swiper-slide">
-                                <img class="benefits__info-photo" src="{{ asset('legacy/assets/colchuga.ru/wp-content/uploads/2025/03/1.jpg') }}" alt="benefits-photo">
-                            </div>
-                            <div class="benefits__slider-slide swiper-slide">
-                                <img class="benefits__info-photo" src="{{ asset('legacy/assets/colchuga.ru/wp-content/uploads/2025/03/2.jpg') }}" alt="benefits-photo">
-                            </div>
-                            <div class="benefits__slider-slide swiper-slide">
-                                <img class="benefits__info-photo" src="{{ asset('legacy/assets/colchuga.ru/wp-content/uploads/2025/03/3.jpg') }}" alt="benefits-photo">
-                            </div>
-                            <div class="benefits__slider-slide swiper-slide">
-                                <img class="benefits__info-photo" src="{{ asset('legacy/assets/colchuga.ru/wp-content/uploads/2025/03/4.jpg') }}" alt="benefits-photo">
-                            </div>
-                            <div class="benefits__slider-slide swiper-slide">
-                                <img class="benefits__info-photo" src="{{ asset('legacy/assets/colchuga.ru/wp-content/uploads/2025/03/5.jpg') }}" alt="benefits-photo">
-                            </div>
-                        </div>
-                    </div>
+    {{-- 4. YouTube / Video showcase (Agilite-style) --}}
+    <section class="video-showcase">
+        {{-- Main: video left + info right --}}
+        <div class="video-showcase__hero">
+            <div class="video-showcase__player">
+                <!-- TODO: заменить VIDEO_ID -->
+                <iframe src="https://www.youtube.com/embed/VIDEO_ID" title="COLCHUGA" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <div class="video-showcase__info">
+                {{-- YouTube icon --}}
+                <svg class="video-showcase__yt-icon" viewBox="0 0 68 48" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M66.52 7.74c-.78-2.93-2.49-5.41-5.42-6.19C55.79.13 34 0 34 0S12.21.13 6.9 1.55C3.97 2.33 2.27 4.81 1.48 7.74.06 13.05 0 24 0 24s.06 10.95 1.48 16.26c.78 2.93 2.49 5.41 5.42 6.19C12.21 47.87 34 48 34 48s21.79-.13 27.1-1.55c2.93-.78 4.64-3.26 5.42-6.19C67.94 34.95 68 24 68 24s-.06-10.95-1.48-16.26z" fill="red"/>
+                    <path d="M45 24L27 14v20" fill="#fff"/>
+                </svg>
+                <div class="video-showcase__stats">
+                    <span class="video-showcase__count">Подписывайтесь</span>
+                    <span class="video-showcase__label">на наш канал</span>
                 </div>
-                <div class="benefits__info-mobile">
-                    <h2 class="benefits__info-mobile__title">Наши преимущества</h2>
-                    <span>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="27" viewBox="0 0 24 27" fill="none">
-                            <path d="M10.9393 26.0607C11.5251 26.6464 12.4749 26.6464 13.0607 26.0607L22.6066 16.5147C23.1924 15.9289 23.1924 14.9792 22.6066 14.3934C22.0208 13.8076 21.0711 13.8076 20.4853 14.3934L12 22.8787L3.51472 14.3934C2.92893 13.8076 1.97919 13.8076 1.3934 14.3934C0.807612 14.9792 0.807613 15.9289 1.3934 16.5147L10.9393 26.0607ZM10.5 6.55671e-08L10.5 25L13.5 25L13.5 -6.55671e-08L10.5 6.55671e-08Z" fill="white"></path>
-                        </svg>
-                    </span>
-                </div>
-                <div class="benefits__list">
-                    <div class="benefits__list-item">
-                        <img src="{{ asset('wp-theme/images/icons/benefits_1.svg') }}" alt="icon">
-                        <h5>Качество</h5>
-                        <p>Разработка и производство изделий, соответствующих самым современным требованиям, является нашей главной задачей.</p>
-                    </div>
-                    <div class="benefits__list-item">
-                        <img src="{{ asset('wp-theme/images/icons/benefits_2.svg') }}" alt="icon">
-                        <h5>Цена</h5>
-                        <p>За счет большого объема производства и честного подхода к формированию цен, наша продукция является одной из самых доступных на рынке высококачественной тактической экипировки.</p>
-                    </div>
-                    <div class="benefits__list-item">
-                        <img src="{{ asset('wp-theme/images/icons/benefits_3.svg') }}" alt="icon">
-                        <h5>Мощность и мобильность</h5>
-                        <p>Компания обладает обширными производственными мощностями и богатым опытом в выполнении больших и срочных заказов. Благодаря мобильности и гибкому подходу к нуждам клиентов мы зарекомендовали себя как надежный производитель.</p>
-                    </div>
-                    <div class="benefits__list-item">
-                        <img src="{{ asset('wp-theme/images/icons/benefits_4.svg') }}" alt="icon">
-                        <h5>Продукция в наличии</h5>
-                        <p>Большинство востребованных моделей нашего бренда есть в наличии на складе и в наших розничных магазинах.</p>
-                    </div>
-                    <div class="benefits__list-item">
-                        <img src="{{ asset('wp-theme/images/icons/benefits_5.svg') }}" alt="icon">
-                        <h5>Поддержка</h5>
-                        <p>Закрепим опытного, ответственного менеджера, готового ответить на любые вопросы ежедневно. При необходимости свяжем напрямую с нашими конструкторами или руководителями.</p>
-                    </div>
-                    <div class="benefits__list-item">
-                        <img src="{{ asset('wp-theme/images/icons/benefits_6.svg') }}" alt="icon">
-                        <h5>Профессионализм</h5>
-                        <p>Мы болеем идеей создания лучшего продукта. Постоянно повышаем квалификацию штата, внедряем новые технологии, расширяем наши производственные возможности.</p>
-                    </div>
-                    <p id="about"></p>
-                </div>
-                <div class="benefits__info-photo-mobile swiper">
-                    <div class="benefits__info-photo-mobile-wrapper swiper-wrapper">
-                        <div class="benefits__info-photo-mobile-slide swiper-slide">
-                            <img class="benefits__info-photo-mobile__img" src="{{ asset('legacy/assets/colchuga.ru/wp-content/uploads/2025/03/1.jpg') }}" alt="benefits-photo">
-                        </div>
-                        <div class="benefits__info-photo-mobile-slide swiper-slide">
-                            <img class="benefits__info-photo-mobile__img" src="{{ asset('legacy/assets/colchuga.ru/wp-content/uploads/2025/03/2.jpg') }}" alt="benefits-photo">
-                        </div>
-                        <div class="benefits__info-photo-mobile-slide swiper-slide">
-                            <img class="benefits__info-photo-mobile__img" src="{{ asset('legacy/assets/colchuga.ru/wp-content/uploads/2025/03/3.jpg') }}" alt="benefits-photo">
-                        </div>
-                        <div class="benefits__info-photo-mobile-slide swiper-slide">
-                            <img class="benefits__info-photo-mobile__img" src="{{ asset('legacy/assets/colchuga.ru/wp-content/uploads/2025/03/4.jpg') }}" alt="benefits-photo">
-                        </div>
-                        <div class="benefits__info-photo-mobile-slide swiper-slide">
-                            <img class="benefits__info-photo-mobile__img" src="{{ asset('legacy/assets/colchuga.ru/wp-content/uploads/2025/03/5.jpg') }}" alt="benefits-photo">
-                        </div>
-                    </div>
-                </div>
+                <a href="#" target="_blank" rel="noopener" class="video-showcase__btn">Смотреть</a>
             </div>
         </div>
+
+        {{-- Video thumbnails row --}}
+        <div class="video-showcase__thumbs">
+            <a href="#" target="_blank" rel="noopener" class="video-showcase__thumb">
+                <img src="{{ asset('legacy/assets/colchuga.ru/wp-content/uploads/2025/03/1.jpg') }}" alt="Видео 1">
+                <div class="video-showcase__thumb-play">
+                    <svg viewBox="0 0 68 48" xmlns="http://www.w3.org/2000/svg"><path d="M66.52 7.74c-.78-2.93-2.49-5.41-5.42-6.19C55.79.13 34 0 34 0S12.21.13 6.9 1.55C3.97 2.33 2.27 4.81 1.48 7.74.06 13.05 0 24 0 24s.06 10.95 1.48 16.26c.78 2.93 2.49 5.41 5.42 6.19C12.21 47.87 34 48 34 48s21.79-.13 27.1-1.55c2.93-.78 4.64-3.26 5.42-6.19C67.94 34.95 68 24 68 24s-.06-10.95-1.48-16.26z" fill="red"/><path d="M45 24L27 14v20" fill="#fff"/></svg>
+                </div>
+            </a>
+            <a href="#" target="_blank" rel="noopener" class="video-showcase__thumb">
+                <img src="{{ asset('legacy/assets/colchuga.ru/wp-content/uploads/2025/03/2.jpg') }}" alt="Видео 2">
+                <div class="video-showcase__thumb-play">
+                    <svg viewBox="0 0 68 48" xmlns="http://www.w3.org/2000/svg"><path d="M66.52 7.74c-.78-2.93-2.49-5.41-5.42-6.19C55.79.13 34 0 34 0S12.21.13 6.9 1.55C3.97 2.33 2.27 4.81 1.48 7.74.06 13.05 0 24 0 24s.06 10.95 1.48 16.26c.78 2.93 2.49 5.41 5.42 6.19C12.21 47.87 34 48 34 48s21.79-.13 27.1-1.55c2.93-.78 4.64-3.26 5.42-6.19C67.94 34.95 68 24 68 24s-.06-10.95-1.48-16.26z" fill="red"/><path d="M45 24L27 14v20" fill="#fff"/></svg>
+                </div>
+            </a>
+            <a href="#" target="_blank" rel="noopener" class="video-showcase__thumb">
+                <img src="{{ asset('legacy/assets/colchuga.ru/wp-content/uploads/2025/03/3.jpg') }}" alt="Видео 3">
+                <div class="video-showcase__thumb-play">
+                    <svg viewBox="0 0 68 48" xmlns="http://www.w3.org/2000/svg"><path d="M66.52 7.74c-.78-2.93-2.49-5.41-5.42-6.19C55.79.13 34 0 34 0S12.21.13 6.9 1.55C3.97 2.33 2.27 4.81 1.48 7.74.06 13.05 0 24 0 24s.06 10.95 1.48 16.26c.78 2.93 2.49 5.41 5.42 6.19C12.21 47.87 34 48 34 48s21.79-.13 27.1-1.55c2.93-.78 4.64-3.26 5.42-6.19C67.94 34.95 68 24 68 24s-.06-10.95-1.48-16.26z" fill="red"/><path d="M45 24L27 14v20" fill="#fff"/></svg>
+                </div>
+            </a>
+        </div>
+    </section>
+
+    {{-- 5. Магазин в Ростове — full-width banner --}}
+    <section class="home-banners">
+        <a href="{{ route('page.contacts') }}" class="home-banners__item home-banners__item--placeholder">
+            <div class="home-banners__overlay">
+                <h3 class="home-banners__title">Магазин в Ростове</h3>
+            </div>
+        </a>
     </section>
 
     {{-- 5. Blog section --}}
     <section class="blog-section">
         <div class="container">
-            <h2 class="blog-section__title"><span>Блог, </span> последние новости</h2>
+            <h2 class="blog-section__title">Новости</h2>
             <div class="blog-section__cards">
                 @foreach ($posts as $post)
-                    <div class="blog-section__card">
+                    <a href="{{ route('blog.show', $post->slug) }}" class="blog-section__card">
                         @if ($post->featured_image)
                             <img class="blog-section__card-img" src="{{ $post->featured_image }}" alt="photo">
                         @endif
@@ -178,9 +145,8 @@
                             @if ($post->excerpt)
                                 <p>{{ $post->excerpt }}</p>
                             @endif
-                            <a class="blog-section__card-info__btn" href="{{ route('blog.show', $post->slug) }}">Читать</a>
                         </div>
-                    </div>
+                    </a>
                 @endforeach
             </div>
         </div>
