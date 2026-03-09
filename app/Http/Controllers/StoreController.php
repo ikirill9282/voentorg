@@ -19,7 +19,18 @@ class StoreController extends Controller
             ->active()
             ->whereNull('parent_id')
             ->orderBy('sort_order')
+            ->with(['children' => fn ($q) => $q->active()->orderBy('sort_order')])
             ->take(6)
+            ->get();
+
+        // Популярное: топ-8 товаров по количеству продаж
+        $popularProducts = Product::query()
+            ->active()
+            ->whereHas('orderItems')
+            ->withSum('orderItems', 'quantity')
+            ->orderByDesc('order_items_sum_quantity')
+            ->with(['images', 'category'])
+            ->take(8)
             ->get();
 
         $posts = Post::query()
@@ -28,7 +39,7 @@ class StoreController extends Controller
             ->take(3)
             ->get();
 
-        return view('store.home', compact('categories', 'posts'));
+        return view('store.home', compact('categories', 'popularProducts', 'posts'));
     }
 
     public function shop(Request $request): View
@@ -41,7 +52,13 @@ class StoreController extends Controller
 
         $query = Product::query()
             ->active()
-            ->with(['images', 'category']);
+            ->with([
+                'images',
+                'category',
+                'variants' => fn ($q) => $q->active()->orderBy('sort_order'),
+                'variants.attributeValues' => fn ($q) => $q->orderBy('sort_order'),
+                'variants.attributeValues.attribute',
+            ]);
 
         $this->applyFilters($query, $request);
 
@@ -93,7 +110,13 @@ class StoreController extends Controller
         $query = Product::query()
             ->active()
             ->whereHas('categories', fn ($q) => $q->whereIn('categories.id', $categoryIds))
-            ->with(['images', 'category']);
+            ->with([
+                'images',
+                'category',
+                'variants' => fn ($q) => $q->active()->orderBy('sort_order'),
+                'variants.attributeValues' => fn ($q) => $q->orderBy('sort_order'),
+                'variants.attributeValues.attribute',
+            ]);
 
         $this->applyFilters($query, request());
 
@@ -201,7 +224,13 @@ class StoreController extends Controller
 
         $query = Product::query()
             ->active()
-            ->with(['images', 'category']);
+            ->with([
+                'images',
+                'category',
+                'variants' => fn ($q) => $q->active()->orderBy('sort_order'),
+                'variants.attributeValues' => fn ($q) => $q->orderBy('sort_order'),
+                'variants.attributeValues.attribute',
+            ]);
 
         if ($searchQuery) {
             $variants = self::caseVariants($searchQuery);

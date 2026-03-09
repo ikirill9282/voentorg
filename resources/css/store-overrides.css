@@ -179,12 +179,79 @@ nav[role="navigation"] a:hover {
     width: 6px;
     height: 6px;
     border-radius: 50%;
-    background: rgba(0, 0, 0, 0.25);
+    background: #404141;
     transition: background 0.15s;
 }
 
 .card__img-dot.active {
     background: #898121;
+}
+
+/* ============================================================
+   CATALOG CARD: flex alignment for equal-height button rows
+   ============================================================ */
+.catalog-filter .cards {
+    align-items: stretch;
+}
+.catalog-filter .cards .card {
+    display: flex;
+    flex-direction: column;
+}
+.catalog-filter .cards .card .card__content {
+    flex: 1;
+}
+.catalog-filter .cards .card form.cart {
+    margin-top: auto;
+}
+
+/* Card color swatches */
+.card__colors {
+    display: flex;
+    gap: 6px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+}
+.card__color-swatch {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: border-color 0.15s;
+    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.1);
+}
+.card__color-swatch.active {
+    border-color: #898121;
+}
+.card__color-swatch:hover {
+    border-color: #AFA312;
+}
+
+/* Card size buttons */
+.card__sizes {
+    display: flex;
+    gap: 4px;
+    margin-top: 8px;
+    flex-wrap: wrap;
+}
+.card__size-btn {
+    padding: 3px 8px;
+    font-size: 12px;
+    line-height: 1.4;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background: #fff;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-family: 'Inter', sans-serif;
+}
+.card__size-btn.active {
+    border-color: #898121;
+    background: #898121;
+    color: #fff;
+}
+.card__size-btn:hover:not(.active) {
+    border-color: #898121;
 }
 
 /* Cart: shift "Название" header right to align with product name text (after image) */
@@ -1568,5 +1635,220 @@ a.blog-section__card:hover {
 }
 a.blog-section__card .blog-section__card-info {
     padding: 15px 0 20px !important;
+}
+
+/* =============================================
+   КАТАЛОГ: wrapper + подкатегории
+   ============================================= */
+
+.catalog__card-wrapper {
+    width: 23% !important;
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+.catalog__card--has-children {
+    cursor: pointer !important;
+}
+
+.catalog__card--viewall {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: #f5f5f5 !important;
+    min-height: 200px;
+}
+.catalog__card--viewall h5 {
+    position: static !important;
+    color: #252916 !important;
+    text-align: center !important;
+}
+
+/* Панель подкатегорий: скрыта, анимация slide */
+.catalog__subcategories {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease, padding 0.3s ease;
+    background: #e8e8e8;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 0 8px;
+}
+.catalog__subcategories.open {
+    max-height: 800px;
+    padding: 12px 8px;
+}
+
+/* Подкатегория: серый фон, чуть уже */
+.catalog__subcard {
+    display: block;
+    position: relative;
+    background: #d9d9d9;
+    text-decoration: none !important;
+    color: #000 !important;
+    overflow: hidden;
+}
+.catalog__subcard-img {
+    width: 100%;
+    display: block;
+    object-fit: cover;
+    height: 120px;
+}
+.catalog__subcard h6 {
+    position: absolute;
+    bottom: 8px;
+    left: 10px;
+    color: #fff;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 15px;
+    text-transform: uppercase;
+    text-shadow: 0 1px 4px rgba(0,0,0,0.6);
+    margin: 0;
+}
+.catalog__subcard:hover {
+    opacity: 0.85;
+}
+
+/* =============================================
+   КАТАЛОГ: Мобильная высота карточек
+   ============================================= */
+@media (max-width: 768px) {
+    .catalog__card-wrapper {
+        width: 47% !important;
+    }
+    .catalog__card-img {
+        max-height: 180px !important;
+        object-fit: cover !important;
+    }
+}
+@media (max-width: 480px) {
+    .catalog__card-wrapper {
+        width: 100% !important;
+    }
+    .catalog__card-img {
+        max-height: 150px !important;
+    }
+}
+
+/* =============================================
+   ПОПУЛЯРНОЕ
+   ============================================= */
+.popular {
+    margin-bottom: 60px;
+}
+.popular__title {
+    font-family: 'Bebas Neue', sans-serif !important;
+    font-size: 36px;
+    color: #252916;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 30px;
+}
+.popular__cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+@media (max-width: 1100px) {
+    .popular__cards { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 768px) {
+    .popular__cards { grid-template-columns: repeat(2, 1fr); gap: 15px; }
+    .popular__title { font-size: 28px; margin-bottom: 20px; }
+}
+@media (max-width: 480px) {
+    .popular__cards { grid-template-columns: 1fr; }
+}
+
+/* ============================================================
+   CATALOG BANNERS: inline carousels between products (CSS Grid)
+   ============================================================ */
+.catalog-filter .cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+.catalog-banner { overflow: hidden; border-radius: 8px; }
+.catalog-banner--full { grid-column: 1 / -1; }
+.catalog-banner--double { grid-column: span 2; }
+.catalog-banner--single { grid-column: span 1; }
+
+.catalog-banner .swiper { width: 100%; height: 100%; }
+.catalog-banner .swiper-slide img {
+    width: 100%; height: 100%; object-fit: cover; display: block;
+}
+.catalog-banner--full .swiper-slide img { max-height: 400px; }
+.catalog-banner--double .swiper-slide img,
+.catalog-banner--single .swiper-slide img { max-height: 360px; }
+
+.catalog-banner a { display: block; line-height: 0; }
+
+@media (max-width: 1100px) {
+    .catalog-filter .cards { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 768px) {
+    .catalog-filter .cards { grid-template-columns: repeat(2, 1fr); gap: 15px; }
+    .catalog-banner--full,
+    .catalog-banner--double,
+    .catalog-banner--single { grid-column: 1 / -1; }
+    .catalog-banner--full .swiper-slide img,
+    .catalog-banner--double .swiper-slide img,
+    .catalog-banner--single .swiper-slide img { max-height: 280px; }
+}
+@media (max-width: 480px) {
+    .catalog-filter .cards { grid-template-columns: 1fr; }
+}
+
+/* ============================================================
+   SECTION FOOTER BANNER (YouTube / RuTube)
+   ============================================================ */
+.section-footer-banner {
+    margin-top: 60px;
+    background: #1a1a1a;
+    padding: 60px 20px;
+    text-align: center;
+}
+.section-footer-banner__content h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 36px;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin: 0 0 30px;
+}
+.section-footer-banner__links {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+.section-footer-banner__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 32px;
+    border: 2px solid #fff;
+    color: #fff;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-decoration: none !important;
+    transition: background 0.2s, color 0.2s;
+}
+.section-footer-banner__link:hover {
+    background: #fff;
+    color: #1a1a1a;
+}
+.section-footer-banner__link img,
+.section-footer-banner__link svg {
+    width: 28px;
+    height: 28px;
+}
+@media (max-width: 768px) {
+    .section-footer-banner { padding: 40px 16px; }
+    .section-footer-banner__content h3 { font-size: 28px; }
+    .section-footer-banner__link { padding: 12px 24px; font-size: 16px; }
 }
 

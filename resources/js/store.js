@@ -407,10 +407,14 @@ document.querySelectorAll('.product__info-counter').forEach(counter => {
     }
 });
 
-/* ---------- Product page: Variant selection ---------- */
+/* ---------- Product page: Variant selection (available combinations) ---------- */
+let _variantUnitPrice = null; // store unit price for total calculation
+
 document.querySelectorAll('.variation-option').forEach(option => {
     option.addEventListener('click', (e) => {
         e.preventDefault();
+        if (option.classList.contains('unavailable')) return; // ignore clicks on unavailable
+
         const list = option.closest('ul, .product-variation-list');
         if (list) {
             list.querySelectorAll('.variation-link').forEach(l => l.classList.remove('active'));
@@ -424,28 +428,51 @@ document.querySelectorAll('.variation-option').forEach(option => {
             if (hidden) hidden.value = value;
         }
 
-        fetchVariantPrice();
+        fetchAvailableVariants();
     });
 });
 
-async function fetchVariantPrice() {
+function getSelectedValues() {
+    const selected = [];
+    document.querySelectorAll('.product-choise input[type="hidden"][name$="_value_id"]').forEach(input => {
+        if (input.value) selected.push(input.value);
+    });
+    return selected;
+}
+
+async function fetchAvailableVariants() {
     const productId = document.querySelector('input[name="product_id"]')?.value;
     if (!productId) return;
 
+    const selected = getSelectedValues();
     const params = new URLSearchParams();
-    document.querySelectorAll('.product-choise input[type="hidden"][name$="_value_id"]').forEach(input => {
-        if (input.value) params.append('attributes[]', input.value);
-    });
-
-    if (!params.has('attributes[]')) return;
+    selected.forEach(v => params.append('selected[]', v));
 
     try {
-        const response = await fetch(`/api/products/${productId}/variants?${params}`);
+        const response = await fetch(`/api/products/${productId}/variants/available?${params}`);
         const data = await response.json();
 
+        // Mark unavailable options
+        if (data.available) {
+            const allAvailableIds = new Set();
+            Object.values(data.available).forEach(ids => ids.forEach(id => allAvailableIds.add(id)));
+
+            document.querySelectorAll('.variation-option').forEach(opt => {
+                const valId = parseInt(opt.dataset.attributeValue);
+                if (allAvailableIds.has(valId)) {
+                    opt.classList.remove('unavailable');
+                } else {
+                    opt.classList.add('unavailable');
+                }
+            });
+        }
+
+        // Update price/sku/stock if exact match found
         if (data.found && data.variant_id) {
             const variantIdInput = document.querySelector('input[name="variant_id"]');
             if (variantIdInput) variantIdInput.value = data.variant_id;
+
+            _variantUnitPrice = data.price;
 
             document.querySelectorAll('.add-to-web .price, .add-to-mob .price').forEach(el => {
                 el.textContent = data.price_formatted;
@@ -477,10 +504,44 @@ async function fetchVariantPrice() {
                     textEl.textContent = data.in_stock ? 'В корзину' : 'Нет в наличии';
                 }
             });
+
+            updateTotalPrice();
+        } else {
+            // No exact match — clear variant_id, keep buttons enabled but show hint
+            const variantIdInput = document.querySelector('input[name="variant_id"]');
+            if (variantIdInput) variantIdInput.value = '';
+            _variantUnitPrice = null;
+            updateTotalPrice();
         }
     } catch (err) {
-        console.error('Failed to fetch variant:', err);
+        console.error('Failed to fetch available variants:', err);
     }
+}
+
+/* ---------- Total price calculation ---------- */
+function updateTotalPrice() {
+    const totalEls = document.querySelectorAll('.total-price');
+    if (!_variantUnitPrice) {
+        totalEls.forEach(el => el.style.display = 'none');
+        return;
+    }
+    const qtyInputs = document.querySelectorAll('.qty');
+    qtyInputs.forEach((input, i) => {
+        const qty = parseInt(input.value) || 1;
+        const totalEl = totalEls[i];
+        if (!totalEl) return;
+        if (qty > 1) {
+            const total = qty * _variantUnitPrice;
+            totalEl.textContent = `${qty} × ${number_format(_variantUnitPrice)} = ${number_format(total)} ₽`;
+            totalEl.style.display = '';
+        } else {
+            totalEl.style.display = 'none';
+        }
+    });
+}
+
+function number_format(num) {
+    return Math.round(num).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
 }
 
 /* ---------- Product page: Auto-select first variant values on load ---------- */
@@ -492,10 +553,8 @@ async function fetchVariantPrice() {
         const firstOption = list.querySelector('.variation-option');
         if (!firstOption) return;
 
-        // Mark first option as active
         firstOption.querySelector('.variation-link')?.classList.add('active');
 
-        // Set hidden input value
         const attrName = list.dataset.attributeName;
         const value = firstOption.dataset.attributeValue;
         if (attrName && value) {
@@ -504,8 +563,7 @@ async function fetchVariantPrice() {
         }
     });
 
-    // Fetch variant price with pre-selected values
-    fetchVariantPrice();
+    fetchAvailableVariants();
 })();
 
 /* ---------- Product tabs (3 tabs: chars, desc, info) ---------- */
@@ -737,6 +795,26 @@ document.querySelectorAll('.coupon-apply-btn, .coupon-apply-btn-sidebar').forEac
         })
         .catch(() => {
             couponWrapper?.classList.add('fail');
+        });
+    });
+});
+
+/* ---------- Каталог: toggle подкатегорий ---------- */
+document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.catalog__card--has-children').forEach(card => {
+        card.addEventListener('click', function (e) {
+            e.preventDefault();
+            const id = this.dataset.categoryId;
+            const panel = document.getElementById('subcats-' + id);
+            if (!panel) return;
+
+            // Закрыть другие открытые панели
+            document.querySelectorAll('.catalog__subcategories.open').forEach(p => {
+                if (p !== panel) p.classList.remove('open');
+            });
+
+            // Toggle текущей
+            panel.classList.toggle('open');
         });
     });
 });
