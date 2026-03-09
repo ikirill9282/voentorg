@@ -17,7 +17,7 @@ class CommercemlExchange extends Page implements HasTable
 
     protected static ?string $navigationIcon = 'heroicon-o-arrow-path';
     protected static ?string $navigationLabel = 'Обмен 1С';
-    protected static ?string $navigationGroup = 'Интеграции';
+    protected static string|\UnitEnum|null $navigationGroup = 'Интеграции';
     protected static ?string $title = 'Обмен с 1С (CommerceML)';
     protected static ?int $navigationSort = 100;
 
