@@ -21,7 +21,7 @@ class CommercemlExchange extends Page implements HasTable
     protected static ?string $title = 'Обмен с 1С (CommerceML)';
     protected static ?int $navigationSort = 100;
 
-    protected static string $view = 'filament.pages.commerceml-exchange';
+    protected string $view = 'filament.pages.commerceml-exchange';
 
     public function table(Table $table): Table
     {
