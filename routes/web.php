@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\CdekController;
+use App\Http\Controllers\Api\CommercemlController;
 use App\Http\Controllers\Api\ProductVariantController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
@@ -39,6 +40,8 @@ Route::get('/cart/pdf', [CartController::class, 'exportPdf'])->name('cart.pdf');
 
 Route::get('/checkout', [CheckoutController::class, 'create'])->name('checkout.create');
 Route::post('/checkout/orders', [CheckoutController::class, 'store'])->name('checkout.store');
+Route::get('/payment/success', [CheckoutController::class, 'paymentSuccess'])->name('payment.success');
+Route::get('/payment/fail', [CheckoutController::class, 'paymentFail'])->name('payment.fail');
 
 Route::get('/api/products/{product}/variants', [ProductVariantController::class, 'show'])->name('api.product.variants');
 Route::get('/api/products/{product}/variants/available', [ProductVariantController::class, 'available'])->name('api.product.variants.available');
@@ -60,5 +63,9 @@ Route::middleware('auth')->prefix('account')->name('account.')->group(function (
     Route::put('/settings/password', [AccountController::class, 'updatePassword'])->name('settings.password');
     Route::delete('/settings', [AccountController::class, 'destroy'])->name('destroy');
 });
+
+// 1C CommerceML exchange
+Route::match(['get', 'post'], '/1c-exchange', [CommercemlController::class, 'handle'])
+    ->name('commerceml.exchange');
 
 require __DIR__.'/auth.php';

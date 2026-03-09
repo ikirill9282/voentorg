@@ -13,6 +13,7 @@ class Product extends Model
     use HasFactory;
 
     protected $fillable = [
+        'external_id',
         'category_id',
         'name',
         'slug',
@@ -63,6 +64,13 @@ class Product extends Model
     public function orderItems(): HasMany
     {
         return $this->hasMany(OrderItem::class);
+    }
+
+    public function stores(): BelongsToMany
+    {
+        return $this->belongsToMany(Store::class, 'product_store_stock')
+            ->withPivot('in_stock', 'quantity')
+            ->withTimestamps();
     }
 
     public function scopeActive($query)

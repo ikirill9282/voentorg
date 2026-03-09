@@ -21,6 +21,9 @@ class Order extends Model
     public const PAYMENT_FAILED = 'failed';
 
     protected $fillable = [
+        'external_id',
+        'external_status',
+        'commerceml_exported_at',
         'order_number',
         'user_id',
         'customer_first_name',
@@ -46,6 +49,14 @@ class Order extends Model
         'cdek_uuid',
         'cdek_tracking_number',
         'discount_amount',
+        'delivery_provider',
+        'pickup_store_id',
+        'pickup_prepaid',
+        'pickup_estimated_days',
+        'yandex_claim_id',
+        'payment_id',
+        'payment_url',
+        'paid_at',
     ];
 
     protected function casts(): array
@@ -55,6 +66,8 @@ class Order extends Model
             'shipping_total' => 'decimal:2',
             'total' => 'decimal:2',
             'discount_amount' => 'decimal:2',
+            'paid_at' => 'datetime',
+            'commerceml_exported_at' => 'datetime',
         ];
     }
 
@@ -76,5 +89,25 @@ class Order extends Model
     public function items(): HasMany
     {
         return $this->hasMany(OrderItem::class);
+    }
+
+    public function pickupStore(): BelongsTo
+    {
+        return $this->belongsTo(Store::class, 'pickup_store_id');
+    }
+
+    public function isPickup(): bool
+    {
+        return $this->delivery_provider === 'pickup';
+    }
+
+    public function isPaid(): bool
+    {
+        return $this->payment_status === self::PAYMENT_PAID;
+    }
+
+    public function isOnlinePayment(): bool
+    {
+        return $this->payment_method === 'online_payment';
     }
 }
