@@ -30,7 +30,13 @@ class StoreController extends Controller
             ->whereHas('orderItems')
             ->withSum('orderItems', 'quantity')
             ->orderByDesc('order_items_sum_quantity')
-            ->with(['images', 'category'])
+            ->with([
+                'images',
+                'category',
+                'variants' => fn ($q) => $q->active()->orderBy('sort_order'),
+                'variants.attributeValues' => fn ($q) => $q->orderBy('sort_order'),
+                'variants.attributeValues.attribute',
+            ])
             ->take(8)
             ->get();
 
