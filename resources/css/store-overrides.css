@@ -1852,3 +1852,305 @@ a.blog-section__card .blog-section__card-info {
     .section-footer-banner__link { padding: 12px 24px; font-size: 16px; }
 }
 
+/* ============================================================
+   C4 Product Card Redesign — Phase 1
+   ============================================================ */
+
+/* 1.1 Unavailable variant options */
+.variation-option.unavailable {
+    opacity: 0.35;
+    pointer-events: none;
+    position: relative;
+}
+.variation-option.unavailable .variation-link {
+    color: #999 !important;
+    border-color: #ddd !important;
+    background: #f5f5f5 !important;
+    cursor: not-allowed;
+}
+.variation-option.unavailable::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 10%;
+    width: 80%;
+    height: 1px;
+    background: #999;
+    transform: rotate(-12deg);
+}
+
+/* 1.2 Quantity buttons visibility */
+.product__info-counter {
+    display: inline-flex;
+    align-items: center;
+    border: 1.5px solid #d1d1d1;
+    border-radius: 8px;
+    overflow: hidden;
+}
+.product__info-counter__decrease,
+.product__info-counter__increase {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
+    font-weight: 600;
+    color: #343A1D;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.2s, color 0.2s;
+}
+.product__info-counter__decrease:hover,
+.product__info-counter__increase:hover {
+    background: #898121;
+    color: #fff;
+}
+.product__info-counter .qty {
+    width: 44px;
+    height: 40px;
+    text-align: center;
+    border: none;
+    border-left: 1.5px solid #d1d1d1;
+    border-right: 1.5px solid #d1d1d1;
+    font-size: 15px;
+    font-weight: 600;
+    color: #343A1D;
+    background: transparent;
+    -moz-appearance: textfield;
+}
+.product__info-counter .qty::-webkit-inner-spin-button,
+.product__info-counter .qty::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* 1.3 Total price display */
+.total-price {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: #898121;
+    margin-top: 4px;
+    margin-bottom: 8px;
+}
+
+/* 1.4 Size chart button redesign */
+.sizelist {
+    text-decoration: none !important;
+    border: 1.5px solid #898121;
+    border-radius: 6px;
+    padding: 4px 12px;
+    font-size: 13px;
+    color: #898121;
+    transition: background 0.2s, color 0.2s;
+    margin-left: 10px;
+}
+.sizelist:hover {
+    background: #898121;
+    color: #fff;
+}
+
+/* 1.5 Compact variant layout */
+.product-choise {
+    margin-bottom: 10px !important;
+}
+.title-attribute {
+    font-size: 13px !important;
+    margin-bottom: 6px !important;
+}
+.title-attribute--group {
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    margin-bottom: 4px !important;
+    margin-top: 6px !important;
+}
+.title-attribute--sub {
+    font-size: 12px !important;
+    color: #666;
+}
+.variation-link {
+    padding: 5px 12px !important;
+    font-size: 13px !important;
+}
+
+/* 1.6 Telegram ask question button */
+.ask-question-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 12px 20px;
+    margin-top: 16px;
+    border: 1.5px solid #898121;
+    border-radius: 8px;
+    color: #898121;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background 0.2s, color 0.2s;
+}
+.ask-question-btn:hover {
+    background: #898121;
+    color: #fff;
+}
+.ask-question-btn svg {
+    flex-shrink: 0;
+}
+
+/* ============================================================
+   C4 Phase 2 — Gallery redesign
+   ============================================================ */
+
+/* 2.1 Desktop hover zoom */
+.main-photo {
+    overflow: hidden;
+    cursor: zoom-in;
+}
+.main-photo img {
+    transition: transform 0.15s ease-out;
+    will-change: transform;
+}
+
+/* Larger thumbnails */
+.thumbnail a img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 6px;
+    border: 2px solid transparent;
+    transition: border-color 0.2s;
+}
+.thumbnail a img.active,
+.thumbnail a img:hover {
+    border-color: #898121;
+}
+
+/* 2.2 Mobile swiper gallery */
+.product-gallery-swiper {
+    width: 100%;
+    border-radius: 12px;
+    overflow: hidden;
+}
+.product-gallery-swiper .swiper-slide img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+.product-gallery-swiper .swiper-pagination-bullet {
+    background: #898121;
+    opacity: 0.4;
+}
+.product-gallery-swiper .swiper-pagination-bullet-active {
+    opacity: 1;
+}
+
+/* Hide thumbnail-nav on mobile */
+@media (max-width: 768px) {
+    .thumbnail-nav {
+        display: none !important;
+    }
+    .main-photo {
+        cursor: default;
+    }
+}
+
+/* FancyBox white background for mobile */
+@media (max-width: 768px) {
+    .fancybox__backdrop {
+        background: #fff !important;
+    }
+}
+
+/* ============================================================
+   C4 Phase 3 — Video support
+   ============================================================ */
+
+/* Video thumbnail play icon overlay */
+.thumb-video {
+    position: relative;
+    display: block;
+}
+.thumb-play-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 28px;
+    height: 28px;
+    background: rgba(0,0,0,0.5);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+}
+.thumb-play-icon svg {
+    margin-left: 2px;
+}
+
+/* Main photo video */
+.main-photo__video {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 8px;
+}
+
+/* Horizontal videos section */
+.product-videos-section {
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
+.product-videos-section__title {
+    font-size: 22px;
+    font-weight: 700;
+    color: #343A1D;
+    margin-bottom: 20px;
+}
+.product-video-player {
+    margin-bottom: 24px;
+}
+.product-video-player__video {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 16px;
+    overflow: hidden;
+}
+@media (max-width: 768px) {
+    .product-video-player__video {
+        border-radius: 12px;
+    }
+}
+
+/* ============================================================
+   CONTACTS: Чат с поддержкой
+   ============================================================ */
+.chat-description {
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 12px;
+}
+.chat-support-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 28px;
+    background: #A03611;
+    color: #fff;
+    border: none;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.chat-support-btn:hover {
+    background: #7a2a0d;
+}
+

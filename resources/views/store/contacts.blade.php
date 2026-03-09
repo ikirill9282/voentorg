@@ -105,38 +105,16 @@
                         <p>Пн-Сб 9:00-19:00</p>
                     </div>
                 </div>
-                <div class="contacts-info__social">
-                    <span>Мессенджеры</span>
-                    <a href="https://wa.me/+79856959389" class="contact">
-                        <span class="contact-icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none">
-                                <g clip-path="url(#clip0_wa1)">
-                                    <path d="M7 0C3.14008 0 0 3.14008 0 7C0 8.34808 0.3815 9.65008 1.106 10.7777L0.01925 13.6033C-0.000379306 13.6554 -0.00474601 13.7121 0.00666189 13.7666C0.0180698 13.8211 0.0447794 13.8712 0.0836589 13.911C0.122538 13.9509 0.171976 13.9788 0.226175 13.9916C0.280374 14.0044 0.337088 14.0014 0.389667 13.9831L3.30575 12.9418C4.41355 13.6341 5.69371 14.0007 7 14C10.8599 14 14 10.8599 14 7C14 3.14008 10.8599 0 7 0ZM10.5 9.04167C10.5 9.69792 9.69208 10.5 8.75 10.5C7.83358 10.5 6.07425 9.40392 5.33517 8.66483C4.59608 7.92517 3.5 6.16583 3.5 5.25C3.5 4.30733 4.30208 3.5 4.95833 3.5H5.54167C5.59607 3.50006 5.64937 3.51533 5.69556 3.54409C5.74174 3.57285 5.77895 3.61395 5.803 3.66275C5.80358 3.66333 6.15475 4.37733 6.38458 4.82533C6.64358 5.33108 6.1565 5.92608 5.87942 6.20667C5.97858 6.461 6.21017 6.965 6.62258 7.37742C7.035 7.78983 7.539 8.022 7.79333 8.12058C8.07333 7.84292 8.66833 7.35525 9.17467 7.61542C9.62267 7.84583 10.3361 8.19642 10.3367 8.19642C10.3857 8.22042 10.4269 8.2577 10.4558 8.304C10.4847 8.3503 10.5 8.40377 10.5 8.45833V9.04167V9.04167Z" fill="#A03611"/>
-                                </g>
-                                <defs>
-                                    <clipPath id="clip0_wa1">
-                                        <rect width="16" height="16" fill="white"/>
-                                    </clipPath>
-                                </defs>
-                            </svg>
-                        </span>
-                        <p class="contact-text">Отправить сообщение через WhatsApp</p>
-                    </a>
-                    <a href="https://t.me/colchuga_ru" class="contact">
-                        <span class="contact-icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="14" viewBox="0 0 16 14" fill="none">
-                                <g clip-path="url(#clip0_tg1)">
-                                    <path d="M6.27812 10.1206L6.01345 13.8433C6.39212 13.8433 6.55612 13.6806 6.75279 13.4853L8.52812 11.7886L12.2068 14.4826C12.8815 14.8586 13.3568 14.6606 13.5388 13.8619L15.9535 2.54728L15.9541 2.54661C16.1681 1.54928 15.5935 1.15928 14.9361 1.40394L0.742785 6.83794C-0.225881 7.21394 -0.211215 7.75394 0.578119 7.99861L4.20679 9.12728L12.6355 3.85328C13.0321 3.59061 13.3928 3.73595 13.0961 3.99861L6.27812 10.1206Z" fill="#A03611"/>
-                                </g>
-                                <defs>
-                                    <clipPath id="clip0_tg1">
-                                        <rect width="16" height="16" fill="white"/>
-                                    </clipPath>
-                                </defs>
-                            </svg>
-                        </span>
-                        <p class="contact-text">Сообщения в телеграм</p>
-                    </a>
+                <div class="contacts-info__social contacts-info__chat">
+                    <span>Чат с поддержкой</span>
+                    <p class="chat-description">Напишите нам — мы на связи в рабочее время</p>
+                    <button type="button" class="chat-support-btn" id="openChatWidget">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                        </svg>
+                        Начать чат
+                    </button>
+                    {{-- TODO: подключить виджет чата (Jivo/Tawk.to) и привязать кнопку --}}
                 </div>
                 <div class="map">
                     <iframe src="https://yandex.ru/map-widget/v1/?lang=ru_RU&scroll=true&source=constructor-api&um=constructor%3A6b9da9c4e9eabb7e74c1fe69e16fa39f620e014e31285e1b4efb7f031269c127" frameborder="0" allowfullscreen="true" width="100%" height="400px" style="display: block;"></iframe>
