@@ -34,16 +34,6 @@
             </div>
         </div>
 
-        {{-- Category navigation links --}}
-        <div class="categories">
-            @foreach ($categories as $cat)
-                <a href="{{ route('shop.category', $cat->slug) }}"
-                   class="navigation-categories {{ $category && $category->id === $cat->id ? 'active' : '' }}">
-                    {{ $cat->name }}
-                </a>
-            @endforeach
-        </div>
-
         @if (!empty($subcategories) && $subcategories->isNotEmpty())
             <div class="categories">
                 @foreach ($subcategories as $subcat)
@@ -57,7 +47,39 @@
 
         @if ($products->isNotEmpty())
             <div class="cards">
-                @foreach ($products as $product)
+                @foreach ($products as $index => $product)
+                    @if (!empty($bannersByPosition[$index]))
+                        @foreach ($bannersByPosition[$index] as $banner)
+                            <div class="catalog-banner catalog-banner--{{ $banner->display_mode }}">
+                                @if (count($banner->images) > 1)
+                                    <div class="swiper catalog-banner__swiper">
+                                        <div class="swiper-wrapper">
+                                            @foreach ($banner->images as $slide)
+                                                <div class="swiper-slide">
+                                                    @if ($banner->link_url)
+                                                        <a href="{{ $banner->link_url }}">
+                                                            <img src="{{ $slide['url'] }}" alt="{{ $slide['alt'] ?? $banner->title }}">
+                                                        </a>
+                                                    @else
+                                                        <img src="{{ $slide['url'] }}" alt="{{ $slide['alt'] ?? $banner->title }}">
+                                                    @endif
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                        <div class="swiper-pagination"></div>
+                                    </div>
+                                @elseif (count($banner->images) === 1)
+                                    @if ($banner->link_url)
+                                        <a href="{{ $banner->link_url }}">
+                                            <img src="{{ $banner->images[0]['url'] }}" alt="{{ $banner->images[0]['alt'] ?? $banner->title }}">
+                                        </a>
+                                    @else
+                                        <img src="{{ $banner->images[0]['url'] }}" alt="{{ $banner->images[0]['alt'] ?? $banner->title }}">
+                                    @endif
+                                @endif
+                            </div>
+                        @endforeach
+                    @endif
                     @include('store.partials.product-card', ['product' => $product])
                 @endforeach
             </div>
@@ -68,5 +90,16 @@
         @else
             <p style="text-align:center;padding:40px;color:#807f81;">Товары не найдены.</p>
         @endif
+
+        {{-- RuTube banner --}}
+        <div class="section-footer-banner">
+            <div class="section-footer-banner__content">
+                <h3 class="section-footer-banner__title">Смотрите наши обзоры</h3>
+                <p class="section-footer-banner__subtitle">Обзоры, тесты и рекомендации по экипировке</p>
+                <div class="section-footer-banner__links">
+                    <a href="https://rutube.ru/" class="section-footer-banner__link" target="_blank" rel="noopener">RuTube</a>
+                </div>
+            </div>
+        </div>
     </div>
 @endsection

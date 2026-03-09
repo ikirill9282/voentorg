@@ -350,26 +350,52 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 
-/* ---------- Product gallery: thumbnail click → main photo + arrow nav ---------- */
+/* ---------- Product gallery: thumbnail click → main photo + arrow nav + hover zoom ---------- */
 document.addEventListener('DOMContentLoaded', function () {
     const thumbnails = document.querySelectorAll('.thumbnail a');
     const mainPhoto = document.querySelector('.main-photo img');
     const mainPhotoLink = document.querySelector('.main-photo a');
+    const mainPhotoContainer = document.querySelector('.main-photo');
 
-    if (thumbnails.length && mainPhoto) {
+    if (thumbnails.length && mainPhotoContainer) {
         thumbnails.forEach(thumb => {
             thumb.addEventListener('click', function (e) {
                 e.preventDefault();
                 const img = this.querySelector('img');
-                if (img && mainPhoto) {
-                    mainPhoto.src = img.src;
-                    if (mainPhotoLink) {
-                        mainPhotoLink.href = this.href;
-                    }
-                    document.querySelectorAll('.thumbnail img').forEach(i => i.classList.remove('active'));
-                    img.classList.add('active');
+                document.querySelectorAll('.thumbnail img').forEach(i => i.classList.remove('active'));
+                if (img) img.classList.add('active');
+
+                // Check if this is a video thumbnail
+                const videoUrl = this.dataset.videoUrl;
+                if (videoUrl) {
+                    // Replace main-photo content with video
+                    mainPhotoContainer.innerHTML = `<video src="${videoUrl}" autoplay muted playsinline preload="auto" loop class="main-photo__video"></video>`;
+                } else {
+                    // Replace with image (restore fancybox link)
+                    const src = img ? img.src : this.href;
+                    const href = this.href;
+                    mainPhotoContainer.innerHTML = `<a href="${href}" data-fancybox="gallery"><img src="${src}" alt=""></a>`;
                 }
             });
+        });
+    }
+
+    /* Desktop hover-zoom on main photo (works with dynamically replaced images) */
+    if (mainPhotoContainer && window.innerWidth > 768) {
+        mainPhotoContainer.addEventListener('mousemove', function (e) {
+            const img = mainPhotoContainer.querySelector('img');
+            if (!img) return; // skip zoom for video
+            const rect = mainPhotoContainer.getBoundingClientRect();
+            const x = ((e.clientX - rect.left) / rect.width) * 100;
+            const y = ((e.clientY - rect.top) / rect.height) * 100;
+            img.style.transformOrigin = `${x}% ${y}%`;
+            img.style.transform = 'scale(2)';
+        });
+        mainPhotoContainer.addEventListener('mouseleave', function () {
+            const img = mainPhotoContainer.querySelector('img');
+            if (!img) return;
+            img.style.transform = 'scale(1)';
+            img.style.transformOrigin = 'center center';
         });
     }
 
@@ -387,6 +413,92 @@ document.addEventListener('DOMContentLoaded', function () {
             slider.scrollBy({ top: scrollStep, behavior: 'smooth' });
         });
     }
+
+    /* Mobile: Swiper carousel for product gallery */
+    if (window.innerWidth <= 768 && document.querySelector('.product__slider')) {
+        initMobileGallerySwiper();
+    }
+});
+
+function initMobileGallerySwiper() {
+    const slider = document.querySelector('.product__slider');
+    if (!slider || slider.dataset.swiperInit) return;
+
+    const thumbnailNav = slider.querySelector('.thumbnail-nav');
+    const mainPhoto = slider.querySelector('.main-photo');
+    if (!thumbnailNav || !mainPhoto) return;
+
+    // Collect all media from thumbnails
+    const mediaItems = [];
+    slider.querySelectorAll('.thumbnail a').forEach(a => {
+        const img = a.querySelector('img');
+        const videoUrl = a.dataset.videoUrl;
+        if (videoUrl) {
+            mediaItems.push({ type: 'video', videoUrl, thumb: img?.src || '', alt: img?.alt || '' });
+        } else if (img) {
+            mediaItems.push({ type: 'image', src: img.src, href: a.href, alt: img.alt });
+        }
+    });
+    if (mediaItems.length === 0) return;
+
+    // Hide original elements
+    thumbnailNav.style.display = 'none';
+    mainPhoto.style.display = 'none';
+
+    // Build Swiper HTML
+    const swiperContainer = document.createElement('div');
+    swiperContainer.className = 'swiper product-gallery-swiper';
+    swiperContainer.innerHTML = `
+        <div class="swiper-wrapper">
+            ${mediaItems.map(item => {
+                if (item.type === 'video') {
+                    return `<div class="swiper-slide"><video src="${item.videoUrl}" autoplay muted playsinline preload="auto" loop style="width:100%;height:auto;display:block;"></video></div>`;
+                }
+                return `<div class="swiper-slide"><a href="${item.href}" data-fancybox="gallery-mobile"><img src="${item.src}" alt="${item.alt}"></a></div>`;
+            }).join('')}
+        </div>
+        <div class="swiper-pagination"></div>
+    `;
+    slider.appendChild(swiperContainer);
+
+    // Init Swiper
+    new Swiper('.product-gallery-swiper', {
+        modules: [Pagination],
+        slidesPerView: 1,
+        spaceBetween: 0,
+        pagination: {
+            el: '.product-gallery-swiper .swiper-pagination',
+            clickable: true,
+        },
+    });
+
+    // FancyBox for mobile with white background
+    if (typeof Fancybox !== 'undefined') {
+        Fancybox.bind('[data-fancybox="gallery-mobile"]', {
+            Backdrop: { background: '#fff' },
+            Toolbar: { display: { left: [], middle: [], right: ['close'] } },
+        });
+    }
+
+    slider.dataset.swiperInit = 'true';
+}
+
+/* ---------- Horizontal video: autoplay on scroll ---------- */
+document.addEventListener('DOMContentLoaded', function () {
+    const videos = document.querySelectorAll('[data-autoplay-scroll]');
+    if (!videos.length) return;
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.play().catch(() => {});
+            } else {
+                entry.target.pause();
+            }
+        });
+    }, { threshold: 0.5 });
+
+    videos.forEach(video => observer.observe(video));
 });
 
 /* ---------- Product page: Quantity counter ---------- */
@@ -399,10 +511,15 @@ document.querySelectorAll('.product__info-counter').forEach(counter => {
         decrease.addEventListener('click', () => {
             let val = parseInt(input.value) || 1;
             if (val > 1) input.value = val - 1;
+            if (typeof updateTotalPrice === 'function') updateTotalPrice();
         });
         increase.addEventListener('click', () => {
             let val = parseInt(input.value) || 1;
             input.value = val + 1;
+            if (typeof updateTotalPrice === 'function') updateTotalPrice();
+        });
+        input.addEventListener('change', () => {
+            if (typeof updateTotalPrice === 'function') updateTotalPrice();
         });
     }
 });
@@ -799,6 +916,80 @@ document.querySelectorAll('.coupon-apply-btn, .coupon-apply-btn-sidebar').forEac
     });
 });
 
+/* ---------- Catalog cards: Color/Size selection ---------- */
+document.addEventListener('DOMContentLoaded', function () {
+    const cardsContainer = document.querySelector('.cards');
+    if (!cardsContainer) return;
+
+    cardsContainer.addEventListener('click', function (e) {
+        const swatch = e.target.closest('.card__color-swatch');
+        if (swatch) {
+            e.preventDefault();
+            e.stopPropagation();
+            const card = swatch.closest('.card');
+            card.querySelectorAll('.card__color-swatch').forEach(s => s.classList.remove('active'));
+            swatch.classList.add('active');
+            resolveCardVariant(card);
+            return;
+        }
+
+        const sizeBtn = e.target.closest('.card__size-btn');
+        if (sizeBtn) {
+            e.preventDefault();
+            e.stopPropagation();
+            const card = sizeBtn.closest('.card');
+            card.querySelectorAll('.card__size-btn').forEach(s => s.classList.remove('active'));
+            sizeBtn.classList.add('active');
+            resolveCardVariant(card);
+            return;
+        }
+    });
+});
+
+function resolveCardVariant(card) {
+    const variants = JSON.parse(card.dataset.variants || '[]');
+    if (!variants.length) return;
+
+    const activeSwatch = card.querySelector('.card__color-swatch.active');
+    const activeSize = card.querySelector('.card__size-btn.active');
+    const colorId = activeSwatch ? activeSwatch.dataset.colorId : null;
+    const sizeId = activeSize ? activeSize.dataset.sizeId : null;
+
+    const match = variants.find(v =>
+        (!colorId || v.color_id == colorId) &&
+        (!sizeId || v.size_id == sizeId)
+    );
+
+    if (match) {
+        const variantInput = card.querySelector('input[name="variant_id"]');
+        if (variantInput) variantInput.value = match.id;
+
+        if (match.price) {
+            const priceEl = card.querySelector('.price');
+            if (priceEl) {
+                priceEl.textContent = number_format(match.price) + ' ₽';
+            }
+        }
+    }
+}
+
+/* ---------- Catalog banner Swipers ---------- */
+document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.catalog-banner__swiper').forEach(el => {
+        new Swiper(el, {
+            modules: [Pagination],
+            slidesPerView: 1,
+            spaceBetween: 0,
+            loop: true,
+            autoplay: { delay: 5000 },
+            pagination: {
+                el: el.querySelector('.swiper-pagination'),
+                clickable: true,
+            },
+        });
+    });
+});
+
 /* ---------- Каталог: toggle подкатегорий ---------- */
 document.addEventListener('DOMContentLoaded', function () {
     document.querySelectorAll('.catalog__card--has-children').forEach(card => {
@@ -815,6 +1006,85 @@ document.addEventListener('DOMContentLoaded', function () {
 
             // Toggle текущей
             panel.classList.toggle('open');
+        });
+    });
+});
+
+/* ---------- Cookie consent banner ---------- */
+document.addEventListener('DOMContentLoaded', function () {
+    const banner = document.getElementById('cookieBanner');
+    const btn = document.getElementById('cookieAccept');
+    if (!banner || document.cookie.includes('cookies_accepted=1')) {
+        banner?.remove();
+        return;
+    }
+    banner.style.display = '';
+    btn?.addEventListener('click', function () {
+        document.cookie = 'cookies_accepted=1; path=/; max-age=' + (365 * 24 * 60 * 60);
+        banner.remove();
+    });
+});
+
+/* ---------- Messenger bar (TG/Max) ---------- */
+document.addEventListener('DOMContentLoaded', function () {
+    const bar = document.getElementById('messengerBar');
+    const close = document.getElementById('messengerBarClose');
+    if (!bar || sessionStorage.getItem('messengerBarClosed')) {
+        bar?.remove();
+        return;
+    }
+    close?.addEventListener('click', function () {
+        sessionStorage.setItem('messengerBarClosed', '1');
+        bar.remove();
+    });
+});
+
+/* ---------- С8: Табы торговых представителей ---------- */
+document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.reps-tabs__btn').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            document.querySelectorAll('.reps-tabs__btn').forEach(function (b) { b.classList.remove('active'); });
+            document.querySelectorAll('.reps-city').forEach(function (c) { c.classList.remove('active'); });
+            btn.classList.add('active');
+            var city = btn.dataset.city;
+            var panel = document.querySelector('[data-city-content="' + city + '"]');
+            if (panel) panel.classList.add('active');
+        });
+    });
+});
+
+/* ---------- С8: Анимация при скролле (IntersectionObserver) ---------- */
+document.addEventListener('DOMContentLoaded', function () {
+    if (!('IntersectionObserver' in window)) {
+        document.querySelectorAll('[data-animate]').forEach(function (el) { el.classList.add('animated'); });
+        return;
+    }
+    var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('animated');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.15 });
+    document.querySelectorAll('[data-animate]').forEach(function (el) { observer.observe(el); });
+});
+
+/* ---------- С8: Swiper для карточек магазинов ---------- */
+document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.store-swiper').forEach(function (el) {
+        new Swiper(el, {
+            slidesPerView: 1,
+            spaceBetween: 0,
+            loop: true,
+            navigation: {
+                nextEl: el.querySelector('.swiper-button-next'),
+                prevEl: el.querySelector('.swiper-button-prev'),
+            },
+            pagination: {
+                el: el.querySelector('.swiper-pagination'),
+                clickable: true,
+            },
         });
     });
 });

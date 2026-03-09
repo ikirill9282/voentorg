@@ -155,6 +155,7 @@
                                 <input class="form__files-input" type="file" name="attachment" accept="audio/*,video/*,image/*">
                             </p>
                         </div>
+                        @include('store.partials.recaptcha-field', ['action' => 'contact'])
                         <p>
                             <label>
                                 <input type="checkbox" name="acceptance" value="1" required>
@@ -172,276 +173,180 @@
         </section>
 
         <h2 class="contacts__title">Фирменные магазины</h2>
-        <section class="listMagazin">
-            <div class="magazin">
-                <div class="magazin-container">
-                    <h3>Щит и Меч</h3>
-                    <h4>Демонстрационный зал и пункт выдачи заказов</h4>
-                    <div class="swiper-container">
+        <section class="stores-section">
+            <div class="store-card" data-animate="fade-up">
+                <div class="store-card__gallery">
+                    <div class="swiper store-swiper">
                         <div class="swiper-wrapper">
                             <div class="swiper-slide">
                                 <a href="https://colchuga.ru/wp-content/uploads/2024/12/photo_2025-07-09_13-12-52.jpg" data-fancybox="gallery-main">
-                                    <img src="https://colchuga.ru/wp-content/uploads/2024/12/photo_2025-07-09_13-12-52.jpg" alt="">
+                                    <img src="https://colchuga.ru/wp-content/uploads/2024/12/photo_2025-07-09_13-12-52.jpg" alt="Щит и Меч — демонстрационный зал">
                                 </a>
                             </div>
                             <div class="swiper-slide">
                                 <a href="https://colchuga.ru/wp-content/uploads/2024/12/photo_2025-07-09_13-13-04.jpg" data-fancybox="gallery-main">
-                                    <img src="https://colchuga.ru/wp-content/uploads/2024/12/photo_2025-07-09_13-13-04.jpg" alt="">
+                                    <img src="https://colchuga.ru/wp-content/uploads/2024/12/photo_2025-07-09_13-13-04.jpg" alt="Щит и Меч — интерьер">
                                 </a>
                             </div>
                             <div class="swiper-slide">
                                 <a href="https://colchuga.ru/wp-content/uploads/2024/12/photo_2025-07-09_13-13-07.jpg" data-fancybox="gallery-main">
-                                    <img src="https://colchuga.ru/wp-content/uploads/2024/12/photo_2025-07-09_13-13-07.jpg" alt="">
+                                    <img src="https://colchuga.ru/wp-content/uploads/2024/12/photo_2025-07-09_13-13-07.jpg" alt="Щит и Меч — экипировка">
                                 </a>
                             </div>
                             <div class="swiper-slide">
                                 <a href="https://colchuga.ru/wp-content/uploads/2024/12/photo_2025-07-09_13-13-11.jpg" data-fancybox="gallery-main">
-                                    <img src="https://colchuga.ru/wp-content/uploads/2024/12/photo_2025-07-09_13-13-11.jpg" alt="">
+                                    <img src="https://colchuga.ru/wp-content/uploads/2024/12/photo_2025-07-09_13-13-11.jpg" alt="Щит и Меч — ассортимент">
                                 </a>
                             </div>
                             <div class="swiper-slide">
                                 <a href="https://colchuga.ru/wp-content/uploads/2024/12/photo_2025-07-09_13-13-14-1.jpg" data-fancybox="gallery-main">
-                                    <img src="https://colchuga.ru/wp-content/uploads/2024/12/photo_2025-07-09_13-13-14-1.jpg" alt="">
+                                    <img src="https://colchuga.ru/wp-content/uploads/2024/12/photo_2025-07-09_13-13-14-1.jpg" alt="Щит и Меч — витрина">
                                 </a>
                             </div>
                         </div>
-                    </div>
-                    <h5 class="title-magazineSection">Адрес</h5>
-                    <p>г. Москва Остаповский проезд, дом 6, строение 2</p>
-                    <p>Основной демонстрационный зал компании Щит и Меч. Здесь можно получить консультацию, изучить весь модельный ряд и ассортимент компании, приобрести интересующую экипировку или забрать заказ, сделанный на сайте.</p>
-                    <h5 class="title-magazineSection">Телефоны</h5>
-                    <div class="contact_magazine">
-                        <div>
-                            <span class="contact-icon">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 18 18" fill="none">
-                                    <g clip-path="url(#clip0_phone2)">
-                                        <path d="M7.43435 4.53593C7.21948 2.0643 4.64098 0.851551 4.53185 0.802051C4.42984 0.754097 4.31552 0.738775 4.20448 0.758176C1.22773 1.25205 0.779976 2.98455 0.761976 3.05655C0.737486 3.15689 0.741381 3.26205 0.773226 3.3603C4.32373 14.3763 11.7026 16.4182 14.1281 17.0898C14.3149 17.1416 14.469 17.1832 14.586 17.2214C14.7195 17.265 14.8645 17.2566 14.9921 17.1978C15.0664 17.1641 16.8191 16.3383 17.2477 13.6451C17.2667 13.5275 17.2478 13.4069 17.1937 13.3008C17.1555 13.2266 16.2386 11.4817 13.6961 10.8652C13.6098 10.8431 13.5195 10.8423 13.4329 10.8629C13.3463 10.8835 13.266 10.9248 13.1989 10.9833C12.3967 11.6684 11.2886 12.3986 10.8105 12.4739C7.60535 10.9068 5.81548 7.89968 5.74798 7.3293C5.7086 7.00868 6.44323 5.88255 7.2881 4.9668C7.3412 4.90917 7.38165 4.84105 7.40684 4.76685C7.43203 4.69264 7.4414 4.61398 7.43435 4.53593V4.53593Z" fill="#A03611"/>
-                                    </g>
-                                    <defs>
-                                        <clipPath id="clip0_phone2">
-                                            <rect width="18" height="18" fill="white"/>
-                                        </clipPath>
-                                    </defs>
-                                </svg>
-                            </span>
-                            <a href="tel:+79167858541">+7 (916) 785-85-41</a>
-                        </div>
-                        <div>
-                            <span class="contact-icon">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 18 18" fill="none">
-                                    <g clip-path="url(#clip0_phone3)">
-                                        <path d="M7.43435 4.53593C7.21948 2.0643 4.64098 0.851551 4.53185 0.802051C4.42984 0.754097 4.31552 0.738775 4.20448 0.758176C1.22773 1.25205 0.779976 2.98455 0.761976 3.05655C0.737486 3.15689 0.741381 3.26205 0.773226 3.3603C4.32373 14.3763 11.7026 16.4182 14.1281 17.0898C14.3149 17.1416 14.469 17.1832 14.586 17.2214C14.7195 17.265 14.8645 17.2566 14.9921 17.1978C15.0664 17.1641 16.8191 16.3383 17.2477 13.6451C17.2667 13.5275 17.2478 13.4069 17.1937 13.3008C17.1555 13.2266 16.2386 11.4817 13.6961 10.8652C13.6098 10.8431 13.5195 10.8423 13.4329 10.8629C13.3463 10.8835 13.266 10.9248 13.1989 10.9833C12.3967 11.6684 11.2886 12.3986 10.8105 12.4739C7.60535 10.9068 5.81548 7.89968 5.74798 7.3293C5.7086 7.00868 6.44323 5.88255 7.2881 4.9668C7.3412 4.90917 7.38165 4.84105 7.40684 4.76685C7.43203 4.69264 7.4414 4.61398 7.43435 4.53593V4.53593Z" fill="#A03611"/>
-                                    </g>
-                                    <defs>
-                                        <clipPath id="clip0_phone3">
-                                            <rect width="18" height="18" fill="white"/>
-                                        </clipPath>
-                                    </defs>
-                                </svg>
-                            </span>
-                            <a href="tel:+79151091923">+7 (915) 109-19-23</a>
-                        </div>
-                    </div>
-                    <h5 class="title-magazineSection">Мессенджеры</h5>
-                    <div class="contact_magazine">
-                        <div>
-                            <span class="contact-icon">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none">
-                                    <g clip-path="url(#clip0_wa2)">
-                                        <path d="M7 0C3.14008 0 0 3.14008 0 7C0 8.34808 0.3815 9.65008 1.106 10.7777L0.01925 13.6033C-0.000379306 13.6554 -0.00474601 13.7121 0.00666189 13.7666C0.0180698 13.8211 0.0447794 13.8712 0.0836589 13.911C0.122538 13.9509 0.171976 13.9788 0.226175 13.9916C0.280374 14.0044 0.337088 14.0014 0.389667 13.9831L3.30575 12.9418C4.41355 13.6341 5.69371 14.0007 7 14C10.8599 14 14 10.8599 14 7C14 3.14008 10.8599 0 7 0ZM10.5 9.04167C10.5 9.69792 9.69208 10.5 8.75 10.5C7.83358 10.5 6.07425 9.40392 5.33517 8.66483C4.59608 7.92517 3.5 6.16583 3.5 5.25C3.5 4.30733 4.30208 3.5 4.95833 3.5H5.54167C5.59607 3.50006 5.64937 3.51533 5.69556 3.54409C5.74174 3.57285 5.77895 3.61395 5.803 3.66275C5.80358 3.66333 6.15475 4.37733 6.38458 4.82533C6.64358 5.33108 6.1565 5.92608 5.87942 6.20667C5.97858 6.461 6.21017 6.965 6.62258 7.37742C7.035 7.78983 7.539 8.022 7.79333 8.12058C8.07333 7.84292 8.66833 7.35525 9.17467 7.61542C9.62267 7.84583 10.3361 8.19642 10.3367 8.19642C10.3857 8.22042 10.4269 8.2577 10.4558 8.304C10.4847 8.3503 10.5 8.40377 10.5 8.45833V9.04167V9.04167Z" fill="#A03611"/>
-                                    </g>
-                                    <defs>
-                                        <clipPath id="clip0_wa2">
-                                            <rect width="16" height="16" fill="white"/>
-                                        </clipPath>
-                                    </defs>
-                                </svg>
-                            </span>
-                            <a href="https://wa.me/79167858541" target="_blank">Сообщение в WhatsApp</a>
-                        </div>
-                        <div>
-                            <span class="contact-icon">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="14" viewBox="0 0 16 14" fill="none">
-                                    <g clip-path="url(#clip0_tg2)">
-                                        <path d="M6.27812 10.1206L6.01345 13.8433C6.39212 13.8433 6.55612 13.6806 6.75279 13.4853L8.52812 11.7886L12.2068 14.4826C12.8815 14.8586 13.3568 14.6606 13.5388 13.8619L15.9535 2.54728L15.9541 2.54661C16.1681 1.54928 15.5935 1.15928 14.9361 1.40394L0.742785 6.83794C-0.225881 7.21394 -0.211215 7.75394 0.578119 7.99861L4.20679 9.12728L12.6355 3.85328C13.0321 3.59061 13.3928 3.73595 13.0961 3.99861L6.27812 10.1206Z" fill="#A03611"/>
-                                    </g>
-                                    <defs>
-                                        <clipPath id="clip0_tg2">
-                                            <rect width="16" height="16" fill="white"/>
-                                        </clipPath>
-                                    </defs>
-                                </svg>
-                            </span>
-                            <a href="https://t.me/colchuga_ru" target="_blank">Сообщение в Telegram</a>
-                        </div>
+                        <div class="swiper-button-next"></div>
+                        <div class="swiper-button-prev"></div>
+                        <div class="swiper-pagination"></div>
                     </div>
                 </div>
-                <div class="mapMagazin">
-                    <div class="mapMagazin">
-                        <iframe src="https://yandex.eu/map-widget/v1/?um=constructor%3A85161960471&ll=37.704619%2C55.721807&z=17&l=map&pt=37.704619,55.721807,pm2rdm&source=constructor" width="100%" height="400" frameborder="0"></iframe>
+                <div class="store-card__info">
+                    <h3 class="store-card__name">Щит и Меч</h3>
+                    <p class="store-card__type">Демонстрационный зал и пункт выдачи заказов</p>
+                    <div class="store-card__detail">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#A03611" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
+                        </svg>
+                        <p>г. Москва, Остаповский проезд, дом 6, строение 2</p>
                     </div>
+                    <p class="store-card__desc">Основной демонстрационный зал компании Щит и Меч. Здесь можно получить консультацию, изучить весь модельный ряд и ассортимент компании, приобрести интересующую экипировку или забрать заказ, сделанный на сайте.</p>
+                    <div class="store-card__phones">
+                        <a href="tel:+79167858541">+7 (916) 785-85-41</a>
+                        <a href="tel:+79151091923">+7 (915) 109-19-23</a>
+                    </div>
+                    <div class="store-card__contacts">
+                        <a href="tel:+79167858541" class="store-card__phone-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
+                            </svg>
+                            Позвонить
+                        </a>
+                        <a href="https://wa.me/79167858541" class="store-card__messenger" target="_blank">WhatsApp</a>
+                        <a href="https://t.me/colchuga_ru" class="store-card__messenger" target="_blank">Telegram</a>
+                    </div>
+                </div>
+                <div class="store-card__map">
+                    <iframe src="https://yandex.eu/map-widget/v1/?um=constructor%3A85161960471&ll=37.704619%2C55.721807&z=17&l=map&pt=37.704619,55.721807,pm2rdm&source=constructor" width="100%" height="300" frameborder="0" allowfullscreen="true"></iframe>
                 </div>
             </div>
         </section>
 
         <h2 class="contacts__title">Торговые представители</h2>
-        <section class="listMagazin">
-            {{-- Ростов-на-Дону | Colchuga Tactical (1) --}}
-            <div class="magazin">
-                <div class="magazin-container">
-                    <h3>Ростов-на-Дону | Colchuga Tactical</h3>
-                    <h4>Торговый представитель</h4>
-                    <div class="swiper-container">
-                        <div class="swiper-wrapper">
-                            <div class="swiper-slide">
-                                <a href="https://colchuga.ru/wp-content/uploads/2024/12/colchuga-tactical-.png" data-fancybox="gallery-rostov1">
-                                    <img src="https://colchuga.ru/wp-content/uploads/2024/12/colchuga-tactical-.png" alt="">
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <h5 class="title-magazineSection">Адрес</h5>
-                    <p>г. Ростов-на-Дону, с. Чалтырь, ул. Красноармейская, д. 82Б</p>
-                    <p>Магазин тактической экипировки и снаряжения. В ассортименте представлены бронежилеты, комплекты снаряжения, тактические пояса и другая продукция компании "Щит и Меч.</p>
-                    <h5 class="title-magazineSection">Телефон</h5>
-                    <div class="contact_magazine">
-                        <div>
-                            <span class="contact-icon">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 18 18" fill="none">
-                                    <g clip-path="url(#clip0_phone4)">
-                                        <path d="M7.43435 4.53593C7.21948 2.0643 4.64098 0.851551 4.53185 0.802051C4.42984 0.754097 4.31552 0.738775 4.20448 0.758176C1.22773 1.25205 0.779976 2.98455 0.761976 3.05655C0.737486 3.15689 0.741381 3.26205 0.773226 3.3603C4.32373 14.3763 11.7026 16.4182 14.1281 17.0898C14.3149 17.1416 14.469 17.1832 14.586 17.2214C14.7195 17.265 14.8645 17.2566 14.9921 17.1978C15.0664 17.1641 16.8191 16.3383 17.2477 13.6451C17.2667 13.5275 17.2478 13.4069 17.1937 13.3008C17.1555 13.2266 16.2386 11.4817 13.6961 10.8652C13.6098 10.8431 13.5195 10.8423 13.4329 10.8629C13.3463 10.8835 13.266 10.9248 13.1989 10.9833C12.3967 11.6684 11.2886 12.3986 10.8105 12.4739C7.60535 10.9068 5.81548 7.89968 5.74798 7.3293C5.7086 7.00868 6.44323 5.88255 7.2881 4.9668C7.3412 4.90917 7.38165 4.84105 7.40684 4.76685C7.43203 4.69264 7.4414 4.61398 7.43435 4.53593V4.53593Z" fill="#A03611"/>
-                                    </g>
-                                    <defs>
-                                        <clipPath id="clip0_phone4">
-                                            <rect width="18" height="18" fill="white"/>
-                                        </clipPath>
-                                    </defs>
-                                </svg>
-                            </span>
-                            <a href="tel:+79613199399">+7 961 319-93-99</a>
-                        </div>
-                    </div>
-                    <h5 class="title-magazineSection">Мессенджеры</h5>
-                    <div class="contact_magazine">
-                        <div>
-                            <span class="contact-icon">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none">
-                                    <g clip-path="url(#clip0_wa3)">
-                                        <path d="M7 0C3.14008 0 0 3.14008 0 7C0 8.34808 0.3815 9.65008 1.106 10.7777L0.01925 13.6033C-0.000379306 13.6554 -0.00474601 13.7121 0.00666189 13.7666C0.0180698 13.8211 0.0447794 13.8712 0.0836589 13.911C0.122538 13.9509 0.171976 13.9788 0.226175 13.9916C0.280374 14.0044 0.337088 14.0014 0.389667 13.9831L3.30575 12.9418C4.41355 13.6341 5.69371 14.0007 7 14C10.8599 14 14 10.8599 14 7C14 3.14008 10.8599 0 7 0ZM10.5 9.04167C10.5 9.69792 9.69208 10.5 8.75 10.5C7.83358 10.5 6.07425 9.40392 5.33517 8.66483C4.59608 7.92517 3.5 6.16583 3.5 5.25C3.5 4.30733 4.30208 3.5 4.95833 3.5H5.54167C5.59607 3.50006 5.64937 3.51533 5.69556 3.54409C5.74174 3.57285 5.77895 3.61395 5.803 3.66275C5.80358 3.66333 6.15475 4.37733 6.38458 4.82533C6.64358 5.33108 6.1565 5.92608 5.87942 6.20667C5.97858 6.461 6.21017 6.965 6.62258 7.37742C7.035 7.78983 7.539 8.022 7.79333 8.12058C8.07333 7.84292 8.66833 7.35525 9.17467 7.61542C9.62267 7.84583 10.3361 8.19642 10.3367 8.19642C10.3857 8.22042 10.4269 8.2577 10.4558 8.304C10.4847 8.3503 10.5 8.40377 10.5 8.45833V9.04167V9.04167Z" fill="#A03611"/>
-                                    </g>
-                                    <defs>
-                                        <clipPath id="clip0_wa3">
-                                            <rect width="16" height="16" fill="white"/>
-                                        </clipPath>
-                                    </defs>
-                                </svg>
-                            </span>
-                            <a href="https://wa.me/79613199399?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5!%20%D0%98%D0%BD%D1%82%D0%B5%D1%80%D0%B5%D1%81%D1%83%D0%B5%D1%82%20%D1%8D%D0%BA%D0%B8%D0%BF%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%B0%20%C2%AB%D0%A9%D0%B8%D1%82%20%D0%B8%20%D0%9C%D0%B5%D1%87%C2%BB.%20" target="_blank">Сообщение в WhatsApp</a>
-                        </div>
-                        <div>
-                            <span class="contact-icon">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="14" viewBox="0 0 16 14" fill="none">
-                                    <g clip-path="url(#clip0_tg3)">
-                                        <path d="M6.27812 10.1206L6.01345 13.8433C6.39212 13.8433 6.55612 13.6806 6.75279 13.4853L8.52812 11.7886L12.2068 14.4826C12.8815 14.8586 13.3568 14.6606 13.5388 13.8619L15.9535 2.54728L15.9541 2.54661C16.1681 1.54928 15.5935 1.15928 14.9361 1.40394L0.742785 6.83794C-0.225881 7.21394 -0.211215 7.75394 0.578119 7.99861L4.20679 9.12728L12.6355 3.85328C13.0321 3.59061 13.3928 3.73595 13.0961 3.99861L6.27812 10.1206Z" fill="#A03611"/>
-                                    </g>
-                                    <defs>
-                                        <clipPath id="clip0_tg3">
-                                            <rect width="16" height="16" fill="white"/>
-                                        </clipPath>
-                                    </defs>
-                                </svg>
-                            </span>
-                            <a href="https://t.me/ColchugaRostov" target="_blank">Сообщение в Telegram</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="mapMagazin">
-                    <iframe src="https://yandex.ru/map-widget/v1/?lang=ru_RU&scroll=true&source=constructor-api&um=constructor%3Ae51e3fa53aa0cc8174febbb5637763756eb5434d18ebad959c664f2a4b72814d" frameborder="0" allowfullscreen="true" width="100%" height="400px" style="display: block;"></iframe>
-                </div>
-            </div>
+        <div class="reps-tabs">
+            <button class="reps-tabs__btn active" data-city="rostov">Ростов-на-Дону</button>
+        </div>
+        <section class="stores-section">
+            <div class="reps-city active" data-city-content="rostov">
 
-            {{-- Ростов-на-Дону | Colchuga Tactical (2) --}}
-            <div class="magazin">
-                <div class="magazin-container">
-                    <h3>Ростов-на-Дону | Colchuga Tactical</h3>
-                    <h4>Торговый представитель</h4>
-                    <div class="swiper-container">
-                        <div class="swiper-wrapper">
-                            <div class="swiper-slide">
-                                <a href="https://colchuga.ru/wp-content/uploads/2024/12/2025-08-21-09.28.34.jpg" data-fancybox="gallery-rostov2">
-                                    <img src="https://colchuga.ru/wp-content/uploads/2024/12/2025-08-21-09.28.34.jpg" alt="">
-                                </a>
+                {{-- Ростов-на-Дону | Colchuga Tactical (1) — Чалтырь --}}
+                <div class="store-card" data-animate="fade-up">
+                    <div class="store-card__gallery">
+                        <div class="swiper store-swiper">
+                            <div class="swiper-wrapper">
+                                <div class="swiper-slide">
+                                    <a href="https://colchuga.ru/wp-content/uploads/2024/12/colchuga-tactical-.png" data-fancybox="gallery-rostov1">
+                                        <img src="https://colchuga.ru/wp-content/uploads/2024/12/colchuga-tactical-.png" alt="Colchuga Tactical — Чалтырь">
+                                    </a>
+                                </div>
                             </div>
-                            <div class="swiper-slide">
-                                <a href="https://colchuga.ru/wp-content/uploads/2024/12/2025-08-21-09.28.42.jpg" data-fancybox="gallery-rostov2">
-                                    <img src="https://colchuga.ru/wp-content/uploads/2024/12/2025-08-21-09.28.42.jpg" alt="">
-                                </a>
-                            </div>
-                            <div class="swiper-slide">
-                                <a href="https://colchuga.ru/wp-content/uploads/2024/12/2025-08-21-09.28.46.jpg" data-fancybox="gallery-rostov2">
-                                    <img src="https://colchuga.ru/wp-content/uploads/2024/12/2025-08-21-09.28.46.jpg" alt="">
-                                </a>
-                            </div>
+                            <div class="swiper-button-next"></div>
+                            <div class="swiper-button-prev"></div>
+                            <div class="swiper-pagination"></div>
                         </div>
                     </div>
-                    <h5 class="title-magazineSection">Адрес</h5>
-                    <p>г. Ростов-на-Дону, ул. Ерёменко, 71/2</p>
-                    <p>Магазин тактической экипировки и снаряжения. В ассортименте представлены бронежилеты, комплекты снаряжения, тактические пояса и другая продукция компании "Щит и Меч.</p>
-                    <h5 class="title-magazineSection">Телефон</h5>
-                    <div class="contact_magazine">
-                        <div>
-                            <span class="contact-icon">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 18 18" fill="none">
-                                    <g clip-path="url(#clip0_phone5)">
-                                        <path d="M7.43435 4.53593C7.21948 2.0643 4.64098 0.851551 4.53185 0.802051C4.42984 0.754097 4.31552 0.738775 4.20448 0.758176C1.22773 1.25205 0.779976 2.98455 0.761976 3.05655C0.737486 3.15689 0.741381 3.26205 0.773226 3.3603C4.32373 14.3763 11.7026 16.4182 14.1281 17.0898C14.3149 17.1416 14.469 17.1832 14.586 17.2214C14.7195 17.265 14.8645 17.2566 14.9921 17.1978C15.0664 17.1641 16.8191 16.3383 17.2477 13.6451C17.2667 13.5275 17.2478 13.4069 17.1937 13.3008C17.1555 13.2266 16.2386 11.4817 13.6961 10.8652C13.6098 10.8431 13.5195 10.8423 13.4329 10.8629C13.3463 10.8835 13.266 10.9248 13.1989 10.9833C12.3967 11.6684 11.2886 12.3986 10.8105 12.4739C7.60535 10.9068 5.81548 7.89968 5.74798 7.3293C5.7086 7.00868 6.44323 5.88255 7.2881 4.9668C7.3412 4.90917 7.38165 4.84105 7.40684 4.76685C7.43203 4.69264 7.4414 4.61398 7.43435 4.53593V4.53593Z" fill="#A03611"/>
-                                    </g>
-                                    <defs>
-                                        <clipPath id="clip0_phone5">
-                                            <rect width="18" height="18" fill="white"/>
-                                        </clipPath>
-                                    </defs>
-                                </svg>
-                            </span>
+                    <div class="store-card__info">
+                        <h3 class="store-card__name">Colchuga Tactical</h3>
+                        <p class="store-card__type">Торговый представитель</p>
+                        <div class="store-card__detail">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#A03611" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
+                            </svg>
+                            <p>г. Ростов-на-Дону, с. Чалтырь, ул. Красноармейская, д. 82Б</p>
+                        </div>
+                        <p class="store-card__desc">Магазин тактической экипировки и снаряжения. В ассортименте представлены бронежилеты, комплекты снаряжения, тактические пояса и другая продукция компании «Щит и Меч».</p>
+                        <div class="store-card__phones">
                             <a href="tel:+79613199399">+7 961 319-93-99</a>
                         </div>
-                    </div>
-                    <h5 class="title-magazineSection">Мессенджеры</h5>
-                    <div class="contact_magazine">
-                        <div>
-                            <span class="contact-icon">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none">
-                                    <g clip-path="url(#clip0_wa4)">
-                                        <path d="M7 0C3.14008 0 0 3.14008 0 7C0 8.34808 0.3815 9.65008 1.106 10.7777L0.01925 13.6033C-0.000379306 13.6554 -0.00474601 13.7121 0.00666189 13.7666C0.0180698 13.8211 0.0447794 13.8712 0.0836589 13.911C0.122538 13.9509 0.171976 13.9788 0.226175 13.9916C0.280374 14.0044 0.337088 14.0014 0.389667 13.9831L3.30575 12.9418C4.41355 13.6341 5.69371 14.0007 7 14C10.8599 14 14 10.8599 14 7C14 3.14008 10.8599 0 7 0ZM10.5 9.04167C10.5 9.69792 9.69208 10.5 8.75 10.5C7.83358 10.5 6.07425 9.40392 5.33517 8.66483C4.59608 7.92517 3.5 6.16583 3.5 5.25C3.5 4.30733 4.30208 3.5 4.95833 3.5H5.54167C5.59607 3.50006 5.64937 3.51533 5.69556 3.54409C5.74174 3.57285 5.77895 3.61395 5.803 3.66275C5.80358 3.66333 6.15475 4.37733 6.38458 4.82533C6.64358 5.33108 6.1565 5.92608 5.87942 6.20667C5.97858 6.461 6.21017 6.965 6.62258 7.37742C7.035 7.78983 7.539 8.022 7.79333 8.12058C8.07333 7.84292 8.66833 7.35525 9.17467 7.61542C9.62267 7.84583 10.3361 8.19642 10.3367 8.19642C10.3857 8.22042 10.4269 8.2577 10.4558 8.304C10.4847 8.3503 10.5 8.40377 10.5 8.45833V9.04167V9.04167Z" fill="#A03611"/>
-                                    </g>
-                                    <defs>
-                                        <clipPath id="clip0_wa4">
-                                            <rect width="16" height="16" fill="white"/>
-                                        </clipPath>
-                                    </defs>
+                        <div class="store-card__contacts">
+                            <a href="tel:+79613199399" class="store-card__phone-btn">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
                                 </svg>
-                            </span>
-                            <a href="https://wa.me/79613199399?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5!%20%D0%98%D0%BD%D1%82%D0%B5%D1%80%D0%B5%D1%81%D1%83%D0%B5%D1%82%20%D1%8D%D0%BA%D0%B8%D0%BF%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%B0%20%C2%AB%D0%A9%D0%B8%D1%82%20%D0%B8%20%D0%9C%D0%B5%D1%87%C2%BB.%20" target="_blank">Сообщение в WhatsApp</a>
-                        </div>
-                        <div>
-                            <span class="contact-icon">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="14" viewBox="0 0 16 14" fill="none">
-                                    <g clip-path="url(#clip0_tg4)">
-                                        <path d="M6.27812 10.1206L6.01345 13.8433C6.39212 13.8433 6.55612 13.6806 6.75279 13.4853L8.52812 11.7886L12.2068 14.4826C12.8815 14.8586 13.3568 14.6606 13.5388 13.8619L15.9535 2.54728L15.9541 2.54661C16.1681 1.54928 15.5935 1.15928 14.9361 1.40394L0.742785 6.83794C-0.225881 7.21394 -0.211215 7.75394 0.578119 7.99861L4.20679 9.12728L12.6355 3.85328C13.0321 3.59061 13.3928 3.73595 13.0961 3.99861L6.27812 10.1206Z" fill="#A03611"/>
-                                    </g>
-                                    <defs>
-                                        <clipPath id="clip0_tg4">
-                                            <rect width="16" height="16" fill="white"/>
-                                        </clipPath>
-                                    </defs>
-                                </svg>
-                            </span>
-                            <a href="https://t.me/ColchugaRostov" target="_blank">Сообщение в Telegram</a>
+                                Позвонить
+                            </a>
+                            <a href="https://wa.me/79613199399?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5!%20%D0%98%D0%BD%D1%82%D0%B5%D1%80%D0%B5%D1%81%D1%83%D0%B5%D1%82%20%D1%8D%D0%BA%D0%B8%D0%BF%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%B0%20%C2%AB%D0%A9%D0%B8%D1%82%20%D0%B8%20%D0%9C%D0%B5%D1%87%C2%BB.%20" class="store-card__messenger" target="_blank">WhatsApp</a>
+                            <a href="https://t.me/ColchugaRostov" class="store-card__messenger" target="_blank">Telegram</a>
                         </div>
                     </div>
+                    <div class="store-card__map">
+                        <iframe src="https://yandex.ru/map-widget/v1/?lang=ru_RU&scroll=true&source=constructor-api&um=constructor%3Ae51e3fa53aa0cc8174febbb5637763756eb5434d18ebad959c664f2a4b72814d" frameborder="0" allowfullscreen="true" width="100%" height="300" style="display: block;"></iframe>
+                    </div>
                 </div>
-                <div class="mapMagazin">
-                    <iframe src="https://yandex.ru/map-widget/v1/?lang=ru_RU&scroll=true&source=constructor-api&um=constructor%3A8362026ea50f1f6e1a4bd841af51607344a486586966a7840c4e9e1f1d73f7ce" frameborder="0" allowfullscreen="true" width="100%" height="400px" style="display: block;"></iframe>
+
+                {{-- Ростов-на-Дону | Colchuga Tactical (2) — Ерёменко --}}
+                <div class="store-card" data-animate="fade-up" style="margin-top: 40px;">
+                    <div class="store-card__gallery">
+                        <div class="swiper store-swiper">
+                            <div class="swiper-wrapper">
+                                <div class="swiper-slide">
+                                    <a href="https://colchuga.ru/wp-content/uploads/2024/12/2025-08-21-09.28.34.jpg" data-fancybox="gallery-rostov2">
+                                        <img src="https://colchuga.ru/wp-content/uploads/2024/12/2025-08-21-09.28.34.jpg" alt="Colchuga Tactical — Ерёменко">
+                                    </a>
+                                </div>
+                                <div class="swiper-slide">
+                                    <a href="https://colchuga.ru/wp-content/uploads/2024/12/2025-08-21-09.28.42.jpg" data-fancybox="gallery-rostov2">
+                                        <img src="https://colchuga.ru/wp-content/uploads/2024/12/2025-08-21-09.28.42.jpg" alt="Colchuga Tactical — интерьер">
+                                    </a>
+                                </div>
+                                <div class="swiper-slide">
+                                    <a href="https://colchuga.ru/wp-content/uploads/2024/12/2025-08-21-09.28.46.jpg" data-fancybox="gallery-rostov2">
+                                        <img src="https://colchuga.ru/wp-content/uploads/2024/12/2025-08-21-09.28.46.jpg" alt="Colchuga Tactical — ассортимент">
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="swiper-button-next"></div>
+                            <div class="swiper-button-prev"></div>
+                            <div class="swiper-pagination"></div>
+                        </div>
+                    </div>
+                    <div class="store-card__info">
+                        <h3 class="store-card__name">Colchuga Tactical</h3>
+                        <p class="store-card__type">Торговый представитель</p>
+                        <div class="store-card__detail">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#A03611" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
+                            </svg>
+                            <p>г. Ростов-на-Дону, ул. Ерёменко, 71/2</p>
+                        </div>
+                        <p class="store-card__desc">Магазин тактической экипировки и снаряжения. В ассортименте представлены бронежилеты, комплекты снаряжения, тактические пояса и другая продукция компании «Щит и Меч».</p>
+                        <div class="store-card__phones">
+                            <a href="tel:+79613199399">+7 961 319-93-99</a>
+                        </div>
+                        <div class="store-card__contacts">
+                            <a href="tel:+79613199399" class="store-card__phone-btn">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
+                                </svg>
+                                Позвонить
+                            </a>
+                            <a href="https://wa.me/79613199399?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5!%20%D0%98%D0%BD%D1%82%D0%B5%D1%80%D0%B5%D1%81%D1%83%D0%B5%D1%82%20%D1%8D%D0%BA%D0%B8%D0%BF%D0%B8%D1%80%D0%BE%D0%B2%D0%BA%D0%B0%20%C2%AB%D0%A9%D0%B8%D1%82%20%D0%B8%20%D0%9C%D0%B5%D1%87%C2%BB.%20" class="store-card__messenger" target="_blank">WhatsApp</a>
+                            <a href="https://t.me/ColchugaRostov" class="store-card__messenger" target="_blank">Telegram</a>
+                        </div>
+                    </div>
+                    <div class="store-card__map">
+                        <iframe src="https://yandex.ru/map-widget/v1/?lang=ru_RU&scroll=true&source=constructor-api&um=constructor%3A8362026ea50f1f6e1a4bd841af51607344a486586966a7840c4e9e1f1d73f7ce" frameborder="0" allowfullscreen="true" width="100%" height="300" style="display: block;"></iframe>
+                    </div>
                 </div>
+
             </div>
         </section>
     </div>

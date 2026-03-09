@@ -16,13 +16,15 @@
                 </div>
             @endif
 
-            @if (str_contains($post->content, '<p'))
-                {!! $post->content !!}
-            @else
-                @foreach (preg_split('/\n{2,}/', trim($post->content)) as $paragraph)
-                    <p>{!! nl2br(trim($paragraph)) !!}</p>
-                @endforeach
-            @endif
+            <div class="blog-content">
+                @if (str_contains($post->content, '<p'))
+                    {!! $post->content !!}
+                @else
+                    @foreach (preg_split('/\n{2,}/', trim($post->content)) as $paragraph)
+                        <p>{!! nl2br(trim($paragraph)) !!}</p>
+                    @endforeach
+                @endif
+            </div>
         </div>
     </section>
 

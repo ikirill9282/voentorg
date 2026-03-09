@@ -39,6 +39,25 @@ class PostForm
                     ->columnSpanFull(),
                 RichEditor::make('content')
                     ->label('Контент')
+                    ->fileAttachmentsDisk('public')
+                    ->fileAttachmentsDirectory('blog-media')
+                    ->fileAttachmentsVisibility('public')
+                    ->toolbarButtons([
+                        'attachFiles',
+                        'blockquote',
+                        'bold',
+                        'bulletList',
+                        'codeBlock',
+                        'h2',
+                        'h3',
+                        'italic',
+                        'link',
+                        'orderedList',
+                        'redo',
+                        'strike',
+                        'underline',
+                        'undo',
+                    ])
                     ->columnSpanFull(),
             ]);
     }

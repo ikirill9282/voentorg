@@ -105,27 +105,27 @@
                 </div>
                 <div class="about__progress">
                     <div class="about__video-wrapper">
-                        <!-- TODO: заменить VIDEO_ID на реальный ID видео -->
-                        <iframe src="https://www.youtube.com/embed/VIDEO_ID" title="О компании COLCHUGA" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        <!-- TODO: заменить VIDEO_ID на реальный ID видео с RuTube -->
+                        <iframe src="https://rutube.ru/play/embed/VIDEO_ID" title="О компании COLCHUGA" frameborder="0" allow="clipboard-write; autoplay" allowfullscreen></iframe>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    {{-- 4. YouTube / Video showcase (Agilite-style) --}}
+    {{-- 4. RuTube / Video showcase (Agilite-style) --}}
     <section class="video-showcase">
         {{-- Main: video left + info right --}}
         <div class="video-showcase__hero">
             <div class="video-showcase__player">
-                <!-- TODO: заменить VIDEO_ID -->
-                <iframe src="https://www.youtube.com/embed/VIDEO_ID" title="COLCHUGA" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                <!-- TODO: заменить VIDEO_ID на реальный ID с RuTube -->
+                <iframe src="https://rutube.ru/play/embed/VIDEO_ID" title="COLCHUGA" frameborder="0" allow="clipboard-write; autoplay" allowfullscreen></iframe>
             </div>
             <div class="video-showcase__info">
-                {{-- YouTube icon --}}
-                <svg class="video-showcase__yt-icon" viewBox="0 0 68 48" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M66.52 7.74c-.78-2.93-2.49-5.41-5.42-6.19C55.79.13 34 0 34 0S12.21.13 6.9 1.55C3.97 2.33 2.27 4.81 1.48 7.74.06 13.05 0 24 0 24s.06 10.95 1.48 16.26c.78 2.93 2.49 5.41 5.42 6.19C12.21 47.87 34 48 34 48s21.79-.13 27.1-1.55c2.93-.78 4.64-3.26 5.42-6.19C67.94 34.95 68 24 68 24s-.06-10.95-1.48-16.26z" fill="red"/>
-                    <path d="M45 24L27 14v20" fill="#fff"/>
+                {{-- RuTube icon --}}
+                <svg class="video-showcase__yt-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="100" height="100" rx="20" fill="#1C1C1C"/>
+                    <text x="50" y="62" text-anchor="middle" font-family="Arial,sans-serif" font-weight="bold" font-size="32" fill="#fff">RT</text>
                 </svg>
                 <div class="video-showcase__stats">
                     <span class="video-showcase__count">Подписывайтесь</span>

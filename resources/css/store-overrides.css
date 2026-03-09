@@ -2128,6 +2128,88 @@ a.blog-section__card .blog-section__card-info {
 }
 
 /* ============================================================
+   C4 Phase 4 — Store availability
+   ============================================================ */
+.store-availability {
+    margin-top: 16px;
+    border: 1.5px solid #e0e0e0;
+    border-radius: 8px;
+    overflow: hidden;
+}
+.store-availability__toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 12px 16px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    color: #343A1D;
+    transition: background 0.2s;
+}
+.store-availability__toggle:hover {
+    background: #f9f9f6;
+}
+.store-availability__toggle svg {
+    transition: transform 0.2s;
+}
+.store-availability.open .store-availability__toggle svg {
+    transform: rotate(180deg);
+}
+.store-availability__list {
+    display: none;
+    padding: 0 16px 12px;
+}
+.store-availability.open .store-availability__list {
+    display: block;
+}
+.store-availability__item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 0;
+    border-top: 1px solid #f0f0f0;
+}
+.store-availability__dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+.store-availability__dot--in {
+    background: #4CAF50;
+}
+.store-availability__dot--out {
+    background: #E53935;
+}
+.store-availability__info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+.store-availability__name {
+    font-size: 14px;
+    font-weight: 600;
+    color: #343A1D;
+}
+.store-availability__address {
+    font-size: 12px;
+    color: #888;
+}
+.store-availability__status {
+    font-size: 13px;
+    font-weight: 500;
+    white-space: nowrap;
+}
+.store-availability__dot--in + .store-availability__info ~ .store-availability__status {
+    color: #4CAF50;
+}
+
+/* ============================================================
    CONTACTS: Чат с поддержкой
    ============================================================ */
 .chat-description {
@@ -2152,5 +2234,334 @@ a.blog-section__card .blog-section__card-info {
 }
 .chat-support-btn:hover {
     background: #7a2a0d;
+}
+
+/* Cart: separator line between items (not full width) */
+.cart_item > td {
+    padding-bottom: 20px;
+}
+.cart_item + .cart_item > td {
+    padding-top: 20px;
+    border-top: 1px solid #e0e0e0;
+}
+.cart_item + .cart_item > td:first-child,
+.cart_item + .cart_item > td:last-child {
+    border-top: none;
+}
+
+/* ========== С7: Медиа в статьях блога ========== */
+.blog-content img {
+    max-width: 100% !important;
+    height: auto !important;
+    border-radius: 8px !important;
+    margin: 20px 0 !important;
+}
+.blog-content iframe {
+    max-width: 100% !important;
+    margin: 20px 0 !important;
+    border-radius: 8px !important;
+}
+.blog-content video {
+    max-width: 100% !important;
+    height: auto !important;
+    border-radius: 8px !important;
+    margin: 20px 0 !important;
+}
+.blog-content figure {
+    margin: 20px 0 !important;
+    text-align: center !important;
+}
+.blog-content figcaption {
+    color: #807f81 !important;
+    font-size: 14px !important;
+    margin-top: 8px !important;
+}
+
+/* ========== С8: Магазины — карточки ========== */
+.stores-section {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 40px !important;
+    margin-bottom: 60px !important;
+}
+.store-card {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 30px !important;
+    background: #fff !important;
+    border-radius: 12px !important;
+    padding: 30px !important;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06) !important;
+    border-left: 4px solid #A03611 !important;
+    transition: transform 0.3s, box-shadow 0.3s !important;
+}
+.store-card:hover {
+    transform: translateY(-4px) !important;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.1) !important;
+}
+.store-card__name {
+    font-family: 'Bebas Neue', sans-serif !important;
+    font-size: 28px !important;
+    color: #252916 !important;
+    margin-bottom: 4px !important;
+}
+.store-card__type {
+    color: #898121 !important;
+    font-size: 14px !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1px !important;
+    margin-bottom: 16px !important;
+}
+.store-card__detail {
+    display: flex !important;
+    align-items: flex-start !important;
+    gap: 8px !important;
+    margin-bottom: 12px !important;
+}
+.store-card__detail svg {
+    flex-shrink: 0 !important;
+    margin-top: 3px !important;
+}
+.store-card__desc {
+    color: #555 !important;
+    font-size: 14px !important;
+    line-height: 1.5 !important;
+    margin-bottom: 16px !important;
+}
+.store-card__phone-btn {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    padding: 10px 24px !important;
+    background: #A03611 !important;
+    color: #fff !important;
+    border-radius: 6px !important;
+    text-decoration: none !important;
+    font-family: 'Bebas Neue', sans-serif !important;
+    font-size: 16px !important;
+    letter-spacing: 0.5px !important;
+    transition: background 0.2s !important;
+}
+.store-card__phone-btn:hover {
+    background: #7a2a0d !important;
+    color: #fff !important;
+}
+.store-card__messenger {
+    padding: 10px 20px !important;
+    border: 1px solid #A03611 !important;
+    color: #A03611 !important;
+    border-radius: 6px !important;
+    text-decoration: none !important;
+    font-size: 14px !important;
+    transition: all 0.2s !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+}
+.store-card__messenger:hover {
+    background: #A03611 !important;
+    color: #fff !important;
+}
+.store-card__contacts {
+    display: flex !important;
+    gap: 12px !important;
+    flex-wrap: wrap !important;
+    margin-top: 16px !important;
+}
+.store-card__map {
+    grid-column: 1 / -1 !important;
+    border-radius: 8px !important;
+    overflow: hidden !important;
+}
+.store-card__map iframe {
+    display: block !important;
+}
+.store-card__phones {
+    margin-bottom: 8px !important;
+}
+.store-card__phones a {
+    display: block !important;
+    color: #252916 !important;
+    text-decoration: none !important;
+    font-size: 15px !important;
+    margin-bottom: 4px !important;
+}
+.store-card__phones a:hover {
+    color: #A03611 !important;
+}
+
+/* Swiper в карточках магазинов */
+.store-swiper {
+    border-radius: 8px !important;
+    overflow: hidden !important;
+}
+.store-swiper .swiper-slide img {
+    width: 100% !important;
+    max-width: 100% !important;
+    max-height: 280px !important;
+    object-fit: cover !important;
+}
+.store-swiper .swiper-button-next,
+.store-swiper .swiper-button-prev {
+    color: #A03611 !important;
+}
+.store-swiper .swiper-pagination-bullet-active {
+    background: #A03611 !important;
+}
+
+/* Табы торговых представителей */
+.reps-tabs {
+    display: flex !important;
+    gap: 0 !important;
+    margin-bottom: 30px !important;
+    border-bottom: 2px solid #e8e8e8 !important;
+}
+.reps-tabs__btn {
+    padding: 12px 30px !important;
+    background: none !important;
+    border: none !important;
+    border-bottom: 3px solid transparent !important;
+    font-family: 'Bebas Neue', sans-serif !important;
+    font-size: 20px !important;
+    color: #807f81 !important;
+    cursor: pointer !important;
+    transition: all 0.2s !important;
+    margin-bottom: -2px !important;
+}
+.reps-tabs__btn.active {
+    color: #A03611 !important;
+    border-bottom-color: #A03611 !important;
+}
+.reps-city { display: none !important; }
+.reps-city.active { display: block !important; }
+
+/* Анимация появления при скролле */
+[data-animate] {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+[data-animate].animated {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* С8: Mobile */
+@media (max-width: 768px) {
+    .store-card {
+        grid-template-columns: 1fr !important;
+        padding: 20px !important;
+    }
+    .store-card__name {
+        font-size: 24px !important;
+    }
+    .reps-tabs__btn {
+        padding: 10px 20px !important;
+        font-size: 18px !important;
+    }
+}
+
+/* ========== Cookie consent banner ========== */
+.cookie-banner {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #1a1a1a;
+    color: #fff;
+    padding: 16px 20px;
+    z-index: 9999;
+    font-size: 14px;
+    line-height: 1.5;
+}
+.cookie-banner a {
+    color: #c9c160;
+    text-decoration: underline;
+}
+.cookie-banner__content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+.cookie-banner__content p {
+    margin: 0;
+}
+.cookie-banner__btn {
+    background: #898121;
+    color: #fff;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 6px;
+    cursor: pointer;
+    white-space: nowrap;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 16px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: background 0.2s;
+}
+.cookie-banner__btn:hover {
+    background: #a39a28;
+}
+@media (max-width: 768px) {
+    .cookie-banner__content {
+        flex-direction: column;
+        text-align: center;
+    }
+}
+
+/* ========== Messenger bar (mobile TG/Max) ========== */
+.messenger-bar {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #1a1a1a;
+    padding: 12px 16px;
+    z-index: 9998;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+}
+.messenger-bar__link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #fff;
+    text-decoration: none;
+    font-size: 15px;
+    font-family: 'Bebas Neue', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+.messenger-bar__link svg {
+    width: 22px;
+    height: 22px;
+    flex-shrink: 0;
+}
+.messenger-bar__close {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #888;
+    font-size: 22px;
+    cursor: pointer;
+    line-height: 1;
+    padding: 4px;
+}
+.messenger-bar__close:hover {
+    color: #fff;
+}
+@media (max-width: 768px) {
+    .messenger-bar {
+        display: flex;
+    }
 }
 
