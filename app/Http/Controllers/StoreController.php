@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CatalogBanner;
 use App\Models\Category;
 use App\Models\Page;
 use App\Models\Post;
@@ -78,12 +79,20 @@ class StoreController extends Controller
             ->orderBy('sort_order')
             ->get();
 
+        $banners = CatalogBanner::active()
+            ->forCategory(null)
+            ->orderBy('position')
+            ->orderBy('sort_order')
+            ->get()
+            ->groupBy('position');
+
         return view('store.shop', [
             'products' => $products,
             'attributes' => $attributes,
             'categories' => $categories,
             'category' => null,
             'title' => 'Каталог',
+            'bannersByPosition' => $banners,
         ]);
     }
 
@@ -136,6 +145,13 @@ class StoreController extends Controller
             ->orderBy('sort_order')
             ->get();
 
+        $banners = CatalogBanner::active()
+            ->forCategory($category->id)
+            ->orderBy('position')
+            ->orderBy('sort_order')
+            ->get()
+            ->groupBy('position');
+
         return view('store.shop', [
             'products' => $products,
             'attributes' => $attributes,
@@ -143,6 +159,7 @@ class StoreController extends Controller
             'subcategories' => $subcategories,
             'category' => $category,
             'title' => $category->name,
+            'bannersByPosition' => $banners,
         ]);
     }
 
@@ -157,6 +174,7 @@ class StoreController extends Controller
                 'specifications',
                 'variants' => fn ($q) => $q->active(),
                 'variants.attributeValues.attribute',
+                'stores' => fn ($q) => $q->where('is_active', true)->orderBy('sort_order'),
             ])
             ->firstOrFail();
 
@@ -200,6 +218,11 @@ class StoreController extends Controller
     public function contacts(): View
     {
         return view('store.contacts');
+    }
+
+    public function privacyPolicy(): View
+    {
+        return view('store.privacy-policy');
     }
 
     public function staticPage(string $slug): View

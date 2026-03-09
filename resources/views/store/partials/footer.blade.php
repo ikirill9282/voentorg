@@ -20,7 +20,7 @@
                 <a href="{{ route('page.contacts') }}" class="footer__col-item">
                     <span class="footer__col-text">Контакты</span>
                 </a>
-                <a href="{{ route('page.policy') }}" class="footer__col-item">
+                <a href="{{ route('page.privacy-policy') }}" class="footer__col-item">
                     <span class="footer__col-text">Политика конфиденциальности</span>
                 </a>
                 <a href="{{ route('page.kak-sdelat-zakaz') }}" class="footer__col-item">
@@ -232,7 +232,7 @@
                     <a href="{{ route('store.home') }}#about">О нас</a>
                     <a href="{{ route('blog.index') }}">Наш блог</a>
                     <a href="{{ route('page.contacts') }}">Контакты</a>
-                    <a href="{{ route('page.policy') }}">Политика конфиденциальности</a>
+                    <a href="{{ route('page.privacy-policy') }}">Политика конфиденциальности</a>
                     <a href="{{ route('page.kak-sdelat-zakaz') }}">Как сделать заказ</a>
                     <a href="{{ route('page.pravila-torgovli') }}">Правила торговли</a>
                     <a href="{{ route('page.sposob-dostavki') }}">Способы доставки</a>

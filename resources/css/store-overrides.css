@@ -583,14 +583,14 @@ main {
     position: static;
 }
 
-/* --- Catalog dropdown (white, full-width, 33vh) --- */
+/* --- Catalog dropdown (white, full-width) --- */
 .header__catalog-dropdown {
     display: none;
     position: fixed;
     top: 70px;
     left: 0;
     width: 100%;
-    max-height: 33vh;
+    max-height: 80vh;
     background: #fff;
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.10);
     z-index: 999;
@@ -876,7 +876,7 @@ main {
     /* Catalog dropdown: full screen on mobile */
     .header__catalog-dropdown {
         top: 56px;
-        max-height: 60vh;
+        max-height: 80vh;
     }
 }
 
@@ -1649,6 +1649,20 @@ a.blog-section__card .blog-section__card-info {
 
 .catalog__card--has-children {
     cursor: pointer !important;
+}
+
+/* Карточка без изображения — плейсхолдер */
+.catalog__card--no-img {
+    background: #343A1D !important;
+    min-height: 220px;
+    display: flex !important;
+    align-items: flex-end !important;
+    justify-content: flex-start !important;
+}
+.catalog__card--no-img h5 {
+    position: static !important;
+    color: #fff !important;
+    padding: 15px 20px !important;
 }
 
 .catalog__card--viewall {
@@ -2562,6 +2576,305 @@ a.blog-section__card .blog-section__card-info {
 @media (max-width: 768px) {
     .messenger-bar {
         display: flex;
+    }
+}
+
+/* ============================================================
+   CHECKOUT — Delivery blocks (C6)
+   ============================================================ */
+.delivery-block {
+    margin-top: 15px;
+    margin-bottom: 20px;
+}
+
+.delivery-operator-note {
+    color: #666;
+    font-size: 14px;
+    font-style: italic;
+    margin-top: 8px;
+}
+
+/* Pickup store cards */
+.pickup-stores {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.pickup-store-card {
+    display: block;
+    cursor: pointer;
+}
+
+.pickup-store-card input[type="radio"] {
+    display: none;
+}
+
+.pickup-store-card__inner {
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 15px 20px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.pickup-store-card input[type="radio"]:checked + .pickup-store-card__inner {
+    border-color: #A09234;
+    box-shadow: 0 0 0 1px #A09234;
+}
+
+.pickup-store-card__name {
+    font-weight: 600;
+    font-size: 16px;
+    margin-bottom: 4px;
+}
+
+.pickup-store-card__address {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 2px;
+}
+
+.pickup-store-card__phone {
+    font-size: 13px;
+    color: #888;
+    margin-bottom: 6px;
+}
+
+.pickup-store-card__availability {
+    margin-top: 8px;
+    font-size: 13px;
+}
+
+.pickup-stock--yes {
+    color: #27ae60;
+    font-weight: 500;
+}
+
+.pickup-stock--partial {
+    color: #e67e22;
+    font-weight: 500;
+}
+
+.pickup-stock-list {
+    list-style: none;
+    padding: 0;
+    margin: 6px 0 0;
+}
+
+.pickup-stock-item {
+    font-size: 13px;
+    padding: 2px 0;
+}
+
+.pickup-stock-item--yes {
+    color: #27ae60;
+}
+
+.pickup-stock-item--no {
+    color: #e74c3c;
+}
+
+.pickup-payment-options {
+    margin-bottom: 20px;
+}
+
+.pickup-note {
+    font-size: 13px;
+    color: #888;
+    margin-top: 8px;
+    font-style: italic;
+}
+
+/* Yandex estimate */
+.yandex-estimate-result {
+    margin-top: 10px;
+    padding: 10px 15px;
+    background: #f7f7f6;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+.yandex-price {
+    font-weight: 600;
+    color: #27ae60;
+}
+
+/* Delivery cost in sidebar */
+.delivery-cost-line {
+    margin-top: 0;
+}
+
+/* Moscow extra fields */
+.moscow-extra-fields {
+    margin-top: 10px;
+}
+
+/* ========== Privacy Policy Page ========== */
+.privacy {
+    padding: 40px 0 80px !important;
+}
+.privacy__title {
+    font-family: 'Bebas Neue', sans-serif !important;
+    font-size: 42px !important;
+    color: #252916 !important;
+    margin-bottom: 8px !important;
+    text-align: center !important;
+}
+.privacy__updated {
+    text-align: center !important;
+    color: #898121 !important;
+    font-size: 14px !important;
+    margin-bottom: 40px !important;
+    letter-spacing: 0.5px !important;
+}
+.privacy__content {
+    max-width: 860px !important;
+    margin: 0 auto !important;
+}
+.privacy__section {
+    position: relative !important;
+    background: #fff !important;
+    border-radius: 12px !important;
+    padding: 30px 30px 30px 70px !important;
+    margin-bottom: 20px !important;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.04) !important;
+    border-left: 4px solid #A03611 !important;
+    transition: transform 0.2s, box-shadow 0.2s !important;
+}
+.privacy__section:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.08) !important;
+}
+.privacy__section--legal {
+    background: #f8f7f5 !important;
+    border-left-color: #898121 !important;
+}
+.privacy__section-icon {
+    position: absolute !important;
+    left: 24px !important;
+    top: 32px !important;
+}
+.privacy__heading {
+    font-family: 'Bebas Neue', sans-serif !important;
+    font-size: 24px !important;
+    color: #252916 !important;
+    margin-bottom: 14px !important;
+    letter-spacing: 0.5px !important;
+}
+.privacy__section p {
+    color: #404141 !important;
+    font-size: 15px !important;
+    line-height: 1.7 !important;
+    margin-bottom: 12px !important;
+}
+.privacy__list {
+    list-style: none !important;
+    padding: 0 !important;
+    margin: 12px 0 !important;
+}
+.privacy__list li {
+    position: relative !important;
+    padding-left: 20px !important;
+    margin-bottom: 10px !important;
+    color: #404141 !important;
+    font-size: 15px !important;
+    line-height: 1.6 !important;
+}
+.privacy__list li::before {
+    content: '' !important;
+    position: absolute !important;
+    left: 0 !important;
+    top: 9px !important;
+    width: 8px !important;
+    height: 8px !important;
+    background: #A03611 !important;
+    border-radius: 50% !important;
+}
+.privacy__highlight {
+    background: #f0ede8 !important;
+    border-radius: 8px !important;
+    padding: 20px !important;
+    margin: 16px 0 !important;
+    border-left: 3px solid #898121 !important;
+}
+.privacy__highlight p {
+    margin-bottom: 0 !important;
+    color: #333 !important;
+}
+/* Cookie cards */
+.privacy__cookies-grid {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 16px !important;
+    margin: 20px 0 !important;
+}
+.privacy__cookie-card {
+    background: #f8f7f5 !important;
+    border-radius: 8px !important;
+    padding: 20px !important;
+    text-align: center !important;
+}
+.privacy__cookie-card h4 {
+    font-family: 'Bebas Neue', sans-serif !important;
+    font-size: 18px !important;
+    color: #A03611 !important;
+    margin-bottom: 8px !important;
+}
+.privacy__cookie-card p {
+    font-size: 13px !important;
+    color: #666 !important;
+    margin-bottom: 0 !important;
+}
+/* Contact card */
+.privacy__contact-card {
+    background: #252916 !important;
+    border-radius: 10px !important;
+    padding: 24px 28px !important;
+    margin-top: 16px !important;
+}
+.privacy__contact-row {
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+    margin-bottom: 12px !important;
+}
+.privacy__contact-row:last-child {
+    margin-bottom: 0 !important;
+}
+.privacy__contact-label {
+    color: #898121 !important;
+    font-size: 14px !important;
+    min-width: 80px !important;
+    font-weight: bold !important;
+}
+.privacy__contact-value {
+    color: #fff !important;
+    font-size: 15px !important;
+    text-decoration: none !important;
+}
+a.privacy__contact-value:hover {
+    color: #c9c160 !important;
+}
+/* Mobile */
+@media (max-width: 768px) {
+    .privacy__title {
+        font-size: 32px !important;
+    }
+    .privacy__section {
+        padding: 24px 20px 24px 20px !important;
+    }
+    .privacy__section-icon {
+        position: static !important;
+        margin-bottom: 12px !important;
+    }
+    .privacy__cookies-grid {
+        grid-template-columns: 1fr !important;
+    }
+    .privacy__contact-row {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 4px !important;
     }
 }
 

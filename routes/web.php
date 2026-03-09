@@ -21,6 +21,7 @@ Route::get('/blog/{slug}', [StoreController::class, 'blogShow'])->name('blog.sho
 Route::get('/contacts', [StoreController::class, 'contacts'])->name('page.contacts');
 Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
 
+Route::get('/page/privacy-policy', [StoreController::class, 'privacyPolicy'])->name('page.privacy-policy');
 Route::get('/policy', [StoreController::class, 'staticPage'])->defaults('slug', 'policy')->name('page.policy');
 Route::get('/pravila-torgovli', [StoreController::class, 'staticPage'])->defaults('slug', 'pravila-torgovli')->name('page.pravila-torgovli');
 Route::get('/sposob-dostavki', [StoreController::class, 'staticPage'])->defaults('slug', 'sposob-dostavki')->name('page.sposob-dostavki');
@@ -40,8 +41,11 @@ Route::get('/checkout', [CheckoutController::class, 'create'])->name('checkout.c
 Route::post('/checkout/orders', [CheckoutController::class, 'store'])->name('checkout.store');
 
 Route::get('/api/products/{product}/variants', [ProductVariantController::class, 'show'])->name('api.product.variants');
+Route::get('/api/products/{product}/variants/available', [ProductVariantController::class, 'available'])->name('api.product.variants.available');
 Route::match(['get', 'post'], '/api/cdek/token', [CdekController::class, 'token'])->name('api.cdek.token');
 Route::match(['get', 'post'], '/api/cdek/{endpoint}', [CdekController::class, 'proxy'])->where('endpoint', '.*')->name('api.cdek.proxy');
+Route::get('/api/stores/{store}/cart-availability', [CheckoutController::class, 'storeAvailability'])->name('api.store.availability');
+Route::post('/api/yandex-delivery/estimate', [CheckoutController::class, 'yandexEstimate'])->name('api.yandex.estimate');
 
 Route::get('/dashboard', fn () => redirect()->route('account.dashboard'))
     ->middleware('auth')
