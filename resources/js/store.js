@@ -4,14 +4,44 @@
  */
 
 import Swiper from 'swiper';
-import { Navigation, Thumbs, Pagination } from 'swiper/modules';
+import { Autoplay, EffectFade, Navigation, Thumbs, Pagination } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/thumbs';
 import 'swiper/css/pagination';
+import 'swiper/css/effect-fade';
 
 import { Fancybox } from '@fancyapps/ui';
 import '@fancyapps/ui/dist/fancybox/fancybox.css';
+
+/* ---------- Header hide/show on scroll ---------- */
+(function () {
+    const header = document.querySelector('.header');
+    if (!header) return;
+
+    let lastScrollY = window.scrollY;
+    let scrollTimer = null;
+
+    window.addEventListener('scroll', function () {
+        const currentScrollY = window.scrollY;
+
+        if (currentScrollY > lastScrollY && currentScrollY > 80) {
+            // Scrolling down — hide
+            header.classList.add('header--hidden');
+        } else {
+            // Scrolling up — show
+            header.classList.remove('header--hidden');
+        }
+
+        lastScrollY = currentScrollY;
+
+        // Show header when scroll stops
+        clearTimeout(scrollTimer);
+        scrollTimer = setTimeout(function () {
+            header.classList.remove('header--hidden');
+        }, 300);
+    });
+})();
 
 /* ---------- FancyBox Init ---------- */
 Fancybox.bind('[data-fancybox]', {
@@ -973,11 +1003,78 @@ function resolveCardVariant(card) {
     }
 }
 
+/* ---------- Hero carousel ---------- */
+document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.js-hero-carousel').forEach(el => {
+        const nextEl = el.querySelector('.top-carousel__arrow--next');
+        const prevEl = el.querySelector('.top-carousel__arrow--prev');
+        const paginationEl = el.querySelector('.top-carousel__pagination');
+        let manualInteraction = false;
+
+        const markManualInteraction = () => {
+            manualInteraction = true;
+        };
+
+        nextEl?.addEventListener('click', markManualInteraction);
+        prevEl?.addEventListener('click', markManualInteraction);
+        paginationEl?.addEventListener('click', markManualInteraction);
+        el.addEventListener('pointerdown', markManualInteraction, { passive: true });
+        el.addEventListener('touchstart', markManualInteraction, { passive: true });
+
+        const swiper = new Swiper(el, {
+            modules: [Autoplay, EffectFade, Navigation, Pagination],
+            slidesPerView: 1,
+            loop: true,
+            speed: 900,
+            effect: 'fade',
+            fadeEffect: {
+                crossFade: true,
+            },
+            autoplay: {
+                delay: 7000,
+                disableOnInteraction: false,
+                waitForTransition: true,
+            },
+            navigation: {
+                nextEl,
+                prevEl,
+            },
+            pagination: {
+                el: paginationEl,
+                clickable: true,
+            },
+            on: {
+                slideChangeTransitionEnd(instance) {
+                    if (!manualInteraction) return;
+
+                    instance.autoplay.stop();
+                    instance.autoplay.start();
+                    manualInteraction = false;
+                },
+            },
+        });
+
+        el.addEventListener('keydown', event => {
+            if (event.key === 'ArrowLeft') {
+                event.preventDefault();
+                manualInteraction = true;
+                swiper.slidePrev();
+            }
+
+            if (event.key === 'ArrowRight') {
+                event.preventDefault();
+                manualInteraction = true;
+                swiper.slideNext();
+            }
+        });
+    });
+});
+
 /* ---------- Catalog banner Swipers ---------- */
 document.addEventListener('DOMContentLoaded', function () {
     document.querySelectorAll('.catalog-banner__swiper').forEach(el => {
         new Swiper(el, {
-            modules: [Pagination],
+            modules: [Autoplay, Pagination],
             slidesPerView: 1,
             spaceBetween: 0,
             loop: true,
@@ -1010,20 +1107,139 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
-/* ---------- Cookie consent banner ---------- */
-document.addEventListener('DOMContentLoaded', function () {
-    const banner = document.getElementById('cookieBanner');
-    const btn = document.getElementById('cookieAccept');
-    if (!banner || document.cookie.includes('cookies_accepted=1')) {
-        banner?.remove();
-        return;
+/* ---------- Cookie consent banner + modal ---------- */
+(function () {
+    var COOKIE_NAME = 'cookie_consent';
+    var MAX_AGE = 365 * 24 * 60 * 60;
+
+    function getConsent() {
+        var match = document.cookie.match(new RegExp('(?:^|; )' + COOKIE_NAME + '=([^;]*)'));
+        if (!match) return null;
+        try { return JSON.parse(decodeURIComponent(match[1])); } catch (e) { return null; }
     }
-    banner.style.display = '';
-    btn?.addEventListener('click', function () {
-        document.cookie = 'cookies_accepted=1; path=/; max-age=' + (365 * 24 * 60 * 60);
-        banner.remove();
+
+    function saveConsent(prefs) {
+        var val = encodeURIComponent(JSON.stringify(prefs));
+        document.cookie = COOKIE_NAME + '=' + val + '; path=/; max-age=' + MAX_AGE;
+    }
+
+    function hideBanner() {
+        var banner = document.getElementById('cookieBanner');
+        if (banner) banner.style.display = 'none';
+    }
+
+    function showModal() {
+        var modal = document.getElementById('cookieModal');
+        if (!modal) return;
+        var consent = getConsent();
+        if (consent) {
+            var a = document.getElementById('cookieAnalytics');
+            var f = document.getElementById('cookieFunctional');
+            if (a) a.checked = !!consent.analytics;
+            if (f) f.checked = !!consent.functional;
+        }
+        modal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    }
+
+    function hideModal() {
+        var modal = document.getElementById('cookieModal');
+        if (modal) modal.style.display = 'none';
+        document.body.style.overflow = '';
+    }
+
+    window.cookieAllowed = function (category) {
+        var consent = getConsent();
+        if (!consent) return false;
+        if (category === 'essential') return true;
+        return !!consent[category];
+    };
+
+    window.openCookieSettings = function () {
+        showModal();
+    };
+
+    document.addEventListener('DOMContentLoaded', function () {
+        var banner = document.getElementById('cookieBanner');
+        var consent = getConsent();
+
+        // Also support old cookie format migration
+        if (!consent && document.cookie.includes('cookies_accepted=1')) {
+            consent = { essential: true, analytics: true, functional: true };
+            saveConsent(consent);
+        }
+
+        if (consent) {
+            if (banner) banner.remove();
+        } else if (banner) {
+            banner.style.display = '';
+        }
+
+        // Accept all
+        var acceptBtn = document.getElementById('cookieAccept');
+        if (acceptBtn) {
+            acceptBtn.addEventListener('click', function () {
+                saveConsent({ essential: true, analytics: true, functional: true });
+                hideBanner();
+                if (banner) banner.remove();
+            });
+        }
+
+        // Reject all (only essential)
+        var rejectBtn = document.getElementById('cookieReject');
+        if (rejectBtn) {
+            rejectBtn.addEventListener('click', function () {
+                saveConsent({ essential: true, analytics: false, functional: false });
+                hideBanner();
+                if (banner) banner.remove();
+            });
+        }
+
+        // Open settings modal
+        var manageBtn = document.getElementById('cookieManage');
+        if (manageBtn) {
+            manageBtn.addEventListener('click', function () {
+                showModal();
+            });
+        }
+
+        // Save preferences from modal
+        var saveBtn = document.getElementById('cookieSavePrefs');
+        if (saveBtn) {
+            saveBtn.addEventListener('click', function () {
+                var a = document.getElementById('cookieAnalytics');
+                var f = document.getElementById('cookieFunctional');
+                saveConsent({
+                    essential: true,
+                    analytics: a ? a.checked : false,
+                    functional: f ? f.checked : false
+                });
+                hideModal();
+                hideBanner();
+                if (banner) banner.remove();
+            });
+        }
+
+        // Close modal
+        var closeBtn = document.getElementById('cookieModalClose');
+        if (closeBtn) {
+            closeBtn.addEventListener('click', hideModal);
+        }
+
+        var overlay = document.querySelector('.cookie-modal__overlay');
+        if (overlay) {
+            overlay.addEventListener('click', hideModal);
+        }
+
+        // Footer "manage cookies" links
+        document.querySelectorAll('[data-cookie-settings]').forEach(function (el) {
+            el.addEventListener('click', function (e) {
+                e.preventDefault();
+                showModal();
+            });
+        });
     });
-});
+})();
 
 /* ---------- Messenger bar (TG/Max) ---------- */
 document.addEventListener('DOMContentLoaded', function () {
@@ -1087,5 +1303,32 @@ document.addEventListener('DOMContentLoaded', function () {
             },
         });
     });
-});
 
+    // Benefits desktop slider
+    if (document.querySelector('.benefits__slider')) {
+        new Swiper('.benefits__slider', {
+            modules: [Autoplay],
+            slidesPerView: 1,
+            spaceBetween: 10,
+            loop: true,
+            autoplay: {
+                delay: 3000,
+                disableOnInteraction: false,
+            },
+        });
+    }
+
+    // Benefits mobile slider
+    if (document.querySelector('.benefits__info-photo-mobile')) {
+        new Swiper('.benefits__info-photo-mobile', {
+            modules: [Autoplay],
+            slidesPerView: 1,
+            spaceBetween: 10,
+            loop: true,
+            autoplay: {
+                delay: 3000,
+                disableOnInteraction: false,
+            },
+        });
+    }
+});

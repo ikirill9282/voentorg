@@ -14,31 +14,42 @@ use Illuminate\View\View;
 
 class RegisteredUserController extends Controller
 {
-    /**
-     * Display the registration view.
-     */
     public function create(): View
     {
         return view('auth.register');
     }
 
-    /**
-     * Handle an incoming registration request.
-     *
-     * @throws \Illuminate\Validation\ValidationException
-     */
     public function store(Request $request): RedirectResponse
     {
-        $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
+        $validated = $request->validate([
+            'last_name' => ['required', 'string', 'max:255'],
+            'first_name' => ['required', 'string', 'max:255'],
+            'patronymic' => ['nullable', 'string', 'max:255'],
+            'callsign' => ['nullable', 'string', 'max:255'],
+            'birthday' => ['nullable', 'date', 'before:today'],
+            'telegram_username' => ['nullable', 'string', 'max:255', 'unique:users,telegram_username'],
+            'email' => ['nullable', 'string', 'lowercase', 'email', 'max:255', 'unique:users,email'],
+            'phone' => ['required', 'string', 'max:80', 'unique:users,phone'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
+        // Normalize telegram username — strip @ if provided
+        $telegram = $validated['telegram_username'] ?? null;
+        if ($telegram) {
+            $telegram = ltrim($telegram, '@');
+        }
+
         $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
+            'name' => trim($validated['first_name'] . ' ' . $validated['last_name']),
+            'first_name' => $validated['first_name'],
+            'last_name' => $validated['last_name'],
+            'patronymic' => $validated['patronymic'] ?? null,
+            'callsign' => $validated['callsign'] ?? null,
+            'birthday' => $validated['birthday'] ?? null,
+            'telegram_username' => $telegram,
+            'email' => $validated['email'] ?? null,
+            'phone' => $validated['phone'],
+            'password' => Hash::make($validated['password']),
         ]);
 
         event(new Registered($user));

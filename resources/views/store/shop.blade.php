@@ -1,10 +1,40 @@
-@extends('layouts.store', ['title' => $title ?? 'Каталог', 'mainClass' => 'catalog-filter'])
+@extends('layouts.store', ['title' => $title ?? 'Каталог', 'mainClass' => 'shop catalog-filter'])
 
 @section('content')
     @include('store.partials.breadcrumbs', ['breadcrumbs' => $category
         ? [['title' => 'Каталог', 'url' => route('shop.index')], ['title' => $category->name]]
         : [['title' => 'Каталог']],
     ])
+
+    @if (!$category && $categories->isNotEmpty())
+        @php
+            $regularCategories = $categories->where('slug', '!=', 'strazh-edtition');
+            $strazhCategory = $categories->firstWhere('slug', 'strazh-edtition');
+        @endphp
+        <div class="container categories">
+            @foreach ($regularCategories as $cat)
+                <a href="{{ route('shop.category', $cat->slug) }}"
+                   @if ($cat->image) style="background-image: url('{{ asset($cat->image) }}'); background-repeat: no-repeat;" @endif>
+                    <div class="category" id="category-{{ $loop->iteration }}">
+                        <div class="cat_title">
+                            <p>{{ $cat->name }}</p>
+                        </div>
+                    </div>
+                </a>
+            @endforeach
+
+            @if ($strazhCategory)
+                <a class="full-width-category" href="{{ route('shop.category', $strazhCategory->slug) }}"
+                   @if ($strazhCategory->image) style="background-image: url('{{ asset($strazhCategory->image) }}'); background-repeat: no-repeat;" @endif>
+                    <div class="category" id="category-10">
+                        <div class="cat_title">
+                            <p>{{ $strazhCategory->name }}</p>
+                        </div>
+                    </div>
+                </a>
+            @endif
+        </div>
+    @endif
 
     <div class="container">
         {{-- Sort dropdown --}}
@@ -91,14 +121,15 @@
             <p style="text-align:center;padding:40px;color:#807f81;">Товары не найдены.</p>
         @endif
 
-        {{-- RuTube banner --}}
-        <div class="section-footer-banner">
-            <div class="section-footer-banner__content">
-                <h3 class="section-footer-banner__title">Смотрите наши обзоры</h3>
-                <p class="section-footer-banner__subtitle">Обзоры, тесты и рекомендации по экипировке</p>
-                <div class="section-footer-banner__links">
-                    <a href="https://rutube.ru/" class="section-footer-banner__link" target="_blank" rel="noopener">RuTube</a>
-                </div>
+    </div>
+
+    {{-- RuTube banner (full width) --}}
+    <div class="section-footer-banner">
+        <div class="section-footer-banner__content">
+            <h3 class="section-footer-banner__title">Смотрите наши обзоры</h3>
+            <p class="section-footer-banner__subtitle">Обзоры, тесты и рекомендации по экипировке</p>
+            <div class="section-footer-banner__links">
+                <a href="https://rutube.ru/" class="section-footer-banner__link" target="_blank" rel="noopener">RuTube</a>
             </div>
         </div>
     </div>

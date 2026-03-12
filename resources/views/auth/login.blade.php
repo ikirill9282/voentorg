@@ -18,12 +18,13 @@
                     @csrf
                     <div class="auth-page__fields">
                         <div class="auth-page__field">
-                            <label for="email" class="auth-page__label">Email</label>
-                            <input type="email" id="email" name="email"
-                                   value="{{ old('email') }}"
-                                   class="auth-page__input {{ $errors->has('email') ? 'auth-page__input--error' : '' }}"
-                                   required autofocus autocomplete="username">
-                            @error('email')
+                            <label for="login" class="auth-page__label">Телефон, Telegram или Email</label>
+                            <input type="text" id="login" name="login"
+                                   value="{{ old('login') }}"
+                                   class="auth-page__input {{ $errors->has('login') ? 'auth-page__input--error' : '' }}"
+                                   required autofocus autocomplete="username"
+                                   placeholder="+7... / @telegram / email">
+                            @error('login')
                                 <span class="auth-page__error">{{ $message }}</span>
                             @enderror
                         </div>

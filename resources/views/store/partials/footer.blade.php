@@ -35,6 +35,9 @@
                 <a href="{{ route('page.sposoby-oplaty') }}" class="footer__col-item">
                     <span class="footer__col-text">Способы оплаты</span>
                 </a>
+                <a href="#" class="footer__col-item" data-cookie-settings>
+                    <span class="footer__col-text">Настроить cookie</span>
+                </a>
             </div>
             <div class="footer__col">
                 <h5>Документация</h5>
@@ -49,7 +52,7 @@
                         </svg>
                     </span>
                 </a>
-                <a href="/" class="footer__col-item">
+                <a href="{{ asset('wp-theme/colchuga.pdf') }}" class="footer__col-item" target="_blank">
                     <span class="footer__col-text">Сертификат</span>
                     <span class="footer__col-icon">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 17 17" fill="none">
@@ -237,6 +240,7 @@
                     <a href="{{ route('page.pravila-torgovli') }}">Правила торговли</a>
                     <a href="{{ route('page.sposob-dostavki') }}">Способы доставки</a>
                     <a href="{{ route('page.sposoby-oplaty') }}">Способы оплаты</a>
+                    <a href="#" data-cookie-settings>Настроить cookie</a>
                 </div>
             </div>
             <div class="accordion-item">
@@ -262,7 +266,7 @@
                 <div class="accordion-item__list">
                     <a href="#" class="form-btn" data-modal="contact">Запрос</a>
                     <a href="{{ asset('wp-theme/catalog25.pdf') }}">Номенклатура продукции</a>
-                    <a href="#">Сертификат</a>
+                    <a href="{{ asset('wp-theme/colchuga.pdf') }}" target="_blank">Сертификат</a>
                 </div>
             </div>
         </div>

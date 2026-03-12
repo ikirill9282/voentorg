@@ -1,16 +1,24 @@
 <header class="header">
     <div class="container">
         <section class="header__main">
-            {{-- Mobile burger (left) --}}
-            <div class="header__burger">
-                <svg width="20" height="14" viewBox="0 0 16 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M0 1.5H16M0 7.23913H16M0 12.5H8" stroke="#898121" stroke-width="2"></path>
-                </svg>
-            </div>
+            {{-- Mobile: back button on category pages, burger on other pages --}}
+            @if (request()->routeIs('shop.category', 'shop.product'))
+                <a href="{{ url()->previous() }}" class="header__back">
+                    <svg width="20" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="#898121" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </a>
+            @else
+                <div class="header__burger">
+                    <svg width="20" height="14" viewBox="0 0 16 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M0 1.5H16M0 7.23913H16M0 12.5H8" stroke="#898121" stroke-width="2"></path>
+                    </svg>
+                </div>
+            @endif
 
             {{-- Logo --}}
             <a href="/" class="header__logo">
-                <img width="134" height="36" src="{{ asset('wp-theme/images/logo-1.svg') }}" alt="Кольчуга">
+                <img width="114" height="30" src="{{ asset('wp-theme/images/logo-1.svg') }}" alt="Кольчуга">
             </a>
 
             {{-- Desktop navigation --}}
@@ -36,9 +44,6 @@
                 </div>
                 <a href="{{ route('blog.index') }}" class="header__nav-link">Новости</a>
                 <a href="{{ route('page.contacts') }}" class="header__nav-link">Контакты и магазины</a>
-                <a href="{{ Auth::check() ? route('account.dashboard') : route('login') }}" class="header__nav-link">
-                    {{ Auth::check() ? 'Личный кабинет' : 'Войти' }}
-                </a>
             </nav>
 
             {{-- Desktop right: socials + contacts + cart + search --}}

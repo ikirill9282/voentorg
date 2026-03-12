@@ -11,9 +11,14 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"></noscript>
 
     @vite(['resources/css/store.css', 'resources/css/store-overrides.css', 'resources/js/store.js'])
+    @if (config('services.yandex_captcha.client_key'))
+        <script src="https://smartcaptcha.yandexcloud.net/captcha.js" defer></script>
+    @endif
 </head>
 <body>
     {{-- Mobile burger menu panel (70% width, white, accordion) — outside .wrapper so it stays in place --}}
@@ -73,12 +78,6 @@
                             <a href="{{ route('page.contacts') }}" class="burger-menu__link">Контакты и магазины</a>
                         </div>
                     </li>
-                    <li class="burger-menu__item">
-                        <div class="burger-menu__item-row">
-                            <a href="{{ Auth::check() ? route('account.dashboard') : route('login') }}" class="burger-menu__link">{{ Auth::check() ? 'Личный кабинет' : 'Войти' }}</a>
-                        </div>
-                    </li>
-
                     {{-- Разделитель --}}
                     <li class="burger-menu__separator"></li>
 
@@ -180,6 +179,8 @@
     </div>
 
     <div id="toast-container"></div>
+    @include('store.partials.cookie-banner')
+    @include('store.partials.messenger-bar')
     @stack('scripts')
 </body>
 </html>

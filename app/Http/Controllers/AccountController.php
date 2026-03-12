@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
 use App\Models\Order;
+use App\Models\UserAddress;
+use App\Services\BonusService;
+use App\Services\QrCodeService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,6 +16,12 @@ use Illuminate\View\View;
 
 class AccountController extends Controller
 {
+    public function __construct(
+        private readonly BonusService $bonusService,
+        private readonly QrCodeService $qrCodeService,
+    ) {
+    }
+
     public function dashboard(Request $request): View
     {
         $user = $request->user();
@@ -28,7 +37,11 @@ class AccountController extends Controller
             'completed' => $user->orders()->where('status', Order::STATUS_COMPLETED)->count(),
         ];
 
-        return view('store.account.dashboard', compact('user', 'recentOrders', 'orderStats'));
+        $qrCode = $this->qrCodeService->generateForUser($user);
+
+        $nextTierThreshold = $this->bonusService->nextTierThreshold((int) $user->loyalty_tier);
+
+        return view('store.account.dashboard', compact('user', 'recentOrders', 'orderStats', 'qrCode', 'nextTierThreshold'));
     }
 
     public function orders(Request $request): View
@@ -61,13 +74,19 @@ class AccountController extends Controller
 
     public function updateProfile(ProfileUpdateRequest $request): RedirectResponse
     {
-        $request->user()->fill($request->validated());
+        $user = $request->user();
+        $validated = $request->validated();
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
+        // Auto-fill name for backward compatibility
+        $validated['name'] = trim(($validated['first_name'] ?? '') . ' ' . ($validated['last_name'] ?? ''));
+
+        $user->fill($validated);
+
+        if ($user->isDirty('email')) {
+            $user->email_verified_at = null;
         }
 
-        $request->user()->save();
+        $user->save();
 
         return redirect()->route('account.settings')->with('success', 'Профиль обновлён.');
     }
@@ -99,5 +118,87 @@ class AccountController extends Controller
         $request->session()->regenerateToken();
 
         return redirect('/');
+    }
+
+    // ==================== Addresses ====================
+
+    public function addresses(Request $request): View
+    {
+        $addresses = $request->user()->addresses()->with('shippingMethod')->get();
+        $shippingMethods = \App\Models\ShippingMethod::query()->active()->orderBy('sort_order')->get();
+
+        return view('store.account.addresses', compact('addresses', 'shippingMethods'));
+    }
+
+    public function storeAddress(Request $request): RedirectResponse
+    {
+        $user = $request->user();
+
+        if ($user->addresses()->count() >= 3) {
+            return redirect()->route('account.addresses')
+                ->withErrors(['address' => 'Максимум 3 адреса доставки.']);
+        }
+
+        $validated = $request->validate([
+            'label' => ['nullable', 'string', 'max:100'],
+            'city' => ['required', 'string', 'max:120'],
+            'postal_code' => ['nullable', 'string', 'max:40'],
+            'address_line_1' => ['required', 'string', 'max:255'],
+            'address_line_2' => ['nullable', 'string', 'max:255'],
+            'region' => ['nullable', 'string', 'max:120'],
+            'shipping_method_id' => ['nullable', 'integer', 'exists:shipping_methods,id'],
+        ]);
+
+        $user->addresses()->create($validated);
+
+        return redirect()->route('account.addresses')->with('success', 'Адрес добавлен.');
+    }
+
+    public function updateAddress(Request $request, UserAddress $address): RedirectResponse
+    {
+        if ($address->user_id !== $request->user()->id) {
+            abort(403);
+        }
+
+        $validated = $request->validate([
+            'label' => ['nullable', 'string', 'max:100'],
+            'city' => ['required', 'string', 'max:120'],
+            'postal_code' => ['nullable', 'string', 'max:40'],
+            'address_line_1' => ['required', 'string', 'max:255'],
+            'address_line_2' => ['nullable', 'string', 'max:255'],
+            'region' => ['nullable', 'string', 'max:120'],
+            'shipping_method_id' => ['nullable', 'integer', 'exists:shipping_methods,id'],
+        ]);
+
+        $address->update($validated);
+
+        return redirect()->route('account.addresses')->with('success', 'Адрес обновлён.');
+    }
+
+    public function destroyAddress(Request $request, UserAddress $address): RedirectResponse
+    {
+        if ($address->user_id !== $request->user()->id) {
+            abort(403);
+        }
+
+        $address->delete();
+
+        return redirect()->route('account.addresses')->with('success', 'Адрес удалён.');
+    }
+
+    // ==================== Bonuses ====================
+
+    public function bonusHistory(Request $request): View
+    {
+        $user = $request->user();
+        $transactions = $user->bonusTransactions()
+            ->with('order')
+            ->latest()
+            ->paginate(20);
+
+        $qrCode = $this->qrCodeService->generateForUser($user);
+        $nextTierThreshold = $this->bonusService->nextTierThreshold((int) $user->loyalty_tier);
+
+        return view('store.account.bonuses', compact('user', 'transactions', 'qrCode', 'nextTierThreshold'));
     }
 }

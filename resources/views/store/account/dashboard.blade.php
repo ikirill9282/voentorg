@@ -12,6 +12,41 @@
                 @include('store.account.partials.sidebar')
 
                 <div class="account__content">
+                    {{-- Loyalty card --}}
+                    <div class="loyalty-card loyalty-card--compact">
+                        <div class="loyalty-card__info">
+                            <div class="loyalty-card__balance">
+                                <span class="loyalty-card__balance-label">Баланс бонусов</span>
+                                <span class="loyalty-card__balance-value">{{ number_format($user->bonus_balance, 0, '', ' ') }} &#8381;</span>
+                            </div>
+                            <div class="loyalty-card__tier">
+                                <span class="loyalty-card__tier-badge loyalty-card__tier-badge--{{ $user->loyalty_tier }}">{{ $user->getLoyaltyPercentage() }}%</span>
+                                <span class="loyalty-card__tier-label">Кешбэк</span>
+                            </div>
+                            <div class="loyalty-card__qr loyalty-card__qr--small">
+                                <div class="loyalty-card__qr-image">{!! $qrCode !!}</div>
+                            </div>
+                        </div>
+                        @if ($nextTierThreshold)
+                            @php
+                                $currentThresholds = [0, 50000, 100000, 200000];
+                                $currentMin = $currentThresholds[$user->loyalty_tier - 1] ?? 0;
+                                $progress = $nextTierThreshold > $currentMin
+                                    ? min(100, (($user->total_spent - $currentMin) / ($nextTierThreshold - $currentMin)) * 100)
+                                    : 100;
+                            @endphp
+                            <div class="loyalty-card__progress">
+                                <div class="loyalty-card__progress-bar">
+                                    <div class="loyalty-card__progress-fill" style="width: {{ $progress }}%"></div>
+                                </div>
+                                <span class="loyalty-card__progress-text">
+                                    До следующего уровня: {{ number_format($nextTierThreshold - $user->total_spent, 0, '', ' ') }} &#8381;
+                                </span>
+                            </div>
+                        @endif
+                        <a href="{{ route('account.bonuses') }}" class="loyalty-card__link">Подробнее &rarr;</a>
+                    </div>
+
                     <div class="account__stats">
                         <div class="account__stat-card">
                             <span class="account__stat-number">{{ $orderStats['total'] }}</span>

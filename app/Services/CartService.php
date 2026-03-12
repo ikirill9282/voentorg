@@ -152,6 +152,7 @@ class CartService
                 'discount' => 0,
                 'total' => 0,
                 'total_quantity' => 0,
+                'total_weight' => 0,
                 'is_empty' => true,
                 'coupon' => null,
             ];
@@ -164,7 +165,7 @@ class CartService
 
         $products = Product::query()
             ->whereIn('id', $productIds)
-            ->with('images')
+            ->with(['images', 'specifications'])
             ->get()
             ->keyBy('id');
 
@@ -253,6 +254,7 @@ class CartService
                         'size' => null,
                         'color' => null,
                         'category_id' => $freeProduct->category_id,
+                        'weight' => null,
                         'row_id' => 'free_gift',
                         'line_total' => 0,
                         'is_free_gift' => true,
@@ -265,6 +267,7 @@ class CartService
         }
 
         $total = max(0, $subtotal - $discount);
+        $totalWeight = $items->sum(fn ($item) => ($item['weight'] ?? 0) * $item['quantity']);
 
         return [
             'items' => $items,
@@ -272,6 +275,7 @@ class CartService
             'discount' => $discount,
             'total' => $total,
             'total_quantity' => (int) $items->sum('quantity'),
+            'total_weight' => $totalWeight,
             'is_empty' => $items->isEmpty(),
             'coupon' => $coupon,
         ];
@@ -326,6 +330,13 @@ class CartService
             $variantLabel = implode(', ', $parts);
         }
 
+        $weightSpec = $product->relationLoaded('specifications')
+            ? $product->specifications->whereIn('name', ['Масса', 'Вес', 'Weight'])->first()
+            : null;
+        $weight = $weightSpec
+            ? (float) preg_replace('/[^\d.,]/', '', str_replace(',', '.', $weightSpec->value))
+            : null;
+
         return [
             'product_id' => $product->id,
             'variant_id' => $variant?->id,
@@ -341,6 +352,7 @@ class CartService
             'size' => $size,
             'color' => $color,
             'category_id' => $product->category_id,
+            'weight' => $weight,
         ];
     }
 

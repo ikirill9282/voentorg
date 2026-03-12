@@ -1,23 +1,98 @@
 @extends('layouts.store', ['title' => 'COLCHUGA — Снаряжение, которое работает', 'mainClass' => ''])
 
 @section('content')
+    @php
+        $heroSlides = [
+            [
+                'image' => asset('legacy/assets/colchuga.ru/wp-content/uploads/2025/02/1-scaled.jpg'),
+                'alt' => 'Тактическое снаряжение COLCHUGA',
+                'title' => 'СНАРЯЖЕНИЕ, КОТОРОЕ РАБОТАЕТ',
+                'text' => 'Произведено в России и рассчитано на реальную эксплуатацию.',
+                'button_label' => 'Перейти в каталог',
+                'button_url' => route('shop.index'),
+            ],
+            [
+                'image' => asset('legacy/assets/colchuga.ru/wp-content/uploads/2025/03/1.jpg'),
+                'alt' => 'Бронежилеты и защита COLCHUGA',
+                'title' => 'БРОНЕЖИЛЕТЫ И БАЛЛИСТИЧЕСКАЯ ЗАЩИТА',
+                'text' => 'Подборка решений для службы, тренировок и полевых задач.',
+                'button_label' => 'Смотреть бронежилеты',
+                'button_url' => url('/product-category/brone-zhilety'),
+            ],
+            [
+                'image' => asset('legacy/assets/colchuga.ru/wp-content/uploads/2025/03/2.jpg'),
+                'alt' => 'Новости и новинки COLCHUGA',
+                'title' => 'НОВИНКИ, ОБЗОРЫ И СПЕЦПРЕДЛОЖЕНИЯ',
+                'text' => 'Следите за новыми релизами, поступлениями и главными анонсами бренда.',
+                'button_label' => 'Читать новости',
+                'button_url' => route('blog.index'),
+            ],
+        ];
+    @endphp
+
     {{-- 1. Hero section --}}
-    <section class="top">
-        <div class="container">
-            <div class="top__wrapper">
-                <div class="top__inner">
-                    <div class="top__image">
-                        <img src="{{ asset('legacy/assets/colchuga.ru/wp-content/uploads/2025/02/1-scaled.jpg') }}" alt="gazelle">
-                    </div>
-                    <div class="top__content">
-                        <img class="top__content-img" src="{{ asset('legacy/assets/colchuga.ru/wp-content/uploads/2024/12/group-32.png') }}">
-                        <h1 class="top__content-title">СНАРЯЖЕНИЕ, <br> КОТОРОЕ РАБОТАЕТ</h1>
-                        <p class="top__content-text">Произведено в России</p>
-                        <a href="{{ route('shop.index') }}" class="top__content-btn">
-                            <span>Перейти в каталог</span>
-                            <img src="{{ asset('legacy/assets/colchuga.ru/wp-content/uploads/2024/12/image-81-traced.png') }}" alt="icon">
-                        </a>
-                    </div>
+    <section class="top top--carousel">
+        <div class="top-carousel swiper js-hero-carousel" aria-label="Главные предложения COLCHUGA" tabindex="0">
+            <div class="swiper-wrapper">
+                @foreach ($heroSlides as $slide)
+                    <article class="swiper-slide top-carousel__slide">
+                        <div class="top-carousel__media">
+                            <img
+                                src="{{ $slide['image'] }}"
+                                alt="{{ $slide['alt'] }}"
+                                loading="{{ $loop->first ? 'eager' : 'lazy' }}"
+                                fetchpriority="{{ $loop->first ? 'high' : 'auto' }}"
+                                decoding="async"
+                            >
+                        </div>
+
+                        <div class="top-carousel__scrim"></div>
+
+                        <div class="top-carousel__content-shell">
+                            <div class="top-carousel__content">
+                                <img
+                                    class="top-carousel__brand"
+                                    src="{{ asset('wp-theme/images/logo-1.svg') }}"
+                                    alt=""
+                                    aria-hidden="true"
+                                >
+
+                                @if ($loop->first)
+                                    <h1 class="top-carousel__title">{{ $slide['title'] }}</h1>
+                                @else
+                                    <h2 class="top-carousel__title">{{ $slide['title'] }}</h2>
+                                @endif
+
+                                <p class="top-carousel__text">{{ $slide['text'] }}</p>
+
+                                <a href="{{ $slide['button_url'] }}" class="top-carousel__button">
+                                    <span>{{ $slide['button_label'] }}</span>
+                                    <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                                        <path d="M4.16699 10H15.8337" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+                                        <path d="M10.833 5L15.833 10L10.833 15" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                    </article>
+                @endforeach
+            </div>
+
+            <div class="top-carousel__controls">
+                <div class="top-carousel__pagination"></div>
+
+                <div class="top-carousel__nav">
+                    <button type="button" class="top-carousel__arrow top-carousel__arrow--prev" aria-label="Предыдущий слайд">
+                        <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                            <path d="M12.5 4.16699L6.66667 10L12.5 15.8337" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+
+                    <button type="button" class="top-carousel__arrow top-carousel__arrow--next" aria-label="Следующий слайд">
+                        <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                            <path d="M7.5 4.16699L13.3333 10L7.5 15.8337" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
                 </div>
             </div>
         </div>
@@ -25,59 +100,38 @@
 
     {{-- 2. Catalog section --}}
     <section class="catalog">
-        <div class="container">
-            <a href="{{ route('shop.index') }}"><h2 class="catalog__title"><span>Основной</span> каталог</h2></a>
-            <div class="catalog__cards">
-                @foreach ($categories as $category)
-                    <div class="catalog__card-wrapper">
-                        @if ($category->children->isNotEmpty())
-                            {{-- Категория с подкатегориями: клик = toggle --}}
-                            <div class="catalog__card catalog__card--has-children"
-                                 data-category-id="{{ $category->id }}">
-                                @if ($category->image)
-                                    <img class="catalog__card-img"
-                                         src="{{ asset($category->image) }}"
-                                         alt="{{ $category->name }}">
-                                @endif
-                                <h5>{{ $category->name }}</h5>
-                            </div>
-                            {{-- Панель подкатегорий (скрыта) --}}
-                            <div class="catalog__subcategories" id="subcats-{{ $category->id }}">
-                                @foreach ($category->children as $child)
-                                    <a href="{{ route('shop.category', $child->slug) }}"
-                                       class="catalog__subcard">
-                                        @if ($child->image)
-                                            <img class="catalog__subcard-img"
-                                                 src="{{ asset($child->image) }}"
-                                                 alt="{{ $child->name }}">
-                                        @endif
-                                        <h6>{{ $child->name }}</h6>
-                                    </a>
-                                @endforeach
-                            </div>
-                        @else
-                            {{-- Обычная категория: ссылка напрямую --}}
-                            <a href="{{ route('shop.category', $category->slug) }}"
-                               class="catalog__card">
-                                @if ($category->image)
-                                    <img class="catalog__card-img"
-                                         src="{{ asset($category->image) }}"
-                                         alt="{{ $category->name }}">
-                                @endif
-                                <h5>{{ $category->name }}</h5>
-                            </a>
-                        @endif
-                    </div>
-                @endforeach
-
-                {{-- "Смотреть все" — всегда последняя --}}
-                <div class="catalog__card-wrapper">
-                    <a href="{{ route('shop.index') }}" class="catalog__card catalog__card--viewall">
-                        <h5>Смотреть все</h5>
-                    </a>
-                </div>
-            </div>
-        </div>
+		<div class="container">
+			<a href="/shop">
+				<h2 class="catalog__title"><span>Основной</span> каталог</h2>
+			</a>
+			<div class="catalog__cards">
+				<a href="/product-category/brone-zhilety/" class="catalog__card">
+					<img class="catalog__card-img" src="{{ asset('images/categories/1.-bronezhiletymain-2.jpg') }}" alt="catalog-item" loading="lazy">
+					<h5>Бронежилеты</h5>
+					<svg class="icon" width="19" height="28" viewBox="0 0 19 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+						<path fill-rule="evenodd" clip-rule="evenodd" d="M1.2679 0.406364C0.972593 0.500275 0.82237 0.643911 0.706134 0.943629L0.640625 1.11248V2.44345C0.640625 3.69815 0.643777 3.7878 0.69567 4.0086C0.769047 4.32073 0.839138 4.50414 0.969414 4.72485C1.1238 4.98643 1.33367 5.19093 1.83266 5.56593C2.07305 5.74658 2.3949 5.98983 2.54788 6.10644C2.84273 6.33124 6.33528 8.97079 7.93851 10.1805C8.46301 10.5763 9.0173 10.9956 9.17028 11.1123C9.32326 11.229 10.0212 11.7571 10.7213 12.286C11.6151 12.9611 12.0148 13.2789 12.0633 13.3529C12.2063 13.5713 12.2322 13.8786 12.1275 14.115C12.0474 14.296 11.9921 14.3536 11.6574 14.6045C11.506 14.718 11.3464 14.8391 11.3027 14.8735C11.259 14.908 10.4007 15.5571 9.39544 16.316C8.39016 17.0749 7.49018 17.7556 7.39548 17.8285C7.30078 17.9015 6.69247 18.362 6.04368 18.8519C4.91083 19.7074 4.28154 20.1833 3.84915 20.5116C3.73808 20.5959 3.61745 20.6863 3.5811 20.7123C3.11995 21.043 1.36175 22.397 1.2582 22.5013C1.07495 22.6857 0.869998 23.008 0.799139 23.2232C0.640969 23.7034 0.641287 23.6996 0.640943 25.1483L0.640625 26.4858L0.709816 26.6688C0.759325 26.7997 0.816198 26.8893 0.90976 26.9838C0.981652 27.0564 1.0519 27.1159 1.06586 27.1159C1.0798 27.1159 1.15299 27.146 1.22848 27.1828C1.40384 27.2682 1.55105 27.2683 1.74193 27.183C1.8654 27.1279 2.06571 26.9986 2.19027 26.8936C2.21702 26.8711 4.57796 25.0863 6.65377 23.5194C7.27296 23.052 7.80938 22.647 7.8458 22.6195C7.88222 22.592 7.99547 22.5068 8.09745 22.4302C8.19944 22.3536 8.34844 22.2402 8.42857 22.1782C8.5087 22.1161 9.1226 21.6518 9.79279 21.1463C11.633 19.7582 13.963 17.9987 14.0973 17.8957C14.1629 17.8455 14.3238 17.7235 14.455 17.6247C14.5861 17.5259 14.7655 17.39 14.8537 17.3227C14.9418 17.2553 15.0491 17.1738 15.0921 17.1415C15.7104 16.6767 17.3559 15.4327 17.3974 15.3987C17.4276 15.3739 17.4714 15.3415 17.4945 15.3268C17.5176 15.3121 17.7681 15.1235 18.0512 14.9077C18.6857 14.424 18.7597 14.3371 18.8498 13.9696C18.8906 13.8036 18.8907 13.7774 18.8513 13.6236C18.7604 13.2692 18.6816 13.1718 18.1767 12.7889C17.6353 12.3784 17.4516 12.2395 17.2761 12.1083C17.1814 12.0376 16.8417 11.7805 16.5211 11.5371C16.028 11.1627 14.3411 9.889 13.4616 9.22696C13.3232 9.12278 13.204 9.03111 13.1967 9.02325C13.1894 9.0154 12.9748 8.85338 12.7199 8.66323C12.4649 8.47305 12.2444 8.30702 12.2298 8.29428C12.2153 8.28151 11.7378 7.91965 11.1688 7.49013C9.8242 6.47507 7.65084 4.83295 4.94519 2.7877C3.75051 1.88461 2.58231 1.00173 2.3492 0.825738C1.75284 0.375479 1.57817 0.307716 1.2679 0.406364ZM1.3426 10.0309C1.06186 10.1016 0.860012 10.2633 0.728464 10.5229L0.65387 10.6701L0.646665 13.7612C0.642373 15.5972 0.649314 16.874 0.66375 16.9058C0.677101 16.9353 0.719829 17.0283 0.758663 17.1126C0.907693 17.4359 1.27826 17.626 1.62991 17.5597C1.80678 17.5263 1.90317 17.4662 2.44192 17.0537C2.53662 16.9812 3.32951 16.3814 4.20388 15.7209C5.07827 15.0603 5.82816 14.4786 5.87034 14.4282C5.91251 14.3778 5.97788 14.2704 6.01563 14.1894C6.07362 14.065 6.08424 14.0048 6.08424 13.8008C6.08424 13.5826 6.07597 13.5424 5.99839 13.3831C5.91717 13.2165 5.77571 13.0575 5.58043 12.9134C5.50515 12.8579 2.99857 10.9657 2.26568 10.4111C2.07406 10.2661 1.86156 10.1226 1.79351 10.0922C1.66953 10.0368 1.44202 10.0058 1.3426 10.0309Z" fill="#898121"></path>
+					</svg>
+				</a>
+				<a href="/product-category/komplekti/" class="catalog__card">
+					<img class="catalog__card-img" src="{{ asset('images/categories/2.-komplekty-snaryazheniyamain.jpg') }}" alt="catalog-item" loading="lazy">
+					<h5>Комплекты снаряжения</h5>
+					<svg class="icon" width="19" height="28" viewBox="0 0 19 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+						<path fill-rule="evenodd" clip-rule="evenodd" d="M1.2679 0.406364C0.972593 0.500275 0.82237 0.643911 0.706134 0.943629L0.640625 1.11248V2.44345C0.640625 3.69815 0.643777 3.7878 0.69567 4.0086C0.769047 4.32073 0.839138 4.50414 0.969414 4.72485C1.1238 4.98643 1.33367 5.19093 1.83266 5.56593C2.07305 5.74658 2.3949 5.98983 2.54788 6.10644C2.84273 6.33124 6.33528 8.97079 7.93851 10.1805C8.46301 10.5763 9.0173 10.9956 9.17028 11.1123C9.32326 11.229 10.0212 11.7571 10.7213 12.286C11.6151 12.9611 12.0148 13.2789 12.0633 13.3529C12.2063 13.5713 12.2322 13.8786 12.1275 14.115C12.0474 14.296 11.9921 14.3536 11.6574 14.6045C11.506 14.718 11.3464 14.8391 11.3027 14.8735C11.259 14.908 10.4007 15.5571 9.39544 16.316C8.39016 17.0749 7.49018 17.7556 7.39548 17.8285C7.30078 17.9015 6.69247 18.362 6.04368 18.8519C4.91083 19.7074 4.28154 20.1833 3.84915 20.5116C3.73808 20.5959 3.61745 20.6863 3.5811 20.7123C3.11995 21.043 1.36175 22.397 1.2582 22.5013C1.07495 22.6857 0.869998 23.008 0.799139 23.2232C0.640969 23.7034 0.641287 23.6996 0.640943 25.1483L0.640625 26.4858L0.709816 26.6688C0.759325 26.7997 0.816198 26.8893 0.90976 26.9838C0.981652 27.0564 1.0519 27.1159 1.06586 27.1159C1.0798 27.1159 1.15299 27.146 1.22848 27.1828C1.40384 27.2682 1.55105 27.2683 1.74193 27.183C1.8654 27.1279 2.06571 26.9986 2.19027 26.8936C2.21702 26.8711 4.57796 25.0863 6.65377 23.5194C7.27296 23.052 7.80938 22.647 7.8458 22.6195C7.88222 22.592 7.99547 22.5068 8.09745 22.4302C8.19944 22.3536 8.34844 22.2402 8.42857 22.1782C8.5087 22.1161 9.1226 21.6518 9.79279 21.1463C11.633 19.7582 13.963 17.9987 14.0973 17.8957C14.1629 17.8455 14.3238 17.7235 14.455 17.6247C14.5861 17.5259 14.7655 17.39 14.8537 17.3227C14.9418 17.2553 15.0491 17.1738 15.0921 17.1415C15.7104 16.6767 17.3559 15.4327 17.3974 15.3987C17.4276 15.3739 17.4714 15.3415 17.4945 15.3268C17.5176 15.3121 17.7681 15.1235 18.0512 14.9077C18.6857 14.424 18.7597 14.3371 18.8498 13.9696C18.8906 13.8036 18.8907 13.7774 18.8513 13.6236C18.7604 13.2692 18.6816 13.1718 18.1767 12.7889C17.6353 12.3784 17.4516 12.2395 17.2761 12.1083C17.1814 12.0376 16.8417 11.7805 16.5211 11.5371C16.028 11.1627 14.3411 9.889 13.4616 9.22696C13.3232 9.12278 13.204 9.03111 13.1967 9.02325C13.1894 9.0154 12.9748 8.85338 12.7199 8.66323C12.4649 8.47305 12.2444 8.30702 12.2298 8.29428C12.2153 8.28151 11.7378 7.91965 11.1688 7.49013C9.8242 6.47507 7.65084 4.83295 4.94519 2.7877C3.75051 1.88461 2.58231 1.00173 2.3492 0.825738C1.75284 0.375479 1.57817 0.307716 1.2679 0.406364ZM1.3426 10.0309C1.06186 10.1016 0.860012 10.2633 0.728464 10.5229L0.65387 10.6701L0.646665 13.7612C0.642373 15.5972 0.649314 16.874 0.66375 16.9058C0.677101 16.9353 0.719829 17.0283 0.758663 17.1126C0.907693 17.4359 1.27826 17.626 1.62991 17.5597C1.80678 17.5263 1.90317 17.4662 2.44192 17.0537C2.53662 16.9812 3.32951 16.3814 4.20388 15.7209C5.07827 15.0603 5.82816 14.4786 5.87034 14.4282C5.91251 14.3778 5.97788 14.2704 6.01563 14.1894C6.07362 14.065 6.08424 14.0048 6.08424 13.8008C6.08424 13.5826 6.07597 13.5424 5.99839 13.3831C5.91717 13.2165 5.77571 13.0575 5.58043 12.9134C5.50515 12.8579 2.99857 10.9657 2.26568 10.4111C2.07406 10.2661 1.86156 10.1226 1.79351 10.0922C1.66953 10.0368 1.44202 10.0058 1.3426 10.0309Z" fill="#898121"></path>
+					</svg>
+				</a>
+				<a href="/product-category/balistic-zashita/" class="catalog__card">
+					<img class="catalog__card-img" src="{{ asset('images/categories/4.-takticheskij-poyasmain-1.jpg') }}" alt="catalog-item" loading="lazy">
+					<h5>Баллистическая защита</h5>
+					<svg class="icon" width="19" height="28" viewBox="0 0 19 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+						<path fill-rule="evenodd" clip-rule="evenodd" d="M1.2679 0.406364C0.972593 0.500275 0.82237 0.643911 0.706134 0.943629L0.640625 1.11248V2.44345C0.640625 3.69815 0.643777 3.7878 0.69567 4.0086C0.769047 4.32073 0.839138 4.50414 0.969414 4.72485C1.1238 4.98643 1.33367 5.19093 1.83266 5.56593C2.07305 5.74658 2.3949 5.98983 2.54788 6.10644C2.84273 6.33124 6.33528 8.97079 7.93851 10.1805C8.46301 10.5763 9.0173 10.9956 9.17028 11.1123C9.32326 11.229 10.0212 11.7571 10.7213 12.286C11.6151 12.9611 12.0148 13.2789 12.0633 13.3529C12.2063 13.5713 12.2322 13.8786 12.1275 14.115C12.0474 14.296 11.9921 14.3536 11.6574 14.6045C11.506 14.718 11.3464 14.8391 11.3027 14.8735C11.259 14.908 10.4007 15.5571 9.39544 16.316C8.39016 17.0749 7.49018 17.7556 7.39548 17.8285C7.30078 17.9015 6.69247 18.362 6.04368 18.8519C4.91083 19.7074 4.28154 20.1833 3.84915 20.5116C3.73808 20.5959 3.61745 20.6863 3.5811 20.7123C3.11995 21.043 1.36175 22.397 1.2582 22.5013C1.07495 22.6857 0.869998 23.008 0.799139 23.2232C0.640969 23.7034 0.641287 23.6996 0.640943 25.1483L0.640625 26.4858L0.709816 26.6688C0.759325 26.7997 0.816198 26.8893 0.90976 26.9838C0.981652 27.0564 1.0519 27.1159 1.06586 27.1159C1.0798 27.1159 1.15299 27.146 1.22848 27.1828C1.40384 27.2682 1.55105 27.2683 1.74193 27.183C1.8654 27.1279 2.06571 26.9986 2.19027 26.8936C2.21702 26.8711 4.57796 25.0863 6.65377 23.5194C7.27296 23.052 7.80938 22.647 7.8458 22.6195C7.88222 22.592 7.99547 22.5068 8.09745 22.4302C8.19944 22.3536 8.34844 22.2402 8.42857 22.1782C8.5087 22.1161 9.1226 21.6518 9.79279 21.1463C11.633 19.7582 13.963 17.9987 14.0973 17.8957C14.1629 17.8455 14.3238 17.7235 14.455 17.6247C14.5861 17.5259 14.7655 17.39 14.8537 17.3227C14.9418 17.2553 15.0491 17.1738 15.0921 17.1415C15.7104 16.6767 17.3559 15.4327 17.3974 15.3987C17.4276 15.3739 17.4714 15.3415 17.4945 15.3268C17.5176 15.3121 17.7681 15.1235 18.0512 14.9077C18.6857 14.424 18.7597 14.3371 18.8498 13.9696C18.8906 13.8036 18.8907 13.7774 18.8513 13.6236C18.7604 13.2692 18.6816 13.1718 18.1767 12.7889C17.6353 12.3784 17.4516 12.2395 17.2761 12.1083C17.1814 12.0376 16.8417 11.7805 16.5211 11.5371C16.028 11.1627 14.3411 9.889 13.4616 9.22696C13.3232 9.12278 13.204 9.03111 13.1967 9.02325C13.1894 9.0154 12.9748 8.85338 12.7199 8.66323C12.4649 8.47305 12.2444 8.30702 12.2298 8.29428C12.2153 8.28151 11.7378 7.91965 11.1688 7.49013C9.8242 6.47507 7.65084 4.83295 4.94519 2.7877C3.75051 1.88461 2.58231 1.00173 2.3492 0.825738C1.75284 0.375479 1.57817 0.307716 1.2679 0.406364ZM1.3426 10.0309C1.06186 10.1016 0.860012 10.2633 0.728464 10.5229L0.65387 10.6701L0.646665 13.7612C0.642373 15.5972 0.649314 16.874 0.66375 16.9058C0.677101 16.9353 0.719829 17.0283 0.758663 17.1126C0.907693 17.4359 1.27826 17.626 1.62991 17.5597C1.80678 17.5263 1.90317 17.4662 2.44192 17.0537C2.53662 16.9812 3.32951 16.3814 4.20388 15.7209C5.07827 15.0603 5.82816 14.4786 5.87034 14.4282C5.91251 14.3778 5.97788 14.2704 6.01563 14.1894C6.07362 14.065 6.08424 14.0048 6.08424 13.8008C6.08424 13.5826 6.07597 13.5424 5.99839 13.3831C5.91717 13.2165 5.77571 13.0575 5.58043 12.9134C5.50515 12.8579 2.99857 10.9657 2.26568 10.4111C2.07406 10.2661 1.86156 10.1226 1.79351 10.0922C1.66953 10.0368 1.44202 10.0058 1.3426 10.0309Z" fill="#898121"></path>
+					</svg>
+				</a>
+				<a href="/shop" class="catalog__card">
+					<img class="catalog__card-img" src="{{ asset('images/categories/catalog4.png') }}" alt="catalog-item" loading="lazy">
+					<h5>Смотреть все</h5>
+				</a>
+			</div>
+		</div>
     </section>
 
     {{-- 2.5 Популярное --}}
@@ -99,14 +153,13 @@
         <div class="container">
             <div class="about__inner containerAbout">
                 <div class="about__info">
-                    <h2>О компании</h2>
+                    <h2>Наша компания</h2>
                     <p>Бренд «Colchuga» является подразделением группы компаний «Щит и Меч». Начало специальной военной операции подтолкнуло нашу команду к организации собственного производства тактической экипировки.</p>
                     <p>С 2022 года мы разрабатываем и производим средства индивидуальной защиты, разгрузочные системы, тактическую одежду и многие другие элементы снаряжения. Нашей основной задачей является создание современного продукта, обладающего наилучшим качеством, износостойкостью, удобством и одновременно дешевизной. Десятки тысяч отправленных изделий, профессиональный подход, опыт и доступность наших продуктов делают нас объективными лидерами на рынке.</p>
                 </div>
                 <div class="about__progress">
                     <div class="about__video-wrapper">
-                        <!-- TODO: заменить VIDEO_ID на реальный ID видео с RuTube -->
-                        <iframe src="https://rutube.ru/play/embed/VIDEO_ID" title="О компании COLCHUGA" frameborder="0" allow="clipboard-write; autoplay" allowfullscreen></iframe>
+                        <iframe src="https://rutube.ru/play/embed/7e2ff1d5ff379800ffd9e60cb48154ad" title="Бронежилет Кольчуга" frameborder="0" allow="clipboard-write; autoplay" allowfullscreen></iframe>
                     </div>
                 </div>
             </div>
@@ -118,8 +171,8 @@
         {{-- Main: video left + info right --}}
         <div class="video-showcase__hero">
             <div class="video-showcase__player">
-                <!-- TODO: заменить VIDEO_ID на реальный ID с RuTube -->
-                <iframe src="https://rutube.ru/play/embed/VIDEO_ID" title="COLCHUGA" frameborder="0" allow="clipboard-write; autoplay" allowfullscreen></iframe>
+                {{-- TODO: заменить VIDEO_ID на реальный ID с RuTube --}}
+                {{-- <iframe src="https://rutube.ru/play/embed/VIDEO_ID" title="COLCHUGA" frameborder="0" allow="clipboard-write; autoplay" allowfullscreen></iframe> --}}
             </div>
             <div class="video-showcase__info">
                 {{-- RuTube icon --}}
@@ -138,19 +191,19 @@
         {{-- Video thumbnails row --}}
         <div class="video-showcase__thumbs">
             <a href="#" target="_blank" rel="noopener" class="video-showcase__thumb">
-                <img src="{{ asset('legacy/assets/colchuga.ru/wp-content/uploads/2025/03/1.jpg') }}" alt="Видео 1">
+                <img src="{{ asset('legacy/assets/colchuga.ru/wp-content/uploads/2025/03/1.jpg') }}" alt="Видео 1" loading="lazy">
                 <div class="video-showcase__thumb-play">
                     <svg viewBox="0 0 68 48" xmlns="http://www.w3.org/2000/svg"><path d="M66.52 7.74c-.78-2.93-2.49-5.41-5.42-6.19C55.79.13 34 0 34 0S12.21.13 6.9 1.55C3.97 2.33 2.27 4.81 1.48 7.74.06 13.05 0 24 0 24s.06 10.95 1.48 16.26c.78 2.93 2.49 5.41 5.42 6.19C12.21 47.87 34 48 34 48s21.79-.13 27.1-1.55c2.93-.78 4.64-3.26 5.42-6.19C67.94 34.95 68 24 68 24s-.06-10.95-1.48-16.26z" fill="red"/><path d="M45 24L27 14v20" fill="#fff"/></svg>
                 </div>
             </a>
             <a href="#" target="_blank" rel="noopener" class="video-showcase__thumb">
-                <img src="{{ asset('legacy/assets/colchuga.ru/wp-content/uploads/2025/03/2.jpg') }}" alt="Видео 2">
+                <img src="{{ asset('legacy/assets/colchuga.ru/wp-content/uploads/2025/03/2.jpg') }}" alt="Видео 2" loading="lazy">
                 <div class="video-showcase__thumb-play">
                     <svg viewBox="0 0 68 48" xmlns="http://www.w3.org/2000/svg"><path d="M66.52 7.74c-.78-2.93-2.49-5.41-5.42-6.19C55.79.13 34 0 34 0S12.21.13 6.9 1.55C3.97 2.33 2.27 4.81 1.48 7.74.06 13.05 0 24 0 24s.06 10.95 1.48 16.26c.78 2.93 2.49 5.41 5.42 6.19C12.21 47.87 34 48 34 48s21.79-.13 27.1-1.55c2.93-.78 4.64-3.26 5.42-6.19C67.94 34.95 68 24 68 24s-.06-10.95-1.48-16.26z" fill="red"/><path d="M45 24L27 14v20" fill="#fff"/></svg>
                 </div>
             </a>
             <a href="#" target="_blank" rel="noopener" class="video-showcase__thumb">
-                <img src="{{ asset('legacy/assets/colchuga.ru/wp-content/uploads/2025/03/3.jpg') }}" alt="Видео 3">
+                <img src="{{ asset('legacy/assets/colchuga.ru/wp-content/uploads/2025/03/3.jpg') }}" alt="Видео 3" loading="lazy">
                 <div class="video-showcase__thumb-play">
                     <svg viewBox="0 0 68 48" xmlns="http://www.w3.org/2000/svg"><path d="M66.52 7.74c-.78-2.93-2.49-5.41-5.42-6.19C55.79.13 34 0 34 0S12.21.13 6.9 1.55C3.97 2.33 2.27 4.81 1.48 7.74.06 13.05 0 24 0 24s.06 10.95 1.48 16.26c.78 2.93 2.49 5.41 5.42 6.19C12.21 47.87 34 48 34 48s21.79-.13 27.1-1.55c2.93-.78 4.64-3.26 5.42-6.19C67.94 34.95 68 24 68 24s-.06-10.95-1.48-16.26z" fill="red"/><path d="M45 24L27 14v20" fill="#fff"/></svg>
                 </div>
@@ -175,7 +228,7 @@
                 @foreach ($posts as $post)
                     <a href="{{ route('blog.show', $post->slug) }}" class="blog-section__card">
                         @if ($post->featured_image)
-                            <img class="blog-section__card-img" src="{{ $post->featured_image }}" alt="photo">
+                            <img class="blog-section__card-img" src="{{ $post->featured_image }}" alt="photo" loading="lazy">
                         @endif
                         <div class="blog-section__card-info">
                             <h5>{{ $post->title }}</h5>

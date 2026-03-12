@@ -155,7 +155,7 @@
                                 <input class="form__files-input" type="file" name="attachment" accept="audio/*,video/*,image/*">
                             </p>
                         </div>
-                        @include('store.partials.recaptcha-field', ['action' => 'contact'])
+                        @include('store.partials.captcha-field', ['id' => 'contact'])
                         <p>
                             <label>
                                 <input type="checkbox" name="acceptance" value="1" required>

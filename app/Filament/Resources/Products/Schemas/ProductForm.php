@@ -81,11 +81,18 @@ class ProductForm
                                     ->label('Изображения товара')
                                     ->relationship('images')
                                     ->schema([
+                                        Select::make('type')
+                                            ->label('Тип')
+                                            ->options([
+                                                'image' => 'Изображение',
+                                                'video' => 'Видео',
+                                            ])
+                                            ->default('image')
+                                            ->reactive(),
                                         TextInput::make('path')
-                                            ->label('Путь / URL')
+                                            ->label('Путь / URL изображения')
                                             ->required()
-                                            ->maxLength(500)
-                                            ->columnSpan(2),
+                                            ->maxLength(500),
                                         TextInput::make('alt')
                                             ->label('Alt текст')
                                             ->maxLength(255),
@@ -93,6 +100,21 @@ class ProductForm
                                             ->label('Сортировка')
                                             ->numeric()
                                             ->default(0),
+                                        TextInput::make('video_url')
+                                            ->label('URL видео (MP4)')
+                                            ->maxLength(500)
+                                            ->visible(fn ($get) => $get('type') === 'video'),
+                                        TextInput::make('video_thumbnail')
+                                            ->label('Миниатюра видео')
+                                            ->maxLength(500)
+                                            ->visible(fn ($get) => $get('type') === 'video'),
+                                        Select::make('orientation')
+                                            ->label('Ориентация')
+                                            ->options([
+                                                'vertical' => 'Вертикальное',
+                                                'horizontal' => 'Горизонтальное',
+                                            ])
+                                            ->visible(fn ($get) => $get('type') === 'video'),
                                     ])
                                     ->columns(4)
                                     ->defaultItems(0)
@@ -149,6 +171,23 @@ class ProductForm
                                     ->defaultItems(0)
                                     ->reorderable()
                                     ->columnSpanFull(),
+                            ]),
+
+                        Tab::make('Наличие в магазинах')
+                            ->schema([
+                                Select::make('store_ids')
+                                    ->label('Магазины, где товар в наличии')
+                                    ->multiple()
+                                    ->options(\App\Models\Store::where('is_active', true)->orderBy('sort_order')->pluck('name', 'id'))
+                                    ->searchable()
+                                    ->preload()
+                                    ->columnSpanFull()
+                                    ->afterStateHydrated(function ($component, $record) {
+                                        if ($record) {
+                                            $component->state($record->stores()->where('in_stock', true)->pluck('stores.id')->toArray());
+                                        }
+                                    })
+                                    ->dehydrated(false),
                             ]),
                     ]),
             ]);

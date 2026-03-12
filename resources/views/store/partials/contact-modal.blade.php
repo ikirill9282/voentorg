@@ -12,6 +12,7 @@
                         <input class="input" type="tel" name="phone" placeholder="Телефон *" required><br>
                         <textarea name="message" placeholder="Сообщение *" required></textarea>
                     </p>
+                    @include('store.partials.captcha-field', ['id' => 'contact-modal'])
                     <p>
                         <button class="form__btn" type="submit">
                             <span class="form__btn-text">Отправить запрос</span>

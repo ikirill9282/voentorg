@@ -116,6 +116,12 @@
                             <p class="items-text">Товары ({{ $cart['total_quantity'] }})</p>
                             <p class="items-price">{{ number_format($cart['subtotal'], 0, '', ' ') }} ₽</p>
                         </div>
+                        @if ($cart['total_weight'] > 0)
+                            <div class="subtotal">
+                                <p class="items-text">Общая масса</p>
+                                <p class="items-price">{{ number_format($cart['total_weight'], 2, ',', ' ') }} кг</p>
+                            </div>
+                        @endif
                         <hr class="discount_hr" @if ($cart['discount'] <= 0) style="display:none;" @endif>
                         <div class="discount" @if ($cart['discount'] <= 0) style="display:none;" @endif>
                             <p class="items-text">Выгода</p>

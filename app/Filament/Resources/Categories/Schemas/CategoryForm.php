@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Categories\Schemas;
 
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
@@ -29,9 +30,16 @@ class CategoryForm
                     ->required()
                     ->maxLength(255)
                     ->unique(ignoreRecord: true),
-                TextInput::make('image')
-                    ->label('Путь к изображению')
-                    ->maxLength(500),
+                FileUpload::make('image')
+                    ->label('Изображение')
+                    ->image()
+                    ->disk('public_uploads')
+                    ->directory('images/categories')
+                    ->visibility('public')
+                    ->imageResizeMode('cover')
+                    ->imageCropAspectRatio('4:3')
+                    ->imageResizeTargetWidth('800')
+                    ->imageResizeTargetHeight('600'),
                 TextInput::make('sort_order')
                     ->label('Сортировка')
                     ->numeric()

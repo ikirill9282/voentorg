@@ -1,11 +1,11 @@
 <aside class="account-sidebar">
     <div class="account-sidebar__user">
         <div class="account-sidebar__avatar">
-            {{ mb_strtoupper(mb_substr(Auth::user()->name, 0, 1)) }}
+            {{ mb_strtoupper(mb_substr(Auth::user()->first_name ?: Auth::user()->name, 0, 1)) }}
         </div>
         <div class="account-sidebar__info">
-            <span class="account-sidebar__name">{{ Auth::user()->name }}</span>
-            <span class="account-sidebar__email">{{ Auth::user()->email }}</span>
+            <span class="account-sidebar__name">{{ Auth::user()->full_name ?: Auth::user()->name }}</span>
+            <span class="account-sidebar__email">{{ Auth::user()->phone ?: Auth::user()->email }}</span>
         </div>
     </div>
     <nav class="account-sidebar__nav">
@@ -22,6 +22,23 @@
                 <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10H7v-2h10v2zm0-4H7V7h10v2z" fill="currentColor"/>
             </svg>
             Мои заказы
+        </a>
+        <a href="{{ route('account.addresses') }}"
+           class="account-sidebar__link {{ request()->routeIs('account.addresses*') ? 'active' : '' }}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24">
+                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 010-5 2.5 2.5 0 010 5z" fill="currentColor"/>
+            </svg>
+            Адреса доставки
+        </a>
+        <a href="{{ route('account.bonuses') }}"
+           class="account-sidebar__link {{ request()->routeIs('account.bonuses') ? 'active' : '' }}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24">
+                <path d="M20 6h-2.18c.11-.31.18-.65.18-1a3 3 0 00-3-3c-1.05 0-1.95.56-2.47 1.37L12 4.13l-.53-.76A2.99 2.99 0 009 2a3 3 0 00-3 3c0 .35.07.69.18 1H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-5-2c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zM9 4c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm11 15H4v-2h16v2zm0-5H4V8h5.08L7 10.83 8.62 12 12 7.4 15.38 12 17 10.83 14.92 8H20v6z" fill="currentColor"/>
+            </svg>
+            Бонусы
+            @if (Auth::user()->bonus_balance > 0)
+                <span class="account-sidebar__badge">{{ number_format(Auth::user()->bonus_balance, 0, '', ' ') }}</span>
+            @endif
         </a>
         <a href="{{ route('account.settings') }}"
            class="account-sidebar__link {{ request()->routeIs('account.settings') ? 'active' : '' }}">

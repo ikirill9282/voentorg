@@ -1,10 +1,67 @@
-<div class="card">
-    <div>
+@php
+    // Collect variant data for color/size selection
+    $colors = collect();
+    $sizes = collect();
+    $variantsJson = [];
+    $defaultVariantId = null;
+
+    if ($product->relationLoaded('variants') && $product->variants->isNotEmpty()) {
+        $firstVariant = $product->variants->first();
+        $defaultVariantId = $firstVariant->id;
+
+        $defaultColorId = null;
+        $defaultSizeId = null;
+
+        foreach ($product->variants as $variant) {
+            $colorId = null;
+            $sizeId = null;
+
+            foreach ($variant->attributeValues as $attrVal) {
+                $slug = $attrVal->attribute->slug ?? '';
+                if ($slug === 'color') {
+                    $colorId = $attrVal->id;
+                    if (!$colors->contains('id', $attrVal->id)) {
+                        $colors->push((object) [
+                            'id' => $attrVal->id,
+                            'value' => $attrVal->value,
+                            'color_hex' => $attrVal->color_hex,
+                        ]);
+                    }
+                } elseif ($slug === 'razmer') {
+                    $sizeId = $attrVal->id;
+                    if (!$sizes->contains('id', $attrVal->id)) {
+                        $sizes->push((object) [
+                            'id' => $attrVal->id,
+                            'value' => $attrVal->value,
+                        ]);
+                    }
+                }
+            }
+
+            $variantsJson[] = [
+                'id' => $variant->id,
+                'color_id' => $colorId,
+                'size_id' => $sizeId,
+                'price' => (float) $variant->price,
+                'stock' => $variant->stock,
+            ];
+        }
+
+        // Defaults from first variant
+        foreach ($firstVariant->attributeValues as $attrVal) {
+            $slug = $attrVal->attribute->slug ?? '';
+            if ($slug === 'color') $defaultColorId = $attrVal->id;
+            elseif ($slug === 'razmer') $defaultSizeId = $attrVal->id;
+        }
+    }
+@endphp
+<div class="card" data-product-id="{{ $product->id }}" data-variants='@json($variantsJson)'>
+    <div class="card__content">
         <div class="card__img">
             <a href="{{ route('shop.product', $product->slug) }}">
                 @if ($product->images->isNotEmpty())
                     @foreach ($product->images as $img)
-                        <img src="{{ $img->path }}" alt="{{ $img->alt ?: $product->name }}" class="card__img-slide {{ $loop->first ? 'active' : '' }}">
+                        <img src="{{ $img->path }}" alt="{{ $img->alt ?: $product->name }}" class="card__img-slide {{ $loop->first ? 'active' : '' }}" loading="lazy">
                     @endforeach
                     @if ($product->images->count() > 1)
                         <div class="card__img-dots">
@@ -18,14 +75,37 @@
                 @endif
             </a>
         </div>
-        <span class="card__number">Артикул: {{ $product->sku }}</span>
         <h5 class="card__title">
             <a href="{{ route('shop.product', $product->slug) }}">{{ $product->name }}</a>
         </h5>
         <p class="price">{{ number_format($product->price, 0, '', ' ') }} &#8381;</p>
+
+        @if ($colors->isNotEmpty())
+            <div class="card__colors">
+                @foreach ($colors as $color)
+                    <span class="card__color-swatch {{ isset($defaultColorId) && $defaultColorId === $color->id ? 'active' : '' }}"
+                          data-color-id="{{ $color->id }}"
+                          style="background-color: {{ $color->color_hex ?: '#ccc' }}"
+                          title="{{ $color->value }}"></span>
+                @endforeach
+            </div>
+        @endif
+
+        @if ($sizes->isNotEmpty())
+            <div class="card__sizes">
+                @foreach ($sizes as $size)
+                    <span class="card__size-btn {{ isset($defaultSizeId) && $defaultSizeId === $size->id ? 'active' : '' }}"
+                          data-size-id="{{ $size->id }}">{{ $size->value }}</span>
+                @endforeach
+            </div>
+        @endif
     </div>
     <form class="cart" action="{{ route('cart.items.store') }}" method="POST">
         @csrf
+        <input type="hidden" name="product_id" value="{{ $product->id }}">
+        @if ($defaultVariantId)
+            <input type="hidden" name="variant_id" value="{{ $defaultVariantId }}">
+        @endif
         <div class="card__btns">
             <div class="try">
                 <button type="submit" class="card__btns__btn single_add_to_cart_button button alt">
@@ -42,7 +122,6 @@
                 </div>
                 <span class="card__btns__counter-increase">+</span>
             </div>
-            <input type="hidden" name="product_id" value="{{ $product->id }}">
         </div>
     </form>
 </div>

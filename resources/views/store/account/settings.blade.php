@@ -21,12 +21,61 @@
                             @method('PATCH')
                             <div class="account__form-grid">
                                 <div class="account__field">
-                                    <label for="name" class="account__label">Имя</label>
-                                    <input type="text" id="name" name="name"
-                                           value="{{ old('name', $user->name) }}"
-                                           class="account__input {{ $errors->has('name') ? 'account__input--error' : '' }}"
+                                    <label for="last_name" class="account__label">Фамилия *</label>
+                                    <input type="text" id="last_name" name="last_name"
+                                           value="{{ old('last_name', $user->last_name) }}"
+                                           class="account__input {{ $errors->has('last_name') ? 'account__input--error' : '' }}"
                                            required>
-                                    @error('name')
+                                    @error('last_name')
+                                        <span class="account__field-error">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="account__field">
+                                    <label for="first_name" class="account__label">Имя *</label>
+                                    <input type="text" id="first_name" name="first_name"
+                                           value="{{ old('first_name', $user->first_name) }}"
+                                           class="account__input {{ $errors->has('first_name') ? 'account__input--error' : '' }}"
+                                           required>
+                                    @error('first_name')
+                                        <span class="account__field-error">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="account__field">
+                                    <label for="patronymic" class="account__label">Отчество</label>
+                                    <input type="text" id="patronymic" name="patronymic"
+                                           value="{{ old('patronymic', $user->patronymic) }}"
+                                           class="account__input">
+                                </div>
+                                <div class="account__field">
+                                    <label for="callsign" class="account__label">Позывной</label>
+                                    <input type="text" id="callsign" name="callsign"
+                                           value="{{ old('callsign', $user->callsign) }}"
+                                           class="account__input">
+                                </div>
+                                <div class="account__field">
+                                    <label for="birthday" class="account__label">Дата рождения</label>
+                                    <input type="date" id="birthday" name="birthday"
+                                           value="{{ old('birthday', $user->birthday?->format('Y-m-d')) }}"
+                                           class="account__input"
+                                           max="{{ now()->subYear()->format('Y-m-d') }}">
+                                </div>
+                                <div class="account__field">
+                                    <label for="telegram_username" class="account__label">Тэг в Telegram</label>
+                                    <input type="text" id="telegram_username" name="telegram_username"
+                                           value="{{ old('telegram_username', $user->telegram_username) }}"
+                                           class="account__input {{ $errors->has('telegram_username') ? 'account__input--error' : '' }}"
+                                           placeholder="@username">
+                                    @error('telegram_username')
+                                        <span class="account__field-error">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="account__field">
+                                    <label for="phone" class="account__label">Телефон *</label>
+                                    <input type="tel" id="phone" name="phone"
+                                           value="{{ old('phone', $user->phone) }}"
+                                           class="account__input {{ $errors->has('phone') ? 'account__input--error' : '' }}"
+                                           required>
+                                    @error('phone')
                                         <span class="account__field-error">{{ $message }}</span>
                                     @enderror
                                 </div>
@@ -34,8 +83,7 @@
                                     <label for="email" class="account__label">Email</label>
                                     <input type="email" id="email" name="email"
                                            value="{{ old('email', $user->email) }}"
-                                           class="account__input {{ $errors->has('email') ? 'account__input--error' : '' }}"
-                                           required>
+                                           class="account__input {{ $errors->has('email') ? 'account__input--error' : '' }}">
                                     @error('email')
                                         <span class="account__field-error">{{ $message }}</span>
                                     @enderror

@@ -62,6 +62,11 @@ Route::middleware('auth')->prefix('account')->name('account.')->group(function (
     Route::patch('/settings/profile', [AccountController::class, 'updateProfile'])->name('settings.profile');
     Route::put('/settings/password', [AccountController::class, 'updatePassword'])->name('settings.password');
     Route::delete('/settings', [AccountController::class, 'destroy'])->name('destroy');
+    Route::get('/addresses', [AccountController::class, 'addresses'])->name('addresses');
+    Route::post('/addresses', [AccountController::class, 'storeAddress'])->name('addresses.store');
+    Route::patch('/addresses/{address}', [AccountController::class, 'updateAddress'])->name('addresses.update');
+    Route::delete('/addresses/{address}', [AccountController::class, 'destroyAddress'])->name('addresses.destroy');
+    Route::get('/bonuses', [AccountController::class, 'bonusHistory'])->name('bonuses');
 });
 
 // 1C CommerceML exchange

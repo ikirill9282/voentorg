@@ -24,5 +24,13 @@ class EditProduct extends EditRecord
             $this->data['variants'] ?? [],
             $this->record,
         );
+
+        // Sync store availability
+        $storeIds = $this->data['store_ids'] ?? [];
+        $syncData = [];
+        foreach ($storeIds as $storeId) {
+            $syncData[$storeId] = ['in_stock' => true];
+        }
+        $this->record->stores()->sync($syncData);
     }
 }

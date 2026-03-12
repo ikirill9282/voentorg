@@ -42,6 +42,7 @@ class OrderForm
                             ->label('Метод оплаты')
                             ->required()
                             ->options([
+                                'online_payment' => 'Оплата онлайн',
                                 'bank_transfer' => 'Банковский перевод',
                                 'cash_on_delivery' => 'Оплата при получении',
                                 'invoice' => 'Счет для юр. лица',
@@ -57,12 +58,43 @@ class OrderForm
                             ->placeholder('Не выбрана'),
                         TextInput::make('delivery_region')
                             ->label('Регион доставки'),
+                        TextInput::make('delivery_provider')
+                            ->label('Провайдер доставки')
+                            ->disabled(),
+                        Select::make('pickup_store_id')
+                            ->label('Магазин самовывоза')
+                            ->relationship('pickupStore', 'name')
+                            ->preload()
+                            ->placeholder('Не выбран'),
+                        TextInput::make('pickup_estimated_days')
+                            ->label('Срок доставки (дни)')
+                            ->numeric()
+                            ->disabled(),
+                        TextInput::make('cdek_tracking_number')
+                            ->label('СДЭК трек-номер'),
+                        TextInput::make('yandex_claim_id')
+                            ->label('Яндекс Claim ID')
+                            ->disabled(),
+                        TextInput::make('payment_id')
+                            ->label('ID платежа ВТБ')
+                            ->disabled(),
+                        TextInput::make('paid_at')
+                            ->label('Дата оплаты')
+                            ->disabled(),
                         TextInput::make('subtotal')
                             ->label('Сумма товаров')
                             ->numeric(),
                         TextInput::make('shipping_total')
                             ->label('Стоимость доставки')
                             ->numeric(),
+                        TextInput::make('bonus_used')
+                            ->label('Бонусов списано')
+                            ->numeric()
+                            ->disabled(),
+                        TextInput::make('bonus_earned')
+                            ->label('Бонусов начислено')
+                            ->numeric()
+                            ->disabled(),
                         TextInput::make('total')
                             ->label('Итого')
                             ->numeric(),

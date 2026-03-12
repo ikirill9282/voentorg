@@ -57,6 +57,8 @@ class Order extends Model
         'payment_id',
         'payment_url',
         'paid_at',
+        'bonus_used',
+        'bonus_earned',
     ];
 
     protected function casts(): array
@@ -68,6 +70,8 @@ class Order extends Model
             'discount_amount' => 'decimal:2',
             'paid_at' => 'datetime',
             'commerceml_exported_at' => 'datetime',
+            'bonus_used' => 'decimal:2',
+            'bonus_earned' => 'decimal:2',
         ];
     }
 
